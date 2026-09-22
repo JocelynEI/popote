@@ -1,4 +1,5 @@
 import Storage from 'expo-sqlite/kv-store';
+import { Platform } from 'react-native';
 import { createContext, type ReactNode, useCallback, useContext, useMemo, useState } from 'react';
 import type { Diet } from '../data/types';
 import type { Allergen } from '../logic/diets';
@@ -67,9 +68,29 @@ export const DEFAULT_SETTINGS: Settings = {
 
 const KEY = 'settings.v1';
 
+/**
+ * Sur le web (aperçu), les réglages vont dans localStorage : plus simple et plus fiable
+ * que SQLite dans le navigateur (Safari notamment). Sur iOS / Android : SQLite (kv-store).
+ */
+const WEB = Platform.OS === 'web' && typeof localStorage !== 'undefined';
+
+function readRaw(): string | null {
+  if (WEB) {
+    try {
+      const v = localStorage.getItem(KEY);
+      if (v) return v;
+    } catch {}
+  }
+  try {
+    return Storage.getItemSync(KEY);
+  } catch {
+    return null;
+  }
+}
+
 export function loadSettings(): Settings {
   try {
-    const raw = Storage.getItemSync(KEY);
+    const raw = readRaw();
     if (!raw) return DEFAULT_SETTINGS;
     const s = { ...DEFAULT_SETTINGS, ...(JSON.parse(raw) as Partial<Settings>) };
     // migration : anciennes couleurs des versions précédentes
@@ -80,8 +101,20 @@ export function loadSettings(): Settings {
   }
 }
 
+/** N'échoue jamais : si l'enregistrement rate, le réglage reste valable pour la session en cours. */
 export function saveSettings(s: Settings) {
-  Storage.setItemSync(KEY, JSON.stringify(s));
+  const json = JSON.stringify(s);
+  if (WEB) {
+    try {
+      localStorage.setItem(KEY, json);
+      return;
+    } catch {}
+  }
+  try {
+    Storage.setItemSync(KEY, json);
+  } catch (e) {
+    console.warn('Réglages non enregistrés', e);
+  }
 }
 
 interface Ctx {

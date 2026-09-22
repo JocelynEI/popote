@@ -92,9 +92,10 @@ export default function WelcomeScreen() {
   }, [i]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const finish = () => {
-    update({ welcomeSeen: true });
+    // on navigue d'abord : même si l'enregistrement échouait, l'utilisateur n'est jamais bloqué
     if (!settings.prefsDone) router.replace('/preferences');
     else goBack();
+    update({ welcomeSeen: true });
   };
 
   const next = () => {

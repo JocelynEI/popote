@@ -13,6 +13,8 @@
     try { var rs = await navigator.serviceWorker.getRegistrations(); for (var r of rs) await r.unregister(); } catch (e) {}
     location.replace(location.pathname.split('?')[0] + '?v=' + Date.now());
   };
+  // lien de dépannage : …/popote/?reset → efface tout et relance
+  if (/[?&]reset\b/.test(location.search)) { window.__popoteReset(); return; }
   var shown = false;
   function check() {
     var root = document.getElementById('root');
