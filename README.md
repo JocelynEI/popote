@@ -32,6 +32,12 @@ npx expo start --dev-client
 
 Sur Mac avec Xcode / Android Studio, tu peux aussi lancer `npx expo run:ios` ou `npx expo run:android`.
 
+### Aperçu web sur GitHub Pages
+
+À chaque `git push` sur la branche `main`, le workflow `.github/workflows/pages.yml` construit et publie l'aperçu web
+(`https://TON-PSEUDO.github.io/NOM-DU-DEPOT/`). Pour le construire à la main : `EXPO_BASE_URL=/popote npm run build:web` (résultat dans `dist/`).
+Limites de l'aperçu web : pas de notifications, pas de dictée vocale, achat Premium simulé. Au premier chargement, la page se recharge une fois (activation de la base locale).
+
 ## 2. Publier
 
 ```bash

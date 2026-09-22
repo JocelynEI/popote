@@ -50,7 +50,8 @@
     "test": "tsx --test scripts/logic.test.ts",
     "build:android": "npx eas-cli@latest build -p android --profile production",
     "build:ios": "npx eas-cli@latest build -p ios --profile production",
-    "submit": "npx eas-cli@latest submit --profile production"
+    "submit": "npx eas-cli@latest submit --profile production",
+    "build:web": "node scripts/build-pages.mjs"
   },
   "private": true
 }
