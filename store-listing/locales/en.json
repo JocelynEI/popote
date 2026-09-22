@@ -1,0 +1,5 @@
+{
+  "CFBundleDisplayName": "Popote",
+  "NSMicrophoneUsageDescription": "Popote only uses the microphone when you turn on voice control in cooking mode (“next”, “repeat”…). Nothing is recorded.",
+  "NSSpeechRecognitionUsageDescription": "Speech recognition runs on your phone to understand “next”, “previous”, “repeat” and “timer” in cooking mode."
+}

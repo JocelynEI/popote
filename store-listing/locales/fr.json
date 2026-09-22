@@ -1,0 +1,5 @@
+{
+  "CFBundleDisplayName": "Popote",
+  "NSMicrophoneUsageDescription": "Popote utilise le micro uniquement quand tu actives la commande vocale en mode cuisine (« suivant », « répète »…). Rien n’est enregistré.",
+  "NSSpeechRecognitionUsageDescription": "La reconnaissance vocale se fait sur ton téléphone pour comprendre « suivant », « précédent », « répète » et « minuteur » en mode cuisine."
+}
