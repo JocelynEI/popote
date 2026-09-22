@@ -70,8 +70,7 @@ const config: ExpoConfig = {
       'com.google.android.gms.permission.AD_ID',
     ],
   },
-  // Version web (aperçu GitHub Pages) : page unique ; EXPO_BASE_URL = « /nom-du-depot » en CI
-  web: { favicon: './assets/favicon.png', output: 'single', bundler: 'metro' },
+  web: { favicon: './assets/favicon.png' },
   plugins: [
     'expo-router',
     'expo-sqlite',
@@ -103,7 +102,7 @@ const config: ExpoConfig = {
     fr: './store-listing/locales/fr.json',
     en: './store-listing/locales/en.json',
   },
-  experiments: { typedRoutes: true, baseUrl: process.env.EXPO_BASE_URL || '' },
+  experiments: { typedRoutes: true },
   extra: {
     router: {},
     eas: {

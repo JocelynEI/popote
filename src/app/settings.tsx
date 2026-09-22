@@ -187,7 +187,6 @@ export default function SettingsScreen() {
         <Section title={t('sectionAbout')}>
           <View style={{ gap: space(2) }}>
             <Button kind="ghost" icon="shield-checkmark-outline" title={t('privacyPolicy')} onPress={() => router.push('/privacy')} />
-            <Button kind="ghost" icon="sparkles" title={t('replayWelcome')} onPress={() => router.push('/welcome')} />
             <Button kind="ghost" icon="bulb-outline" title={t('resetTips')} onPress={() => (update({ tipsSeen: [], privacyNoticeSeen: false }), router.back())} />
             <Button kind="ghost" icon="mail-outline" title={`${t('contact')} : ${CONTACT_EMAIL}`} onPress={() => Linking.openURL(`mailto:${CONTACT_EMAIL}`)} />
           </View>

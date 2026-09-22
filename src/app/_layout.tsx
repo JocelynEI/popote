@@ -164,7 +164,6 @@ function AppStack() {
         <Stack.Screen name="planner" options={{ title: t('plannerTitle') }} />
         <Stack.Screen name="empty-fridge" options={{ title: t('emptyFridgeTitle') }} />
         <Stack.Screen name="recipe-editor" options={{ title: t('editorTitle'), presentation: 'modal' }} />
-        <Stack.Screen name="welcome" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false, animation: 'fade' }} />
         <Stack.Screen name="preferences" options={{ title: '', presentation: 'modal' }} />
         <Stack.Screen name="quick-fill" options={{ title: t('quickFillTitle'), presentation: 'modal' }} />
         <Stack.Screen name="fridge-add" options={{ title: t('fridgeAdd'), presentation: 'modal' }} />

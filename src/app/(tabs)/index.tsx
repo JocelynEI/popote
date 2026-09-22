@@ -36,10 +36,10 @@ export default function HomeScreen() {
   const [includeSaved, setIncludeSaved] = useState(true);
   const [tipStep, setTipStep] = useState(settings.tipsSeen.includes('home2') ? -1 : 0);
 
+  // Premier lancement : écran de préférences facultatif (une fois la navigation montée)
   useEffect(() => {
-    if (settings.welcomeSeen && settings.prefsDone) return;
-    // 1er lancement : présentation par Frigo, puis préférences (facultatives)
-    const id = setTimeout(() => router.push(settings.welcomeSeen ? '/preferences' : '/welcome'), 300);
+    if (settings.prefsDone) return;
+    const id = setTimeout(() => router.push('/preferences'), 300);
     return () => clearTimeout(id);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
