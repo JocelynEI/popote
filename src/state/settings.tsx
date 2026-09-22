@@ -15,6 +15,7 @@ export interface Settings {
   allergies: Allergen[];
   defaultServings: number;
   // onboarding
+  welcomeSeen: boolean;
   prefsDone: boolean;
   tipsSeen: string[];
   privacyNoticeSeen: boolean;
@@ -45,6 +46,7 @@ export const DEFAULT_SETTINGS: Settings = {
   diets: [],
   allergies: [],
   defaultServings: 2,
+  welcomeSeen: false,
   prefsDone: false,
   tipsSeen: [],
   privacyNoticeSeen: false,
