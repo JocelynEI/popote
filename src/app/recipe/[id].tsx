@@ -335,7 +335,7 @@ export default function RecipeScreen() {
   );
 }
 
-const AWAKE_TAG = 'popote-recipe';
+const AWAKE_TAG = 'mypopote-recipe';
 
 const styles = StyleSheet.create({
   round: { width: 44, height: 44, borderRadius: 22 },

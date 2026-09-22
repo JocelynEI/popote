@@ -193,7 +193,7 @@ export default function SettingsScreen() {
             <Button kind="ghost" icon="mail-outline" title={`${t('contact')} : ${CONTACT_EMAIL}`} onPress={() => Linking.openURL(`mailto:${CONTACT_EMAIL}`)} />
           </View>
           <Txt v="small" muted style={{ textAlign: 'center', marginTop: space(4) }}>
-            Popote · {t('version', { v: Constants.expoConfig?.version ?? '1.0.0' })} · {DEVELOPER_NAME}
+            Mypopote · {t('version', { v: Constants.expoConfig?.version ?? '1.0.0' })} · {DEVELOPER_NAME}
           </Txt>
         </Section>
       </ScrollView>

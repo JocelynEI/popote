@@ -1,7 +1,7 @@
 import { openDatabaseSync, type SQLiteDatabase } from 'expo-sqlite';
 import { Platform } from 'react-native';
 
-export const DB_NAME = 'popote.db';
+export const DB_NAME = 'mypopote.db';
 const SCHEMA_VERSION = 1;
 
 let _db: SQLiteDatabase | null = null;

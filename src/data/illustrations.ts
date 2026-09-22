@@ -1,5 +1,5 @@
 /**
- * Illustrations vectorielles des plats (vue de dessus, style « assiette »), dessinées pour Popote.
+ * Illustrations vectorielles des plats (vue de dessus, style « assiette »), dessinées pour Mypopote.
  * Rendu avec react-native-svg (SvgXml) : légères, nettes à toutes les tailles, sans droits d'auteur tiers.
  * viewBox 0 0 200 200.
  */

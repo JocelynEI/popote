@@ -2,7 +2,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 import { Illo } from '../components/Dish';
-import { PopoteLoader } from '../components/PopoteLoader';
+import { MypopoteLoader } from '../components/MypopoteLoader';
 import { FeedRecipeCard } from '../components/RecipeCard';
 import { useToast } from '../components/Toast';
 import { Button, Chip, EmptyState, IconButton, Screen, Txt } from '../components/ui';
@@ -87,7 +87,7 @@ export default function ResultsScreen() {
   if (loading && !firstDone) {
     return (
       <Screen edges={['top', 'bottom']}>
-        <PopoteLoader />
+        <MypopoteLoader />
       </Screen>
     );
   }

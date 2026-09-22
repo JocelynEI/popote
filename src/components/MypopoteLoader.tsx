@@ -29,7 +29,7 @@ function Pot({ size, color, lid }: { size: number; color: string; lid: string })
  * Écran de transition « magique » : la marmite bout, les ingrédients sautent dedans,
  * et des messages drôles défilent. Respecte le réglage « réduire les animations ».
  */
-export function PopoteLoader() {
+export function MypopoteLoader() {
   const { c, reduceMotion } = useTheme();
   const { t } = useI18n();
   const [msg, setMsg] = useState(0);

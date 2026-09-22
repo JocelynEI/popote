@@ -3,7 +3,7 @@ import { Platform, type ViewStyle } from 'react-native';
 import type { AccentTheme } from '../state/settings';
 
 /**
- * Design system Popote (spécification UX/UI v2) :
+ * Design system Mypopote (spécification UX/UI v2) :
  * Vert Sauge #82A98B · Zeste d'Orange #F28C38 · Crème d'Avoine #FDFBF7 · Surface #FFFFFF · Gris Poivre #2D3142.
  * Pour l'accessibilité (WCAG AA ≥ 4,5:1), le sauge et l'orange servent d'aplats ; le texte posé dessus
  * est en Gris Poivre, et le texte « couleur » utilise des variantes foncées (#4A7454, #A94F0E).

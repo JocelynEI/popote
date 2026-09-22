@@ -1,4 +1,4 @@
-# Popote : textes pour les stores
+# Mypopote : textes pour les stores
 
 > Remplace `contact@example.com` par ton adresse de contact publique et l'URL de la politique de confidentialité par celle où tu l'héberges (voir `politique-confidentialite.html`).
 
@@ -10,7 +10,7 @@
 
 | Champ | Valeur | Limite |
 |---|---|---|
-| Nom | **Popote** | 30 |
+| Nom | **Mypopote** | 30 |
 | Sous-titre | **Cuisine ce qu'il y a au frigo** | 30 (29) |
 | Catégorie principale | Cuisine et boissons (*Food & Drink*) | — |
 | Catégorie secondaire | Style de vie | — |
@@ -19,20 +19,20 @@
 | URL d'assistance | mailto:contact@example.com (ou une page simple) | — |
 
 **Texte promotionnel (170)**
-> Tu ouvres le frigo, tu ne sais pas quoi faire ? Coche ce que tu as, Popote te propose des recettes. Sans compte, sans pub, même sans réseau.
+> Tu ouvres le frigo, tu ne sais pas quoi faire ? Coche ce que tu as, Mypopote te propose des recettes. Sans compte, sans pub, même sans réseau.
 
 **Description (4000)**
 ```
-Qu'est-ce qu'on mange ce soir ? Popote répond en quelques secondes, avec ce que tu as déjà.
+Qu'est-ce qu'on mange ce soir ? Mypopote répond en quelques secondes, avec ce que tu as déjà.
 
 🥕 TAPE TES INGRÉDIENTS, C'EST TOUT
-Quelques ingrédients suffisent : Popote trie les recettes en « Tout est là ✓ », « Il manque 1 ingrédient », « Il manque 2 ingrédients ». Sel, huile, farine… la base du placard n'est jamais comptée comme manquante.
+Quelques ingrédients suffisent : Mypopote trie les recettes en « Tout est là ✓ », « Il manque 1 ingrédient », « Il manque 2 ingrédients ». Sel, huile, farine… la base du placard n'est jamais comptée comme manquante.
 
 🧊 TON FRIGO, SANS GASPI
 Garde ton frigo en mémoire, ajoute une date de péremption si tu veux : rouge, orange, vert, tu vois tout de suite quoi utiliser en premier. Les recettes qui sauvent tes produits passent devant, et un petit rappel te prévient avant qu'il soit trop tard.
 
 ✨ MODE « VIDER LE FRIGO »
-Popote combine 2 ou 3 recettes pour utiliser un maximum de produits qui vont périmer.
+Mypopote combine 2 ou 3 recettes pour utiliser un maximum de produits qui vont périmer.
 
 🔄 PAS DE CRÈME ? PAS DE PANIQUE
 Remplacements proposés automatiquement : crème → lait + beurre, échalote → oignon…
@@ -59,22 +59,22 @@ Pack de recettes supplémentaires, statistiques anti-gaspi détaillées, plannin
 ```
 
 **Nouveautés (version 1.0)**
-> Première version de Popote ! Dis-nous ce que tu en penses 🍳
+> Première version de Mypopote ! Dis-nous ce que tu en penses 🍳
 
 ### English (localisation)
 
 | Field | Value |
 |---|---|
-| Name | **Popote** |
+| Name | **Mypopote** |
 | Subtitle | **Cook what's in your fridge** (27) |
 | Keywords | `fridge,recipes,leftovers,food waste,what to cook,ingredients,meal ideas,shopping list,expiry,offline` |
 
 **Promotional text**
-> Open the fridge, no idea what to make? Tick what you have and Popote suggests recipes. No account, no ads, works offline.
+> Open the fridge, no idea what to make? Tick what you have and Mypopote suggests recipes. No account, no ads, works offline.
 
 **Description**
 ```
-What's for dinner tonight? Popote answers in seconds, using what you already have.
+What's for dinner tonight? Mypopote answers in seconds, using what you already have.
 
 🥕 JUST TYPE YOUR INGREDIENTS
 A few ingredients are enough: recipes are sorted into "You have everything ✓", "1 ingredient missing", "2 ingredients missing". Salt, oil, flour… pantry basics never count as missing.
@@ -83,7 +83,7 @@ A few ingredients are enough: recipes are sorted into "You have everything ✓",
 Keep your fridge in memory and add expiry dates if you like: red, orange, green, you instantly see what to use first. Recipes that rescue your food come first, and a gentle reminder warns you before it's too late.
 
 ✨ "CLEAR THE FRIDGE" MODE
-Popote combines 2–3 recipes to use as many soon-to-expire items as possible.
+Mypopote combines 2–3 recipes to use as many soon-to-expire items as possible.
 
 🔄 NO CREAM? NO PROBLEM
 Smart swaps: cream → milk + butter, shallot → onion…
@@ -121,10 +121,10 @@ Répondre « Aucun » à toutes les rubriques → **4+**.
 | Champ | Valeur |
 |---|---|
 | Type | **Non consommable** |
-| ID produit | `popote_premium_lifetime` (identique dans le code) |
-| Nom de référence | Popote Premium à vie |
+| ID produit | `mypopote_premium_lifetime` (identique dans le code) |
+| Nom de référence | Mypopote Premium à vie |
 | Prix | Palier 2,99 € |
-| Nom affiché FR / EN | Popote Premium / Popote Premium |
+| Nom affiché FR / EN | Mypopote Premium / Mypopote Premium |
 | Description FR | Recettes en plus, stats anti-gaspi, planning et thèmes. À vie. |
 | Description EN | Extra recipes, waste stats, meal planner and themes. For life. |
 
@@ -136,7 +136,7 @@ Une capture de l'écran Premium est demandée pour la validation de l'achat int�
 
 | Champ | FR | EN |
 |---|---|---|
-| Nom de l'appli (30) | Popote : recettes du frigo | Popote: Fridge Recipes |
+| Nom de l'appli (30) | Mypopote : recettes du frigo | Mypopote: Fridge Recipes |
 | Description courte (80) | Que cuisiner avec ce qu'il y a au frigo ? Anti-gaspi, sans compte, hors ligne. | What to cook with what's in your fridge? Zero waste, no account, offline. |
 | Description complète | Reprendre la description App Store ci-dessus | idem EN |
 | Catégorie | Cuisine et boissons | Food & Drink |
@@ -160,7 +160,7 @@ Une capture de l'écran Premium est demandée pour la validation de l'achat int�
 - **Autorisation micro (RECORD_AUDIO)** : fonctionnalité facultative de commande vocale en mode cuisine, reconnaissance sur l'appareil.
 
 ### Produit intégré à créer
-- Produits > Produits intégrés > **Produit unique** : ID `popote_premium_lifetime`, prix 2,99 €.
+- Produits > Produits intégrés > **Produit unique** : ID `mypopote_premium_lifetime`, prix 2,99 €.
 
 ---
 
@@ -168,9 +168,9 @@ Une capture de l'écran Premium est demandée pour la validation de l'achat int�
 
 Tailles : iPhone 6,9" (1320 × 2868) obligatoire ; Android téléphone 1080 × 1920 minimum.
 
-1. **Cuisiner** avec 4 ingrédients choisis et « Tout est là ✓ » → *« Tape ce que tu as. Popote trouve la recette. »*
+1. **Cuisiner** avec 4 ingrédients choisis et « Tout est là ✓ » → *« Tape ce que tu as. Mypopote trouve la recette. »*
 2. **Mon frigo** avec pastilles rouge/orange/vert → *« Fini le gaspillage : utilise d'abord ce qui périme. »*
-3. **Fiche recette** avec ✓/✗ et une substitution → *« Il manque la crème ? Popote te propose une solution. »*
+3. **Fiche recette** avec ✓/✗ et une substitution → *« Il manque la crème ? Mypopote te propose une solution. »*
 4. **Mode cuisine** en gros caractères avec minuteur → *« Pas à pas, mains libres. »*
 5. **Mes progrès** (compteur + badges) → *« Chaque produit sauvé compte. »*
 6. **Écran confidentialité / réglages** → *« Sans compte. Sans pub. Hors ligne. »*

@@ -1,4 +1,4 @@
-# 🧊 Popote : cuisine ce qu'il y a au frigo
+# 🧊 Mypopote : cuisine ce qu'il y a au frigo
 
 Application React Native / Expo (SDK 57) · iOS + Android · FR / EN
 **Sans compte · aucune donnée collectée · 100 % locale · hors ligne · achat unique Premium 2,99 €**
@@ -52,7 +52,7 @@ Avant la première publication, complète :
 |---|---|
 | `src/config.ts` | `CONTACT_EMAIL` (adresse publique) |
 | `store-listing/politique-confidentialite.html` | l'e-mail, puis héberge la page (GitHub Pages, Netlify…) et mets son URL dans les stores |
-| `app.config.ts` | vérifie `com.misterj.popote` (identifiant **définitif** une fois publié) |
+| `app.config.ts` | vérifie `com.misterj.mypopote` (identifiant **définitif** une fois publié) |
 | `eas.json` | `submit.production.ios.ascAppId` (ID de l'app dans App Store Connect) |
 
 Tous les textes des stores (nom, sous-titre, descriptions FR/EN, mots-clés, questionnaires de confidentialité, classification, achat intégré, idées de captures) sont dans **`store-listing/fiches-stores.md`**.
@@ -95,7 +95,7 @@ scripts/logic.test.ts     ← tests
 - Typo : **Fraunces** (logo, titres) + **Inter** (corps, 16 px / 14 px pour les tags, 18 px pour les étapes).
 - Géométrie : cartes à 16 px, boutons principaux en pilule, ombre douce `0 10px 25px -5px rgba(0,0,0,0.05)`.
 - Icônes : Lucide (trait 2 px, bouts arrondis) via `src/components/Icon.tsx`.
-- Parcours : Accueil (saisie en phrase ou dictée, ajout rapide, puces « Mon frigo », CTA « Créer ma Popote ») → chargement animé (`PopoteLoader`) → feed de résultats (`FeedRecipeCard`) → fiche recette « mode cuisson ».
+- Parcours : Accueil (saisie en phrase ou dictée, ajout rapide, puces « Mon frigo », CTA « Créer ma Mypopote ») → chargement animé (`MypopoteLoader`) → feed de résultats (`FeedRecipeCard`) → fiche recette « mode cuisson ».
 - Moteur de suggestions interchangeable : `src/services/recipeEngine.ts` (local et hors ligne aujourd'hui ; un moteur IA peut s'y brancher, mais cela changerait la promesse de confidentialité).
 
 ## 5. Règles métier clés
@@ -107,7 +107,7 @@ scripts/logic.test.ts     ← tests
 - **Produit sauvé** = marqué « Utilisé » alors qu'il périmait dans 3 jours ou moins. Économie estimée : 1,30 € par produit (affiché comme estimation).
 - **Régimes et allergènes** calculés automatiquement à partir des ingrédients obligatoires ; les ingrédients facultatifs incompatibles sont signalés.
 - **Rappels** : une notification par jour (17 h 30 par défaut) seulement s'il y a des produits qui périment dans 2 jours ou moins, reprogrammée à chaque changement du frigo. Pas d'alarmes exactes.
-- **Premium** : non consommable `popote_premium_lifetime`, déblocage stocké localement, bouton « Restaurer mes achats ».
+- **Premium** : non consommable `mypopote_premium_lifetime`, déblocage stocké localement, bouton « Restaurer mes achats ».
 
 ## 6. Ajouter des recettes
 

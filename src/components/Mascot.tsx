@@ -6,7 +6,7 @@ import { useTheme } from '../theme/theme';
 export type Mood = 'happy' | 'wow' | 'wink' | 'love';
 
 /**
- * « Frigo », la mascotte de Popote : un réfrigérateur rond et souriant qui fait coucou.
+ * « Frigo », la mascotte de Mypopote : un réfrigérateur rond et souriant qui fait coucou.
  * Dessin original en SVG. Animations : il se balance, cligne des yeux et agite le bras
  * (désactivées si « réduire les animations » est activé).
  */

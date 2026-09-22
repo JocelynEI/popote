@@ -1,4 +1,4 @@
-# Publie automatiquement l'aperçu web de Popote sur GitHub Pages à chaque envoi sur « main ».
+# Publie automatiquement l'aperçu web de Mypopote sur GitHub Pages à chaque envoi sur « main ».
 name: Aperçu web (GitHub Pages)
 
 on:

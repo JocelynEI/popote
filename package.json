@@ -1,5 +1,5 @@
 {
-  "name": "popote",
+  "name": "mypopote",
   "version": "1.0.0",
   "main": "expo-router/entry",
   "dependencies": {
@@ -37,6 +37,8 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+    "eslint": "^9.0.0",
+    "eslint-config-expo": "~57.0.2",
     "tsx": "^4.23.15",
     "typescript": "~6.0.3"
   },
@@ -51,7 +53,8 @@
     "build:android": "npx eas-cli@latest build -p android --profile production",
     "build:ios": "npx eas-cli@latest build -p ios --profile production",
     "submit": "npx eas-cli@latest submit --profile production",
-    "build:web": "node scripts/build-pages.mjs"
+    "build:web": "node scripts/build-pages.mjs",
+    "lint": "expo lint"
   },
   "private": true
 }

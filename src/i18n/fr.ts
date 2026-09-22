@@ -1,5 +1,5 @@
 export const fr = {
-  appName: 'Popote',
+  appName: 'Mypopote',
   // Général
   cancel: 'Annuler',
   ok: 'OK',
@@ -57,7 +57,7 @@ export const fr = {
   badgeMissing: 'Il manque : {list}',
   badgeUrgent: 'Utilise {n} produit(s) à finir',
   emptyTitle: 'Qu’as-tu sous la main ?',
-  emptyText: 'Tape 2 ou 3 ingrédients, Popote te trouve de quoi te régaler.',
+  emptyText: 'Tape 2 ou 3 ingrédients, Mypopote te trouve de quoi te régaler.',
   emptyQuickFill: 'Remplir mon frigo rapidement',
   emptyJustSearch: 'Juste chercher avec quelques ingrédients',
   pantryIdeas: 'Avec presque rien',
@@ -84,7 +84,7 @@ export const fr = {
   badgeMissingN: 'Manque {n} ingrédients',
   badgeQuick: 'Prêt en {n} min',
   badgeAntiWaste: 'Anti-gaspi',
-  resultsTitle: 'Tes idées Popote',
+  resultsTitle: 'Tes idées Mypopote',
   resultsSubtitle: '{n} recette(s) avec tes {k} ingrédient(s)',
   resultsEmpty: 'Rien pour ces filtres…',
   resultsEmptyText: 'Retire un filtre ou ajoute un ingrédient, et on retente !',
@@ -98,7 +98,7 @@ export const fr = {
   myFridgeZone: 'Mon frigo',
   myFridgeEmpty: 'Tape ou tapote des ingrédients : ils apparaîtront ici.',
   includeSaved: 'Inclure mon frigo enregistré ({n})',
-  ctaCreate: 'Créer ma Popote',
+  ctaCreate: 'Créer ma Mypopote',
   dictate: 'Dicter mes ingrédients',
   dictating: 'Je t’écoute… dis tes ingrédients',
   dictationUnavailable: 'La dictée vocale fonctionne dans l’appli installée (pas dans Expo Go).',
@@ -112,10 +112,10 @@ export const fr = {
   keepAwakeOff: 'Mise en veille normale',
   fullscreenCook: 'Plein écran',
   ingredientChecked: 'coché',
-  welcome1Title: 'Bienvenue sur Popote !',
+  welcome1Title: 'Bienvenue sur Mypopote !',
   welcome1Says: 'Salut, moi c’est Frigo ! 👋 Je suis plein de bonnes choses… mais on ne sait jamais quoi en faire, hein ?',
   welcome2Title: 'Tes restes, une vraie recette',
-  welcome2Says: 'Dis-moi ce qui traîne dans mes étagères — 2 œufs, un bout de brocoli, du fromage — et Popote te trouve une recette en 3 secondes. Même avec presque rien !',
+  welcome2Says: 'Dis-moi ce qui traîne dans mes étagères — 2 œufs, un bout de brocoli, du fromage — et Mypopote te trouve une recette en 3 secondes. Même avec presque rien !',
   welcome3Title: 'Zéro gaspi, zéro prise de tête',
   welcome3Says: 'Et comme je déteste jeter, je te préviens avant que tes yaourts ne périment. Ta planète et ton porte-monnaie te disent merci ! 🌱',
   welcome4Title: 'Juste entre toi et moi',
@@ -134,7 +134,7 @@ export const fr = {
   // Bulles d'aide
   tip1: '👆 Écris (ou dicte) ce que tu as sous la main',
   tip2: '⚡ Ou tapote les basiques du placard',
-  tip3: '🍲 Puis touche « Créer ma Popote » pour voir tes recettes',
+  tip3: '🍲 Puis touche « Créer ma Mypopote » pour voir tes recettes',
   tipNext: 'Suivant',
   tipDone: 'Compris !',
 
@@ -200,7 +200,7 @@ export const fr = {
   segHistory: 'Historique',
   segMine: 'Mes créations',
   favoritesEmpty: 'Pas encore de favoris. Touche ♡ sur une recette.',
-  historyEmpty: 'Tu n’as encore rien cuisiné avec Popote.',
+  historyEmpty: 'Tu n’as encore rien cuisiné avec Mypopote.',
   mineEmpty: 'Ajoute tes propres recettes : elles seront proposées comme les autres.',
   newRecipe: 'Nouvelle recette',
   progress: 'Mes progrès',
@@ -238,7 +238,7 @@ export const fr = {
   difficultyEasy: 'Facile',
   difficultyMedium: 'Moyen',
   addToPlan: 'Ajouter au planning',
-  shareRecipeFooter: '— partagé depuis Popote',
+  shareRecipeFooter: '— partagé depuis Mypopote',
   recipeNotFound: 'Recette introuvable.',
   deleteRecipeTitle: 'Supprimer cette recette ?',
   deleteRecipeText: 'Elle sera retirée de tes favoris et de ton planning.',
@@ -294,7 +294,7 @@ export const fr = {
 
   // Notifications
   notifAskTitle: 'Être prévenu avant que ça périme ?',
-  notifAskText: 'Popote peut t’envoyer un petit rappel quand un produit arrive à sa date. Les rappels sont programmés sur ton téléphone, rien n’est envoyé.',
+  notifAskText: 'Mypopote peut t’envoyer un petit rappel quand un produit arrive à sa date. Les rappels sont programmés sur ton téléphone, rien n’est envoyé.',
   notifAskYes: 'Oui, me prévenir',
   notifAskNo: 'Plus tard',
   notifExpiryTitle: '{emoji} À utiliser vite !',
@@ -302,10 +302,10 @@ export const fr = {
   notifExpiryMany: '« {name} » et {n} autre(s) produit(s) périment bientôt.',
   notifExpiryIdea: 'Idée : {recipe} !',
   notifDinnerTitle: 'Qu’est-ce qu’on mange ce soir ? 🍽️',
-  notifDinnerBody: 'Ouvre Popote : on trouve une idée avec ce que tu as.',
+  notifDinnerBody: 'Ouvre Mypopote : on trouve une idée avec ce que tu as.',
   notifRecapTitle: 'Ton récap de la semaine est prêt 📊',
   notifRecapBody: 'Découvre combien de produits tu as sauvés cette semaine.',
-  notifChannel: 'Rappels Popote',
+  notifChannel: 'Rappels Mypopote',
 
   // Progrès / stats
   progressTitle: 'Mes progrès',
@@ -378,7 +378,7 @@ export const fr = {
   importConfirmTitle: 'Remplacer tes données ?',
   importConfirmText: 'Toutes les données actuelles seront remplacées par la sauvegarde. Une copie de sécurité est faite juste avant.',
   importOk: 'Sauvegarde importée ✓',
-  importError: 'Ce fichier n’est pas une sauvegarde Popote valide. Tes données n’ont pas été modifiées.',
+  importError: 'Ce fichier n’est pas une sauvegarde Mypopote valide. Tes données n’ont pas été modifiées.',
   exportError: 'L’export a échoué. Réessaie.',
   backupReminderTitle: 'Pense à sauvegarder 💾',
   backupReminderText: 'Ça fait un moment ! Un export prend 5 secondes et protège tes recettes et ton historique.',
@@ -395,7 +395,7 @@ export const fr = {
   contact: 'Contact',
 
   // Premium
-  premiumTitle: 'Popote Premium',
+  premiumTitle: 'Mypopote Premium',
   premiumSubtitle: 'Un seul achat, à vie. Pas d’abonnement, pas de pub.',
   premiumF1: '📚 Pack recettes + : cuisine du monde, desserts, batch cooking',
   premiumF2: '📊 Statistiques anti-gaspi détaillées',
@@ -407,7 +407,7 @@ export const fr = {
   premiumThanks: 'Merci ! Premium est activé 🎉',
   premiumError: 'L’achat n’a pas abouti.',
   premiumNudgeTitle: '10 recettes cuisinées 👏',
-  premiumNudgeText: 'Envie de plus de recettes et de suivre tes économies ? Découvre Popote Premium.',
+  premiumNudgeText: 'Envie de plus de recettes et de suivre tes économies ? Découvre Mypopote Premium.',
   premiumNudgeCta: 'Découvrir',
 };
 

@@ -112,7 +112,7 @@ export default function WelcomeScreen() {
       {/* barre du haut */}
       <View style={styles.top}>
         <Txt style={{ fontFamily: FONTS.display, fontSize: 22 }} color={c.primaryText}>
-          Popote
+          Mypopote
         </Txt>
         {!last && (
           <Pressable accessibilityRole="button" onPress={finish} hitSlop={10} style={{ padding: space(2) }}>

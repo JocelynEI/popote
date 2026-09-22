@@ -11,7 +11,7 @@ import { loadSettings, type Settings } from '../state/settings';
  */
 
 export interface BackupFile {
-  app: 'popote';
+  app: 'mypopote';
   format: 1;
   schema: number;
   exportedAt: string;
@@ -28,7 +28,7 @@ export function buildBackup(): BackupFile {
   for (const t of USER_TABLES) tables[t] = d.getAllSync<Record<string, unknown>>(`SELECT * FROM ${t}`);
   const settings: Partial<Settings> = { ...loadSettings() };
   LOCAL_ONLY.forEach((k) => delete settings[k]);
-  return { app: 'popote', format: 1, schema: SCHEMA_VERSION, exportedAt: new Date().toISOString(), tables, settings };
+  return { app: 'mypopote', format: 1, schema: SCHEMA_VERSION, exportedAt: new Date().toISOString(), tables, settings };
 }
 
 function writeJson(name: string, data: unknown, dir = Paths.cache): File {
@@ -41,14 +41,14 @@ function writeJson(name: string, data: unknown, dir = Paths.cache): File {
 
 export async function exportBackup(): Promise<void> {
   const date = new Date().toISOString().slice(0, 10);
-  const f = writeJson(`popote-sauvegarde-${date}.json`, buildBackup());
-  await Sharing.shareAsync(f.uri, { mimeType: 'application/json', dialogTitle: 'Popote', UTI: 'public.json' });
+  const f = writeJson(`mypopote-sauvegarde-${date}.json`, buildBackup());
+  await Sharing.shareAsync(f.uri, { mimeType: 'application/json', dialogTitle: 'Mypopote', UTI: 'public.json' });
 }
 
 export function validateBackup(x: unknown): x is BackupFile {
   if (!x || typeof x !== 'object') return false;
   const b = x as Partial<BackupFile>;
-  if (b.app !== 'popote' || b.format !== 1 || typeof b.schema !== 'number' || b.schema > SCHEMA_VERSION) return false;
+  if (b.app !== 'mypopote' || b.format !== 1 || typeof b.schema !== 'number' || b.schema > SCHEMA_VERSION) return false;
   if (!b.tables || typeof b.tables !== 'object') return false;
   return USER_TABLES.every((t) => Array.isArray((b.tables as Record<string, unknown>)[t] ?? []));
 }
@@ -91,5 +91,5 @@ export async function pickBackup(): Promise<PickResult> {
 
 /** Copie de sécurité de l'état actuel, conservée dans l'espace privé de l'app. */
 export function safetyCopy() {
-  writeJson('popote-avant-import.json', buildBackup(), Paths.document);
+  writeJson('mypopote-avant-import.json', buildBackup(), Paths.document);
 }

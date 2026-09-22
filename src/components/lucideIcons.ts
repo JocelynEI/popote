@@ -1,5 +1,5 @@
 /**
- * Tracés des icônes Lucide utilisées par Popote (extraits de lucide v0.577.0, licence ISC).
+ * Tracés des icônes Lucide utilisées par Mypopote (extraits de lucide v0.577.0, licence ISC).
  * Copie locale pour n'embarquer que ~55 icônes au lieu de la bibliothèque entière (≈ 1,4 Mo de JS en moins).
  * Généré automatiquement — voir README.
  */

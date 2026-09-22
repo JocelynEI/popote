@@ -4,7 +4,7 @@ import { NO_NATIVE_EXTRAS } from '../runtime';
 import { useSettings } from '../state/settings';
 
 /** ⚠️ Créer le produit avec EXACTEMENT cet identifiant dans App Store Connect et Google Play Console. */
-export const PREMIUM_SKU = 'popote_premium_lifetime';
+export const PREMIUM_SKU = 'mypopote_premium_lifetime';
 
 export type BuyResult = 'ok' | 'cancelled' | 'error' | 'unavailable';
 

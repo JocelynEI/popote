@@ -1,22 +1,22 @@
 import type { ExpoConfig } from 'expo/config';
 
 /**
- * Configuration Expo / EAS de Popote.
+ * Configuration Expo / EAS de Mypopote.
  * ⚠️ Avant la première soumission : vérifier `ios.bundleIdentifier`, `android.package`
  *    et renseigner `extra.eas.projectId` (rempli automatiquement par `eas init`).
  */
 const IS_DEV = process.env.APP_VARIANT === 'development';
 
 const config: ExpoConfig = {
-  name: IS_DEV ? 'Popote (dev)' : 'Popote',
-  slug: 'popote',
-  scheme: 'popote',
+  name: IS_DEV ? 'Mypopote (dev)' : 'Mypopote',
+  slug: 'mypopote',
+  scheme: 'mypopote',
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'automatic', // mode sombre suivi automatiquement
   ios: {
-    bundleIdentifier: IS_DEV ? 'com.misterj.popote.dev' : 'com.misterj.popote',
+    bundleIdentifier: IS_DEV ? 'com.misterj.mypopote.dev' : 'com.misterj.mypopote',
     buildNumber: '1',
     supportsTablet: true,
     config: { usesNonExemptEncryption: false }, // pas de chiffrement propriétaire -> pas de déclaration d'export
@@ -39,7 +39,7 @@ const config: ExpoConfig = {
     },
   },
   android: {
-    package: IS_DEV ? 'com.misterj.popote.dev' : 'com.misterj.popote',
+    package: IS_DEV ? 'com.misterj.mypopote.dev' : 'com.misterj.mypopote',
     versionCode: 1,
     adaptiveIcon: {
       backgroundColor: '#F28C38',
@@ -91,7 +91,7 @@ const config: ExpoConfig = {
     [
       'expo-speech-recognition',
       {
-        microphonePermission: 'Popote utilise le micro uniquement quand tu actives la commande vocale en mode cuisine (« suivant », « répète »…). Rien n’est enregistré.',
+        microphonePermission: 'Mypopote utilise le micro uniquement quand tu actives la commande vocale en mode cuisine (« suivant », « répète »…). Rien n’est enregistré.',
         speechRecognitionPermission:
           'La reconnaissance vocale se fait sur ton téléphone pour comprendre « suivant », « précédent », « répète » et « minuteur » en mode cuisine.',
         androidSpeechServicePackages: ['com.google.android.googlequicksearchbox', 'com.google.android.as'],

@@ -21,7 +21,7 @@ const GUTTER = space(5);
 
 /**
  * Écran 1 — L'inventaire spontané.
- * Objectif : saisir ses restes en moins de 3 secondes, puis « Créer ma Popote ».
+ * Objectif : saisir ses restes en moins de 3 secondes, puis « Créer ma Mypopote ».
  */
 export default function HomeScreen() {
   const { c } = useTheme();
@@ -111,10 +111,10 @@ export default function HomeScreen() {
         {/* Header : logo centré, profil à droite */}
         <View style={styles.header}>
           <IconButton icon="trophy-outline" label={t('progress')} onPress={() => router.push('/progress')} color={c.primaryText} size={22} style={styles.headerBtn} />
-          <View style={styles.logo} accessibilityRole="header" accessible accessibilityLabel="Popote">
+          <View style={styles.logo} accessibilityRole="header" accessible accessibilityLabel="Mypopote">
             <Icon name="pot" size={22} color={c.accent} />
             <Txt style={{ fontFamily: FONTS.display, fontSize: 26, lineHeight: 32, marginLeft: 6 }} color={c.primaryText}>
-              Popote
+              Mypopote
             </Txt>
           </View>
           <IconButton icon="user" label={t('profile')} onPress={() => router.push('/settings')} color={c.primaryText} size={22} style={styles.headerBtn} />
