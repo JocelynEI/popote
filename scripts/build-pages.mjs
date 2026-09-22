@@ -26,6 +26,10 @@ copyFileSync('scripts/coi-serviceworker.min.js', join(out, 'coi-serviceworker.mi
 const indexPath = join(out, 'index.html');
 let html = readFileSync(indexPath, 'utf8');
 html = html.replace('<head>', `<head><script src="${base}/coi-serviceworker.min.js"></script>`);
+// écran de secours (jamais de page blanche) + numéro de version affiché
+const build = new Date().toISOString().slice(0, 16).replace('T', ' ');
+const secours = readFileSync('scripts/secours.html', 'utf8').replace('__BUILD__', build);
+html = html.replace('</body>', `${secours}</body>`);
 writeFileSync(indexPath, html);
 writeFileSync(join(out, '404.html'), html);
 writeFileSync(join(out, '.nojekyll'), '');
@@ -35,10 +39,14 @@ const jsDir = join(out, '_expo/static/js/web');
 for (const f of readdirSync(jsDir).filter((f) => f.endsWith('.js'))) {
   const p = join(jsDir, f);
   const src = readFileSync(p, 'utf8');
-  const patched = src.replace(/if\(([A-Za-z_$][\w$]*)>1e6\)throw new Error\((["'])Sync operation timeout\2\)/g, 'if($1>1e10)throw new Error("Sync operation timeout")');
+  let patched = src.replace(/if\(([A-Za-z_$][\w$]*)>1e6\)throw new Error\((["'])Sync operation timeout\2\)/g, 'if($1>1e10)throw new Error("Sync operation timeout")');
+  // 3. bug expo-sqlite (web) : la longueur de la réponse était écrite sur 1 seul octet
+  //    (Uint8Array.set(new Uint32Array([n]))) → toute valeur > 255 octets revenait tronquée
+  //    et les réglages (dont Premium) étaient perdus au rechargement. On l'écrit sur 4 octets.
+  patched = patched.replace(/([A-Za-z_$][\w$]*)\.set\(new Uint32Array\(\[([A-Za-z_$][\w$]*)\]\),0\)/g, 'new Uint32Array($1.buffer,0,1)[0]=$2');
   if (patched !== src) {
     writeFileSync(p, patched);
-    console.log(`✔ SQLite web : délai allongé dans ${f}`);
+    console.log(`✔ SQLite web : correctifs appliqués dans ${f}`);
   }
 }
 console.log(`✔ Aperçu prêt dans ${out}/`);

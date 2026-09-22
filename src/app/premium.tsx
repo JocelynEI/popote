@@ -11,7 +11,7 @@ import { space, useTheme } from '../theme/theme';
 export default function PremiumScreen() {
   const { c } = useTheme();
   const { t } = useI18n();
-  const { isPremium, price, connected, buy, restore } = usePremium();
+  const { isPremium, price, connected, buy, restore, simulated, resetSimulation } = usePremium();
   const toast = useToast();
   const [busy, setBusy] = useState(false);
 
@@ -55,12 +55,20 @@ export default function PremiumScreen() {
         <Txt v="small" muted style={{ textAlign: 'center' }}>
           {t('premiumFree')}
         </Txt>
+        {simulated && (
+          <Txt v="small" muted style={{ textAlign: 'center' }}>
+            {t('premiumTestMode')}
+          </Txt>
+        )}
         {isPremium ? (
-          <Card style={{ backgroundColor: c.successBg }}>
-            <Txt color={c.success} style={{ textAlign: 'center', fontWeight: '700' }}>
-              {t('premiumActive')}
-            </Txt>
-          </Card>
+          <>
+            <Card style={{ backgroundColor: c.successBg }}>
+              <Txt color={c.success} style={{ textAlign: 'center', fontWeight: '700' }}>
+                {t('premiumActive')}
+              </Txt>
+            </Card>
+            {simulated && resetSimulation && <Button kind="ghost" title={t('premiumTestReset')} onPress={resetSimulation} />}
+          </>
         ) : (
           <>
             <Button title={t('premiumBuy', { price: price ?? '2,99 €' })} icon="star" onPress={onBuy} loading={busy} disabled={!connected && !busy} />

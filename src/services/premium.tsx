@@ -16,6 +16,8 @@ export interface PremiumCtx {
   simulated: boolean;
   buy: () => Promise<BuyResult>;
   restore: () => Promise<boolean>;
+  /** mode test uniquement : repasser en version gratuite */
+  resetSimulation?: () => void;
 }
 
 export const PremiumContext = createContext<PremiumCtx | null>(null);
@@ -29,7 +31,7 @@ function ExpoGoPremiumProvider({ children }: { children: ReactNode }) {
   const buy = useCallback(
     () =>
       new Promise<BuyResult>((resolve) =>
-        Alert.alert('Expo Go', 'Achat simulé (test) : activer Premium ?', [
+        Alert.alert('Mode test', 'Achat simulé (aucun paiement) : activer Premium ?', [
           { text: 'Annuler', style: 'cancel', onPress: () => resolve('cancelled') },
           { text: 'Activer', onPress: () => (update({ premium: true }), resolve('ok')) },
         ]),
@@ -37,9 +39,10 @@ function ExpoGoPremiumProvider({ children }: { children: ReactNode }) {
     [update],
   );
   const restore = useCallback(async () => settings.premium, [settings.premium]);
+  const reset = useCallback(() => update({ premium: false }), [update]);
   const value = useMemo(
-    () => ({ isPremium: settings.premium, price: '2,99 € (test)', connected: true, simulated: true, buy, restore }),
-    [settings.premium, buy, restore],
+    () => ({ isPremium: settings.premium, price: '2,99 € (test)', connected: true, simulated: true, buy, restore, resetSimulation: reset }),
+    [settings.premium, buy, restore, reset],
   );
   return <PremiumContext.Provider value={value}>{children}</PremiumContext.Provider>;
 }

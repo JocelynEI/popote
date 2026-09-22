@@ -18,11 +18,13 @@ import { I18nProvider, useI18n } from '../i18n';
 import { exportBackup } from '../services/backup';
 import { configureNotifications, rescheduleAll } from '../services/notifications';
 import { PremiumProvider } from '../services/premium';
+import { installWebAlert } from '../services/webAlert';
 import { SettingsProvider, useSettings } from '../state/settings';
 import { FONTS, makePalette, type Theme, ThemeContext, useTheme as useThemeValue } from '../theme/theme';
 
 // Initialisation synchrone de la base locale + comportement des notifications
 configureNotifications();
+installWebAlert();
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function RootLayout() {
@@ -164,6 +166,7 @@ function AppStack() {
         <Stack.Screen name="planner" options={{ title: t('plannerTitle') }} />
         <Stack.Screen name="empty-fridge" options={{ title: t('emptyFridgeTitle') }} />
         <Stack.Screen name="recipe-editor" options={{ title: t('editorTitle'), presentation: 'modal' }} />
+        <Stack.Screen name="welcome" options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false, animation: 'fade' }} />
         <Stack.Screen name="preferences" options={{ title: '', presentation: 'modal' }} />
         <Stack.Screen name="quick-fill" options={{ title: t('quickFillTitle'), presentation: 'modal' }} />
         <Stack.Screen name="fridge-add" options={{ title: t('fridgeAdd'), presentation: 'modal' }} />

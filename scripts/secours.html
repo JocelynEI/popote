@@ -1,0 +1,35 @@
+<script>
+/* Écran de secours de l'aperçu web : si l'appli ne s'affiche pas après 20 s,
+   on montre l'erreur et un bouton pour tout remettre à zéro (au lieu d'une page blanche). */
+(function () {
+  var errs = [];
+  window.addEventListener('error', function (e) { errs.push(String((e.error && e.error.message) || e.message)); });
+  window.addEventListener('unhandledrejection', function (e) { errs.push(String((e.reason && e.reason.message) || e.reason)); });
+  window.__popoteReset = async function () {
+    var b = document.getElementById('popote-reset'); if (b) { b.disabled = true; b.textContent = 'Réinitialisation…'; }
+    try { var d = await navigator.storage.getDirectory(); for await (var k of d.keys()) await d.removeEntry(k, { recursive: true }); } catch (e) {}
+    try { localStorage.clear(); sessionStorage.clear(); } catch (e) {}
+    try { var ks = await caches.keys(); for (var c of ks) await caches.delete(c); } catch (e) {}
+    try { var rs = await navigator.serviceWorker.getRegistrations(); for (var r of rs) await r.unregister(); } catch (e) {}
+    location.replace(location.pathname.split('?')[0] + '?v=' + Date.now());
+  };
+  setTimeout(function () {
+    var root = document.getElementById('root');
+    if (!root || root.innerText.trim().length > 0) return;
+    var box = document.createElement('div');
+    box.style.cssText = 'position:fixed;inset:0;background:#FDFBF7;color:#2D3142;font:16px/1.5 -apple-system,system-ui,sans-serif;padding:32px 20px;overflow:auto;z-index:99999';
+    var iso = window.crossOriginIsolated ? 'oui' : 'non';
+    box.innerHTML = '<div style="max-width:420px;margin:0 auto"><div style="font-size:56px">🧊</div>' +
+      '<h1 style="font-size:24px;margin:8px 0">Popote n’arrive pas à démarrer</h1>' +
+      '<p>Appuie sur le bouton ci-dessous : il efface les données de test de cet aperçu et recharge la dernière version.</p>' +
+      '<button id="popote-reset" onclick="__popoteReset()" style="width:100%;min-height:56px;border:0;border-radius:999px;background:#F28C38;color:#2D3142;font-size:17px;font-weight:700;margin:12px 0">Réinitialiser et relancer</button>' +
+      '<p style="font-size:13px;color:#6B7280">Si ça ne suffit pas, envoie une capture de ce cadre :</p>' +
+      '<pre id="popote-info" style="white-space:pre-wrap;font-size:12px;background:#fff;border-radius:12px;padding:12px;color:#6B7280"></pre></div>';
+    document.body.appendChild(box);
+    document.getElementById('popote-info').textContent =
+      'Version : __BUILD__\nIsolation : ' + iso + '\nNavigateur : ' + navigator.userAgent + '\nErreurs : ' + (errs.join('\n') || 'aucune');
+      // si l'appli finit par s'afficher, on retire l'écran de secours
+    var t = setInterval(function () { if (root.innerText.trim().length > 0) { box.remove(); clearInterval(t); } }, 1000);
+  }, 20000);
+})();
+</script>
