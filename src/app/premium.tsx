@@ -1,4 +1,3 @@
-import { router } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useToast } from '../components/Toast';
@@ -7,6 +6,7 @@ import { Button, Card, haptic, Screen, Txt } from '../components/ui';
 import { useI18n } from '../i18n';
 import { usePremium } from '../services/premium';
 import { space, useTheme } from '../theme/theme';
+import { goBack } from '../navigation/goBack';
 
 export default function PremiumScreen() {
   const { c } = useTheme();
@@ -22,7 +22,7 @@ export default function PremiumScreen() {
     if (res === 'ok') {
       haptic('success');
       toast.show(t('premiumThanks'));
-      router.back();
+      goBack();
     } else if (res === 'unavailable') toast.show(t('premiumUnavailable'));
     else if (res === 'error') toast.show(t('premiumError'));
   };
@@ -83,7 +83,7 @@ export default function PremiumScreen() {
               onPress={async () => {
                 const found = await restore();
                 toast.show(found ? t('restoreOk') : t('restoreNone'));
-                if (found) router.back();
+                if (found) goBack();
               }}
             />
           </>

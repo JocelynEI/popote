@@ -17,6 +17,7 @@ import { getRecipeEngine } from '../services/recipeEngine';
 import { usePremium } from '../services/premium';
 import { useSettings } from '../state/settings';
 import { radius, shadow, space, useTheme } from '../theme/theme';
+import { goBack } from '../navigation/goBack';
 
 const DIET_KEYS: Record<Diet, TKey> = { vegetarian: 'dietVegetarian', vegan: 'dietVegan', glutenFree: 'dietGlutenFree', lactoseFree: 'dietLactoseFree' };
 const COURSE_KEYS: Record<Course, TKey> = { starter: 'courseStarter', main: 'courseMain', dessert: 'courseDessert' };
@@ -94,7 +95,7 @@ export default function ResultsScreen() {
   const header = (
     <View style={{ paddingHorizontal: space(4) }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: space(2) }}>
-        <IconButton icon="arrow-back" label={t('back')} onPress={() => router.back()} style={[styles.round, { backgroundColor: c.surface }, shadow(c, 1)]} color={c.text} />
+        <IconButton icon="arrow-back" label={t('back')} onPress={() => goBack()} style={[styles.round, { backgroundColor: c.surface }, shadow(c, 1)]} color={c.text} />
       </View>
       <Txt v="display" accessibilityRole="header" style={{ marginTop: space(4) }}>
         {t('resultsTitle')}
@@ -166,7 +167,7 @@ export default function ResultsScreen() {
         )}
         ListEmptyComponent={
           <EmptyState illo={<Illo name="veggies" size={140} />} title={t('resultsEmpty')} text={t('resultsEmptyText')}>
-            <Button title={t('back')} kind="secondary" icon="arrow-back" onPress={() => router.back()} />
+            <Button title={t('back')} kind="secondary" icon="arrow-back" onPress={() => goBack()} />
           </EmptyState>
         }
       />

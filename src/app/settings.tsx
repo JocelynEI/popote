@@ -11,6 +11,7 @@ import { getPermissionStatus, requestPermission } from '../services/notification
 import { usePremium } from '../services/premium';
 import { type AccentTheme, type LangPref, type ThemePref, useSettings } from '../state/settings';
 import { ACCENTS, space, useTheme } from '../theme/theme';
+import { goBack } from '../navigation/goBack';
 
 
 export default function SettingsScreen() {
@@ -188,7 +189,7 @@ export default function SettingsScreen() {
           <View style={{ gap: space(2) }}>
             <Button kind="ghost" icon="shield-checkmark-outline" title={t('privacyPolicy')} onPress={() => router.push('/privacy')} />
             <Button kind="ghost" icon="sparkles" title={t('replayWelcome')} onPress={() => router.push('/welcome')} />
-            <Button kind="ghost" icon="bulb-outline" title={t('resetTips')} onPress={() => (update({ tipsSeen: [], privacyNoticeSeen: false }), router.back())} />
+            <Button kind="ghost" icon="bulb-outline" title={t('resetTips')} onPress={() => (update({ tipsSeen: [], privacyNoticeSeen: false }), goBack())} />
             <Button kind="ghost" icon="mail-outline" title={`${t('contact')} : ${CONTACT_EMAIL}`} onPress={() => Linking.openURL(`mailto:${CONTACT_EMAIL}`)} />
           </View>
           <Txt v="small" muted style={{ textAlign: 'center', marginTop: space(4) }}>

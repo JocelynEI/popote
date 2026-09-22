@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { DateChooser } from '../components/Expiry';
@@ -13,6 +13,7 @@ import { checkExpiryDate } from '../logic/expiry';
 import { requestPermission } from '../services/notifications';
 import { useSettings } from '../state/settings';
 import { space, useTheme } from '../theme/theme';
+import { goBack } from '../navigation/goBack';
 
 /** Ajout d'un produit au frigo (ou modification de sa date si ?id=…) */
 export default function FridgeAddScreen() {
@@ -47,7 +48,7 @@ export default function FridgeAddScreen() {
 
   const finish = () => {
     toast.show(t('itemAdded', { name }));
-    router.back();
+    goBack();
     setTimeout(maybeAskNotifications, 400);
   };
 
@@ -82,7 +83,7 @@ export default function FridgeAddScreen() {
   const save = () => {
     if (!editing) return;
     updateFridgeExpiry(editing.id, date);
-    router.back();
+    goBack();
     setTimeout(maybeAskNotifications, 400);
   };
 

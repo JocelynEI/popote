@@ -1,4 +1,3 @@
-import { router } from 'expo-router';
 import { useState } from 'react';
 import { FlatList, Pressable, View } from 'react-native';
 import { useToast } from '../components/Toast';
@@ -8,6 +7,7 @@ import { addManyToFridge } from '../db/repo';
 import { useFridge } from '../hooks/useData';
 import { useI18n } from '../i18n';
 import { radius, space, useTheme } from '../theme/theme';
+import { goBack } from '../navigation/goBack';
 
 /** Grille « Remplir mon frigo rapidement » : ~30 produits courants à cocher d'un geste */
 export default function QuickFillScreen() {
@@ -84,7 +84,7 @@ export default function QuickFillScreen() {
             addManyToFridge([...picked]);
             haptic('success');
             toast.show(t('addedSelectionToFridge', { n: picked.size }));
-            router.back();
+            goBack();
           }}
         />
       </View>

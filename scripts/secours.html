@@ -13,9 +13,11 @@
     try { var rs = await navigator.serviceWorker.getRegistrations(); for (var r of rs) await r.unregister(); } catch (e) {}
     location.replace(location.pathname.split('?')[0] + '?v=' + Date.now());
   };
-  setTimeout(function () {
+  var shown = false;
+  function check() {
     var root = document.getElementById('root');
-    if (!root || root.innerText.trim().length > 0) return;
+    if (shown || !root || root.innerText.trim().length > 0) return;
+    shown = true;
     var box = document.createElement('div');
     box.style.cssText = 'position:fixed;inset:0;background:#FDFBF7;color:#2D3142;font:16px/1.5 -apple-system,system-ui,sans-serif;padding:32px 20px;overflow:auto;z-index:99999';
     var iso = window.crossOriginIsolated ? 'oui' : 'non';
@@ -28,8 +30,15 @@
     document.body.appendChild(box);
     document.getElementById('popote-info').textContent =
       'Version : __BUILD__\nIsolation : ' + iso + '\nNavigateur : ' + navigator.userAgent + '\nErreurs : ' + (errs.join('\n') || 'aucune');
-      // si l'appli finit par s'afficher, on retire l'écran de secours
-    var t = setInterval(function () { if (root.innerText.trim().length > 0) { box.remove(); clearInterval(t); } }, 1000);
-  }, 20000);
+    // si l'appli finit par s'afficher, on retire l'écran de secours
+    var t = setInterval(function () { if (root.innerText.trim().length > 0) { box.remove(); clearInterval(t); shown = false; } }, 1000);
+  }
+  setTimeout(check, 20000);
+  // plantage plus tard (ex. en changeant d'écran) : on vérifie après chaque erreur
+  var rendered = false;
+  var w = setInterval(function () { var r = document.getElementById('root'); if (r && r.innerText.trim().length > 0) { rendered = true; clearInterval(w); } }, 500);
+  function later() { if (rendered) setTimeout(check, 1500); }
+  window.addEventListener('error', later);
+  window.addEventListener('unhandledrejection', later);
 })();
 </script>

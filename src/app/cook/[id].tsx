@@ -1,6 +1,6 @@
 import { useKeepAwake } from 'expo-keep-awake';
 import * as Notifications from 'expo-notifications';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useToast } from '../../components/Toast';
@@ -11,6 +11,7 @@ import { getPermissionStatus } from '../../services/notifications';
 import { speak, stopSpeaking, useVoiceCommands, type VoiceCommand } from '../../services/voice';
 import { useSettings } from '../../state/settings';
 import { radius, space, useTheme } from '../../theme/theme';
+import { goBack } from '../../navigation/goBack';
 
 interface Timer {
   id: number;
@@ -132,7 +133,7 @@ export default function CookMode() {
     <Screen edges={['top', 'bottom']}>
       {/* barre du haut */}
       <View style={styles.top}>
-        <IconButton icon="close" label={t('close')} onPress={() => router.back()} />
+        <IconButton icon="close" label={t('close')} onPress={() => goBack()} />
         <Txt v="label" muted style={{ flex: 1, textAlign: 'center' }}>
           {t('stepOf', { i: i + 1, n: steps.length })}
         </Txt>
@@ -221,7 +222,7 @@ export default function CookMode() {
       <View style={styles.nav}>
         <Button kind="ghost" icon="arrow-back" title={t('previous')} onPress={() => go(i - 1)} disabled={i === 0} style={{ flex: 1 }} />
         {last ? (
-          <Button icon="checkmark" title={t('finish')} onPress={() => router.back()} style={{ flex: 1 }} />
+          <Button icon="checkmark" title={t('finish')} onPress={() => goBack()} style={{ flex: 1 }} />
         ) : (
           <Button icon="arrow-forward" title={t('next')} onPress={() => go(i + 1)} style={{ flex: 1 }} />
         )}

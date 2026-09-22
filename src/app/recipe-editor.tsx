@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Alert, ScrollView, TextInput, View } from 'react-native';
 import { IngredientSearch } from '../components/IngredientSearch';
@@ -13,6 +13,7 @@ import { formatQty, parseQtyInput } from '../logic/scaling';
 import { key } from '../logic/text';
 import { checkBadges } from '../services/progress';
 import { radius, space, useTheme } from '../theme/theme';
+import { goBack } from '../navigation/goBack';
 
 interface Row {
   id: string;
@@ -76,7 +77,7 @@ export default function RecipeEditor() {
     saveUserRecipe(recipe);
     checkBadges().forEach((b) => setTimeout(() => toast.show(t('badgeUnlocked', { name: `${b.emoji} ${l(b.title)}` })), 2600));
     toast.show(t('editorSaved'));
-    router.back();
+    goBack();
   };
 
   return (

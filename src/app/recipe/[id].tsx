@@ -29,6 +29,7 @@ import { usePremium } from '../../services/premium';
 import { checkBadges } from '../../services/progress';
 import { useSettings } from '../../state/settings';
 import { FONTS, radius, shadow, space, useTheme } from '../../theme/theme';
+import { goBack } from '../../navigation/goBack';
 
 const DIET_KEYS: Record<Diet, TKey> = { vegetarian: 'dietVegetarian', vegan: 'dietVegan', glutenFree: 'dietGlutenFree', lactoseFree: 'dietLactoseFree' };
 
@@ -153,7 +154,7 @@ export default function RecipeScreen() {
         <View>
           <DishArt recipe={recipe} radius={0} padding={0.08} style={{ height: 340 + insets.top, width: '100%', paddingTop: insets.top }} />
           <View style={[styles.topBtns, { top: insets.top + space(2) }]}>
-            <RoundBtn icon="arrow-back" label={t('back')} onPress={() => router.back()} />
+            <RoundBtn icon="arrow-back" label={t('back')} onPress={() => goBack()} />
             <View style={{ flexDirection: 'row', gap: space(2) }}>
               {recipe.custom && <RoundBtn icon="create-outline" label={t('edit')} onPress={() => router.push({ pathname: '/recipe-editor', params: { id: recipe.id } })} />}
               {recipe.custom && (
@@ -164,7 +165,7 @@ export default function RecipeScreen() {
                   onPress={() =>
                     Alert.alert(t('deleteRecipeTitle'), t('deleteRecipeText'), [
                       { text: t('cancel'), style: 'cancel' },
-                      { text: t('delete'), style: 'destructive', onPress: () => (deleteUserRecipe(recipe.id), router.back()) },
+                      { text: t('delete'), style: 'destructive', onPress: () => (deleteUserRecipe(recipe.id), goBack()) },
                     ])
                   }
                 />

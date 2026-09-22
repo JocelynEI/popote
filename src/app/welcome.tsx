@@ -6,6 +6,7 @@ import { Button, haptic, Screen, Txt } from '../components/ui';
 import { type TKey, useI18n } from '../i18n';
 import { useSettings } from '../state/settings';
 import { FONTS, radius, shadow, space, useTheme } from '../theme/theme';
+import { goBack } from '../navigation/goBack';
 
 interface Slide {
   mood: Mood;
@@ -93,7 +94,7 @@ export default function WelcomeScreen() {
   const finish = () => {
     update({ welcomeSeen: true });
     if (!settings.prefsDone) router.replace('/preferences');
-    else router.back();
+    else goBack();
   };
 
   const next = () => {

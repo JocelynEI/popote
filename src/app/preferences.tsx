@@ -1,4 +1,4 @@
-import { router, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import { Illo } from '../components/Dish';
 import { Button, Chip, Screen, Stepper, styles as ui, Txt } from '../components/ui';
@@ -7,6 +7,7 @@ import { type TKey, useI18n } from '../i18n';
 import { ALLERGENS, DIETS } from '../logic/diets';
 import { useSettings } from '../state/settings';
 import { space, useTheme } from '../theme/theme';
+import { goBack } from '../navigation/goBack';
 
 const DIET_KEYS: Record<Diet, TKey> = { vegetarian: 'dietVegetarian', vegan: 'dietVegan', glutenFree: 'dietGlutenFree', lactoseFree: 'dietLactoseFree' };
 
@@ -18,7 +19,7 @@ export default function PreferencesScreen() {
 
   const done = () => {
     update({ prefsDone: true });
-    router.back();
+    goBack();
   };
 
   return (
