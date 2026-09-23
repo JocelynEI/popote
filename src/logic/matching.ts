@@ -100,7 +100,9 @@ export interface MatchOptions {
 
 /**
  * Moteur de recherche principal.
- * Tri : moins de manquants > plus de produits urgents utilisés > meilleur ratio > pas cuisinée récemment > plus rapide.
+ * Tri : moins de manquants > plus de produits urgents utilisés > pas cuisinée récemment
+ * > utilise le plus de choses du frigo > meilleur ratio > plus rapide.
+ * Les recettes complètes arrivent donc toujours en tête ; les autres (grisées à l'écran) suivent.
  */
 export function matchRecipes(
   recipes: Recipe[],
@@ -128,8 +130,8 @@ export function matchRecipes(
       a.missing.length - b.missing.length ||
       b.usedUrgent.length - a.usedUrgent.length ||
       recentPenalty(a.recipe.id) - recentPenalty(b.recipe.id) ||
-      b.ratio - a.ratio ||
       b.used.length - a.used.length ||
+      b.ratio - a.ratio ||
       a.recipe.time - b.recipe.time,
   );
 }

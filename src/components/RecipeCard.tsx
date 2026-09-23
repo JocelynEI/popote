@@ -190,7 +190,8 @@ export function FeedRecipeCard({
   onPress,
   favorite,
   onToggleFavorite,
-}: Props & { favorite?: boolean; onToggleFavorite?: () => void }) {
+  dimmed,
+}: Props & { favorite?: boolean; onToggleFavorite?: () => void; /** grisée (ingrédients manquants) mais toujours cliquable */ dimmed?: boolean }) {
   const { c } = useTheme();
   const { a11y, title, t } = useCardText(recipe, match, locked);
   const { lang } = useI18n();
@@ -200,7 +201,7 @@ export function FeedRecipeCard({
     <View style={[{ borderRadius: radius.lg, backgroundColor: c.surface, marginBottom: space(5) }, shadow(c, 1)]}>
       <Pressable accessibilityRole="button" accessibilityLabel={a11y} onPress={() => (haptic(), onPress())} style={({ pressed }) => [{ transform: [{ scale: pressed ? 0.99 : 1 }] }]}>
         <View style={{ borderTopLeftRadius: radius.lg, borderTopRightRadius: radius.lg, overflow: 'hidden' }}>
-          <DishArt recipe={recipe} radius={0} padding={0.06} style={{ height: 200, width: '100%' }} />
+          <DishArt recipe={recipe} radius={0} padding={0.06} style={{ height: 200, width: '100%', opacity: dimmed ? 0.4 : 1 }} />
           {/* badges flottants */}
           <View style={styles.feedBadges}>
             {match && missing.length === 0 && <Badge bg={c.surface} fg={c.herb} icon="checkmark" label={t('badgeMatch')} />}
@@ -218,7 +219,7 @@ export function FeedRecipeCard({
           )}
         </View>
         <View style={{ padding: space(4), paddingTop: space(3) }}>
-          <Txt v="h3" numberOfLines={2} style={{ fontSize: 20, lineHeight: 25, paddingRight: space(8) }}>
+          <Txt v="h3" numberOfLines={2} color={dimmed ? c.textMuted : undefined} style={{ fontSize: 20, lineHeight: 25, paddingRight: space(8) }}>
             {title}
           </Txt>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: space(1.5), marginTop: space(1.5) }}>
@@ -228,7 +229,7 @@ export function FeedRecipeCard({
             </Txt>
           </View>
           {missing.length > 0 && (
-            <Txt v="small" muted numberOfLines={1} style={{ marginTop: space(1) }}>
+            <Txt v="small" muted={!dimmed} color={dimmed ? c.warning : undefined} numberOfLines={2} style={{ marginTop: space(1), fontWeight: dimmed ? '600' : undefined }}>
               {t('badgeMissing', { list: missingNames })}
             </Txt>
           )}

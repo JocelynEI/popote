@@ -153,11 +153,21 @@ export default function ResultsScreen() {
         contentContainerStyle={{ paddingBottom: space(16) }}
         initialNumToRender={4}
         windowSize={7}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <View style={{ paddingHorizontal: space(4) }}>
+            {index === 0 && item.missing.length === 0 && <Txt v="h2" style={{ marginBottom: space(3) }}>{t('resultsReadyTitle')}</Txt>}
+            {item.missing.length > 0 && (index === 0 || visible[index - 1].missing.length === 0) && (
+              <View style={{ marginBottom: space(4), marginTop: index === 0 ? 0 : space(2) }}>
+                <Txt v="h2">{t('resultsAlmostTitle')}</Txt>
+                <Txt muted style={{ marginTop: space(1) }}>
+                  {t('resultsAlmostHint')}
+                </Txt>
+              </View>
+            )}
             <FeedRecipeCard
               recipe={item.recipe}
               match={item}
+              dimmed={item.missing.length > 0}
               locked={!!item.recipe.premium && !isPremium}
               onPress={() => open(item.recipe)}
               favorite={favs.includes(item.recipe.id)}
