@@ -111,7 +111,7 @@ scripts/logic.test.ts     ← tests
 
 ## 6. Ajouter des recettes
 
-Le lot actuel contient **53 recettes gratuites + 12 Premium** et **112 ingrédients**. L'objectif est d'atteindre ~300 recettes gratuites et ~300 Premium.
+Le lot actuel contient **105 recettes gratuites + 12 Premium** et **112 ingrédients**. L'objectif est d'atteindre ~300 recettes gratuites et ~300 Premium.
 Ajoute-les dans `src/data/recipes.ts` (ou `recipesPremium.ts` avec `premium: true`) :
 
 ```ts
