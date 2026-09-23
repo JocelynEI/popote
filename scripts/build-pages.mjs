@@ -11,7 +11,7 @@
  * N'a AUCUN effet sur l'appli iOS / Android.
  */
 import { execSync } from 'node:child_process';
-import { copyFileSync, existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const base = (process.env.EXPO_BASE_URL || '').replace(/\/$/, '');
@@ -33,6 +33,11 @@ html = html.replace('</body>', `${secours}</body>`);
 writeFileSync(indexPath, html);
 writeFileSync(join(out, '404.html'), html);
 writeFileSync(join(out, '.nojekyll'), '');
+// pages exigées par les stores : …/confidentialite/ et …/assistance/
+for (const [dir, file] of [['confidentialite', 'politique-confidentialite.html'], ['assistance', 'assistance.html']]) {
+  mkdirSync(join(out, dir), { recursive: true });
+  copyFileSync(join('store-listing', file), join(out, dir, 'index.html'));
+}
 
 // 2. délai des appels synchrones SQLite (web uniquement)
 const jsDir = join(out, '_expo/static/js/web');
