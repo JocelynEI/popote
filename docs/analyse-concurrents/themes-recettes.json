@@ -1,0 +1,147 @@
+{
+ "themes": [
+  {
+   "id": "devenu_payant",
+   "label": "Fonctions passées payantes, frais ajoutés (mots non couverts par « Prix »)",
+   "type": "plainte",
+   "motifs": [
+    "faut payer",
+    "pour payer",
+    "payer pour",
+    "payer un abonnement",
+    "sans payer",
+    "frais maintenant",
+    "commission",
+    "gratuitement et maintenant"
+   ]
+  },
+  {
+   "id": "peu_recettes",
+   "label": "Trop peu de recettes, répétitives",
+   "type": "plainte",
+   "motifs": [
+    "peu de recettes",
+    "peu nombreuses",
+    "très peu de recette",
+    "pas assez de recette",
+    "suffisamment de recettes",
+    "choix (reste )?très limité",
+    "manque en variété",
+    "une seule recette",
+    "seulement 2 recettes",
+    "tourne (vite autour|en rond|en boucle)",
+    "redondantes",
+    "on finit par s'en lasser",
+    "recette de base n'y sont"
+   ]
+  },
+  {
+   "id": "matching",
+   "label": "Ne tient pas compte de ce qu'on a vraiment",
+   "type": "plainte",
+   "motifs": [
+    "n'en prend qu'un",
+    "qu'un seul en compte",
+    "plusieurs ingrédients",
+    "ne tiennent pas compte",
+    "ne prennent pas en compte",
+    "ne correspond (absolument )?pas",
+    "ingrédients que je n'ai pas coché",
+    "recettes par rapport aux (ingrédients|aliments)",
+    "aucune recette n'est proposée",
+    "qu'avec les .{0,10}dients choisis",
+    "partir de l'ingrédient principal",
+    "au jour le jour"
+   ]
+  },
+  {
+   "id": "saisie",
+   "label": "Saisie du frigo longue ou laborieuse",
+   "type": "plainte",
+   "motifs": [
+    "30 min à indiquer",
+    "laborieux",
+    "un par un",
+    "rentrer à la main",
+    "décocher soi-même",
+    "trop long",
+    "liste d'ingrédients préprogrammées",
+    "toujours\", \"parfois\"",
+    "catégorie \"parfois\""
+   ]
+  },
+  {
+   "id": "navigation",
+   "label": "Navigation : retour impossible, menu bloqué",
+   "type": "plainte",
+   "motifs": [
+    "revenir en arrière",
+    "impossible de la refermer",
+    "menu en bas",
+    "bouton \"retour\"",
+    "quitter l'application"
+   ]
+  },
+  {
+   "id": "peremption",
+   "label": "Dates de péremption et alertes",
+   "type": "demande",
+   "motifs": [
+    "date d'expiration",
+    "dates? de péremption",
+    "averti",
+    "arrivent à terme",
+    "à finir plus vite"
+   ]
+  },
+  {
+   "id": "regimes",
+   "label": "Régimes, allergies, goûts, ustensiles",
+   "type": "demande",
+   "motifs": [
+    "régime",
+    "allergie",
+    "non goût",
+    "n'aimez pas",
+    "refuse certains ingrédients",
+    "ustensiles?",
+    "appareils",
+    "moule",
+    "cookeo",
+    "équipements"
+   ]
+  },
+  {
+   "id": "organisation",
+   "label": "Planning, favoris, notes perso, classement",
+   "type": "demande",
+   "motifs": [
+    "calendrier",
+    "planning",
+    "planifi",
+    "favoris",
+    "coup de c",
+    "dossiers",
+    "note perso",
+    "classer les recettes",
+    "classification",
+    "entrées, plats",
+    "salées et sucrées",
+    "recettes perso",
+    "checker les recettes déjà faites"
+   ]
+  },
+  {
+   "id": "portions",
+   "label": "Quantités et nombre de personnes",
+   "type": "plainte",
+   "motifs": [
+    "quantités sont à l'ouest",
+    "mal proportionnées",
+    "plein de restes",
+    "nombre de personnes",
+    "Ombres de personnes"
+   ]
+  }
+ ]
+}
