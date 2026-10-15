@@ -2,6 +2,31 @@
 
 Chaque version porte un seul sujet. Le plan de la refonte est dans `CAHIER_DES_CHARGES.md`.
 
+## V1.3 : l'accueil en cartes (15 octobre 2026)
+
+L'accueil montre tout de suite quoi cuisiner, sans rien taper quand le frigo est rempli.
+
+- **Les cartes, dans un ordre fixe** : « À finir vite » (s'il y a des produits à 2 jours ou moins), « Tout de suite » (les trois meilleures recettes faisables sans rien acheter, puis « Voir toutes les idées (n) »), le gros bouton « Ajouter ce que j'ai », puis « Remplir mon frigo ».
+- **« À finir vite »** nomme les produits en phrase (« Crème fraîche et courgette », quatre au plus puis « et 2 autres ») et ouvre « Vider le frigo ».
+- **Si rien n'est faisable tout de suite**, la carte devient « Presque prêt » et dit ce qui manque.
+- **Frigo vide** : « Ajouter ce que j'ai » passe en premier, suivi de « Avec trois fois rien », trois plats choisis sur tout le catalogue parmi ceux qui demandent le moins de choses en plus du placard, chacun avec un ingrédient différent (aujourd'hui : omelette, pommes de terre sautées, pâtes à l'ail).
+- **« Ajouter ce que j'ai »** ouvre un écran à part : saisie en phrase ou dictée, ajout rapide, ce qui est déjà dans le frigo, et « Voir les idées ».
+- **Une seule aide** au lieu des trois bulles orange de l'accueil : elle apparaît après le tout premier ajout.
+- Jamais de recette Premium verrouillée dans les cartes de l'accueil.
+
+Écarts au cahier des charges : la tuile « Vider le frigo » n'est pas sur l'accueil, car cet écran ne sert que s'il y a des produits à finir, et la carte « À finir vite » y mène déjà. Les idées de placard sont calculées sur le catalogue au lieu d'une liste fixe, car le riz sauté de cette liste demandait quatre ingrédients.
+
+Tests ajoutés : l'ordre des cartes, les trois idées (complètes, jamais Premium verrouillées), les idées de placard (des plats, deux ingrédients au plus, tous différents), la phrase des produits à finir.
+
+### Recette sur le téléphone
+
+1. Appli neuve, frigo vide : l'accueil montre « Ajouter ce que j'ai » en haut, puis « Avec trois fois rien » (trois plats), puis « Remplir mon frigo ».
+2. Touche « Ajouter ce que j'ai », tape « 2 œufs, des pâtes, une courgette » : une aide s'affiche une seule fois, les produits apparaissent dans « Dans ton frigo ».
+3. Reviens à l'accueil : la carte « Tout de suite » propose trois recettes faisables, et « Voir toutes les idées » donne leur nombre.
+4. Donne à la courgette la date de demain : la carte « À finir vite » apparaît en haut, avec « Courgette ». Elle ouvre « Vider le frigo ».
+5. Avec un seul produit peu courant dans le frigo (par exemple seulement une aubergine) : la carte devient « Presque prêt » et dit ce qui manque.
+6. Passe l'appli en anglais : « What’s for dinner tonight? » et les mêmes cartes.
+
 ## V1.2.1 : corrections (15 octobre 2026)
 
 Maintenance, sans changement visible.

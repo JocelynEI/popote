@@ -22,6 +22,7 @@ import { fr } from '../src/i18n/fr';
 import { BADGES, progressCards, visibleBadges } from '../src/logic/badges';
 import { formatMessage } from '../src/logic/text';
 import { groupFridge, newFridgeEntries, searchIngredientsFrom } from '../src/logic/fridge';
+import { homeCards, namesPreview, namesSentence, pantryIdeas, quickIdeas } from '../src/logic/home';
 
 const ALL = [...FREE_RECIPES, ...PREMIUM_RECIPES];
 const noFilter = { diets: [], allergies: [] };
@@ -256,4 +257,46 @@ test('anglais : aucun texte resté en français', () => {
 test('identifiant de l’appli : éditeur R-Aclés', () => {
   assert.equal(appConfig.ios?.bundleIdentifier, 'com.racles.mypopote');
   assert.equal(appConfig.android?.package, 'com.racles.mypopote');
+});
+
+// ——— V1.3 : l'accueil en cartes ———
+
+test('accueil : ordre fixe des cartes', () => {
+  assert.deepEqual(homeCards({ fridgeEmpty: false, urgentCount: 2 }), ['urgent', 'now', 'add', 'fill']);
+  assert.deepEqual(homeCards({ fridgeEmpty: false, urgentCount: 0 }), ['now', 'add', 'fill']);
+  assert.deepEqual(homeCards({ fridgeEmpty: true, urgentCount: 0 }), ['add', 'pantry', 'fill']);
+});
+
+test('accueil : trois idées tout de suite, jamais de recette Premium verrouillée', () => {
+  const fridge = new Set(['egg', 'milk', 'butter', 'pasta', 'emmental', 'tomato', 'cream', 'onion']);
+  const matches = matchRecipes(ALL, fridge, { ...noFilter, maxTime: null, difficulty: null, course: null });
+  const { ideas, complete } = quickIdeas(matches, false);
+  assert.equal(ideas.length, 3);
+  assert.ok(complete);
+  assert.ok(ideas.every((m) => m.missing.length === 0 && !m.recipe.premium));
+  // rien de faisable : on propose les plus proches, en le disant
+  const presque = quickIdeas(matchRecipes(ALL, new Set(['zucchini']), { ...noFilter, maxTime: null, difficulty: null, course: null }), false);
+  assert.equal(presque.complete, false);
+});
+
+test('accueil : idées avec trois fois rien quand le frigo est vide', () => {
+  const ideas = pantryIdeas(ALL);
+  assert.equal(ideas.length, 3);
+  assert.ok(ideas.every((m) => m.missing.length <= 2 && !m.recipe.premium && m.recipe.course === 'main'), JSON.stringify(ideas.map((m) => [m.recipe.id, m.missing])));
+  const demandes = ideas.flatMap((m) => m.missing);
+  assert.equal(new Set(demandes).size, demandes.length, 'deux idées demandent le même ingrédient');
+  console.log('   idées de placard :', ideas.map((m) => `${m.recipe.id} (${m.missing.join(', ')}, ${m.recipe.time} min)`).join(' · '));
+});
+
+test('accueil : quatre produits à finir au plus, puis « et n autres »', () => {
+  assert.deepEqual(namesPreview(['a', 'b']), { shown: ['a', 'b'], rest: 0 });
+  assert.deepEqual(namesPreview(['a', 'b', 'c', 'd', 'e', 'f']), { shown: ['a', 'b', 'c', 'd'], rest: 2 });
+});
+
+test('accueil : la liste des produits à finir se lit comme une phrase', () => {
+  const fr = { and: 'et', others: (n: number) => formatMessage('{n} {n|autre|autres}', { n }, 'fr') };
+  assert.equal(namesSentence(['Crème'], fr), 'Crème');
+  assert.equal(namesSentence(['Crème fraîche', 'Courgette'], fr), 'Crème fraîche et courgette');
+  assert.equal(namesSentence(['Pâtes', 'Ail', 'ton placard'], fr), 'Pâtes, ail et ton placard');
+  assert.equal(namesSentence(['Aa', 'Bb', 'Cc', 'Dd', 'Ee'], fr), 'Aa, bb, cc, dd et 1 autre');
 });
