@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AccessibilityInfo, Animated, Easing, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { Mascot, type Mood } from '../components/Mascot';
 import { Button, haptic, Screen, Txt } from '../components/ui';
@@ -24,7 +24,7 @@ const SLIDES: Slide[] = [
 
 /** Petits objets qui flottent autour de Frigo */
 function Floaters({ items, reduceMotion }: { items: string[]; reduceMotion: boolean }) {
-  const anims = useRef(items.map(() => new Animated.Value(0))).current;
+  const [anims] = useState(() => items.map(() => new Animated.Value(0)));
   useEffect(() => {
     if (reduceMotion) return;
     const loops = anims.map((v, i) =>
@@ -73,16 +73,21 @@ export default function WelcomeScreen() {
   const { settings, update } = useSettings();
   const { height } = useWindowDimensions();
   const [i, setI] = useState(0);
-  const [typed, setTyped] = useState(0);
   const slide = SLIDES[i];
   const full = t(slide.says);
+  const [typed, setTyped] = useState(() => (reduceMotion ? full.length : 0));
+  const [typedFor, setTypedFor] = useState(i);
+  if (typedFor !== i) {
+    // nouvelle étape : la bulle repart de zéro (pendant le rendu, sans effet)
+    setTypedFor(i);
+    setTyped(reduceMotion ? full.length : 0);
+  }
   const last = i === SLIDES.length - 1;
   const done = typed >= full.length;
-  const pop = useRef(new Animated.Value(1)).current;
+  const [pop] = useState(() => new Animated.Value(1));
 
   // texte de la bulle qui s'écrit
   useEffect(() => {
-    setTyped(reduceMotion ? full.length : 0);
     AccessibilityInfo.announceForAccessibility(`${t(slide.title)}. ${full}`);
     if (reduceMotion) return;
     pop.setValue(0.85);

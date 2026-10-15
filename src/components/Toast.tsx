@@ -21,7 +21,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const insets = useSafeAreaInsets();
   const [toast, setToast] = useState<{ message: string; onUndo?: () => void; key: number } | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const anim = useRef(new Animated.Value(0)).current;
+  const [anim] = useState(() => new Animated.Value(0));
 
   const hide = useCallback(() => {
     if (timer.current) clearTimeout(timer.current);

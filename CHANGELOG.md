@@ -2,6 +2,22 @@
 
 Chaque version porte un seul sujet. Le plan de la refonte est dans `CAHIER_DES_CHARGES.md`.
 
+## V1.2.1 : corrections (15 octobre 2026)
+
+Maintenance, sans changement visible.
+
+- **Lint propre** : `npm run lint` ne signale plus rien (il y avait 59 problèmes). Les animations (Frigo, le chargement, les messages en bas d'écran, la présentation, les cartes de recettes) sont créées une seule fois avec `useState` au lieu d'être lues dans une référence pendant l'affichage. Les minuteurs du mode cuisine vérifient leur fin dans leur propre tic. La note d'une recette et le texte de la présentation se remettent à jour pendant l'affichage plutôt que dans un effet. Le prix Premium se déduit directement de la réponse du store. Le bouton rond de la fiche recette devient un vrai composant.
+- **Identifiant de l'appli** : `com.racles.mypopote` (éditeur R-Aclés) pour l'App Store et Google Play. À ne plus changer après la première publication.
+- Tests ajoutés : aucun texte anglais resté en français, identifiant de l'appli.
+
+### Recette sur le téléphone
+
+1. Présentation au premier lancement : le texte de la bulle s'écrit à chaque étape, Frigo se balance et fait coucou.
+2. Lance une recherche : la casserole animée s'affiche, puis les idées.
+3. Fiche recette : les boutons ronds (retour, partager, favori) marchent ; écris une note, quitte et reviens, elle est toujours là.
+4. Mode cuisine : lance un minuteur d'une minute, il sonne et un message s'affiche à la fin.
+5. Retire un produit du frigo puis touche « Annuler » : le message apparaît et disparaît comme avant.
+
 ## V1.2 : un seul frigo (15 octobre 2026)
 
 Il n'y a plus qu'un frigo : ce qu'on tape sur l'accueil y entre, et la recherche part de tout le frigo.

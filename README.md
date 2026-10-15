@@ -52,7 +52,7 @@ Avant la première publication, complète :
 |---|---|
 | `src/config.ts` | `CONTACT_EMAIL` (adresse publique) |
 | `store-listing/politique-confidentialite.html` | l'e-mail, puis héberge la page (GitHub Pages, Netlify…) et mets son URL dans les stores |
-| `app.config.ts` | vérifie `com.misterj.mypopote` (identifiant **définitif** une fois publié) |
+| `app.config.ts` | identifiant `com.racles.mypopote` (éditeur R-Aclés), **définitif** une fois publié |
 | `eas.json` | `submit.production.ios.ascAppId` (ID de l'app dans App Store Connect) |
 
 Tous les textes des stores (nom, sous-titre, descriptions FR/EN, mots-clés, questionnaires de confidentialité, classification, achat intégré, idées de captures) sont dans **`store-listing/fiches-stores.md`**.

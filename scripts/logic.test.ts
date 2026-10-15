@@ -15,6 +15,7 @@ import { didYouMean, parseIngredientText, searchIngredients } from '../src/logic
 import { bestUnlock, evaluateRecipe, matchRecipes, PANTRY_RECIPE_IDS } from '../src/logic/matching';
 import { formatQty, parseQtyInput, scaleQty } from '../src/logic/scaling';
 import { parseCommand } from '../src/services/voiceParse';
+import appConfig from '../app.config';
 import { CONTACT_EMAIL, DEVELOPER_NAME } from '../src/config';
 import { en } from '../src/i18n/en';
 import { fr } from '../src/i18n/fr';
@@ -244,4 +245,15 @@ test('résultats : décocher un produit ne touche pas au frigo', () => {
   const search = searchIngredientsFrom(fridgeIds, new Set(['tomato']));
   assert.deepEqual([...search], ['egg', 'pasta']);
   assert.equal(fridgeIds.size, 3);
+});
+
+// ——— V1.2.1 : corrections ———
+
+test('anglais : aucun texte resté en français', () => {
+  for (const [k, v] of Object.entries(en)) assert.ok(!/[éèàùçêâôûîœ]/i.test(v), `en.${k} semble en français : ${v}`);
+});
+
+test('identifiant de l’appli : éditeur R-Aclés', () => {
+  assert.equal(appConfig.ios?.bundleIdentifier, 'com.racles.mypopote');
+  assert.equal(appConfig.android?.package, 'com.racles.mypopote');
 });

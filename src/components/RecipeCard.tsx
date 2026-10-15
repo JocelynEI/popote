@@ -1,5 +1,5 @@
 import { Icon } from './Icon';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Animated, Pressable, StyleSheet, View } from 'react-native';
 import { ingredientDisplay } from '../data/ingredients';
 import type { Recipe } from '../data/types';
@@ -36,7 +36,7 @@ function useCardText(recipe: Recipe, match?: RecipeMatch, locked?: boolean) {
 
 function StatusLine({ match, complete, status }: { match?: RecipeMatch; complete: boolean; status: string | null }) {
   const { c, reduceMotion } = useTheme();
-  const pop = useRef(new Animated.Value(complete && !reduceMotion ? 0.6 : 1)).current;
+  const [pop] = useState(() => new Animated.Value(complete && !reduceMotion ? 0.6 : 1));
   useEffect(() => {
     if (complete && !reduceMotion) Animated.spring(pop, { toValue: 1, friction: 4, useNativeDriver: true }).start();
   }, [complete, reduceMotion, pop]);

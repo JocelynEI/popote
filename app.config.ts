@@ -11,12 +11,12 @@ const config: ExpoConfig = {
   name: IS_DEV ? 'Mypopote (dev)' : 'Mypopote',
   slug: 'mypopote',
   scheme: 'mypopote',
-  version: '1.2.0',
+  version: '1.2.1',
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'automatic', // mode sombre suivi automatiquement
   ios: {
-    bundleIdentifier: IS_DEV ? 'com.misterj.mypopote.dev' : 'com.misterj.mypopote',
+    bundleIdentifier: IS_DEV ? 'com.racles.mypopote.dev' : 'com.racles.mypopote',
     buildNumber: '1',
     supportsTablet: true,
     config: { usesNonExemptEncryption: false }, // pas de chiffrement propriétaire -> pas de déclaration d'export
@@ -39,7 +39,7 @@ const config: ExpoConfig = {
     },
   },
   android: {
-    package: IS_DEV ? 'com.misterj.mypopote.dev' : 'com.misterj.mypopote',
+    package: IS_DEV ? 'com.racles.mypopote.dev' : 'com.racles.mypopote',
     versionCode: 1,
     adaptiveIcon: {
       backgroundColor: '#F28C38',

@@ -1,7 +1,7 @@
 import { useKeepAwake } from 'expo-keep-awake';
 import * as Notifications from 'expo-notifications';
 import { useLocalSearchParams } from 'expo-router';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useToast } from '../../components/Toast';
 import { Button, haptic, IconButton, Screen, Txt } from '../../components/ui';
@@ -34,34 +34,33 @@ export default function CookMode() {
   const toast = useToast();
   const [i, setI] = useState(0);
   const [timers, setTimers] = useState<Timer[]>([]);
-  const [now, setNow] = useState(Date.now());
+  const [now, setNow] = useState(() => Date.now());
   const [width, setWidth] = useState(1);
   const [reading, setReading] = useState(false);
   const nextTimerId = useRef(1);
   const scale = settings.cookFontScale;
 
-  const steps = recipe?.steps ?? [];
+  const steps = useMemo(() => recipe?.steps ?? [], [recipe]);
   const step = steps[i];
   const last = i === steps.length - 1;
 
-  // tic des minuteurs
+  // tic des minuteurs, et minuteurs terminés
   useEffect(() => {
     if (!timers.some((x) => x.endsAt)) return;
-    const h = setInterval(() => setNow(Date.now()), 500);
+    const h = setInterval(() => {
+      const n = Date.now();
+      setNow(n);
+      const done = timers.filter((x) => x.endsAt && x.endsAt <= n);
+      if (!done.length) return;
+      // au premier plan : on annule la notification de relais pour éviter un doublon
+      done.forEach((d) => d.notifId && Notifications.cancelScheduledNotificationAsync(d.notifId).catch(() => {}));
+      haptic('success');
+      toast.show(`${t('timerDone')} (${done.map((d) => d.label).join(', ')})`);
+      speak(t('timerDone'), lang);
+      setTimers((ts) => ts.filter((x) => !done.includes(x)));
+    }, 500);
     return () => clearInterval(h);
-  }, [timers]);
-
-  // minuteurs terminés
-  useEffect(() => {
-    const done = timers.filter((x) => x.endsAt && x.endsAt <= now);
-    if (!done.length) return;
-    // au premier plan : on annule la notification de relais pour éviter un doublon
-    done.forEach((d) => d.notifId && Notifications.cancelScheduledNotificationAsync(d.notifId).catch(() => {}));
-    haptic('success');
-    toast.show(`${t('timerDone')} (${done.map((d) => d.label).join(', ')})`);
-    speak(t('timerDone'), lang);
-    setTimers((ts) => ts.filter((x) => !done.includes(x)));
-  }, [now, timers, t, lang, toast]);
+  }, [timers, t, lang, toast]);
 
   const go = useCallback(
     (n: number) => {

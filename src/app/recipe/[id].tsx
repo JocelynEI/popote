@@ -44,16 +44,18 @@ export default function RecipeScreen() {
   const fridge = useFridge();
   const favs = useData(listFavorites);
   const [servings, setServings] = useState(clampServings(settings.defaultServings));
-  const [note, setNoteText] = useState('');
+  const [note, setNoteText] = useState(() => (id ? getNote(id) : ''));
+  const [noteFor, setNoteFor] = useState(id);
+  if (noteFor !== id) {
+    // autre recette dans le même écran : on recharge sa note (sans effet, pendant le rendu)
+    setNoteFor(id);
+    setNoteText(id ? getNote(id) : '');
+  }
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [awake, setAwake] = useState(false);
   const insets = useSafeAreaInsets();
   // on relâche la mise en veille en quittant la fiche
   useEffect(() => () => void deactivateKeepAwake(AWAKE_TAG).catch(() => {}), []);
-
-  useEffect(() => {
-    if (id) setNoteText(getNote(id));
-  }, [id]);
 
   const locked = !!recipe?.premium && !isPremium;
   useEffect(() => {
@@ -142,10 +144,6 @@ export default function RecipeScreen() {
     }
     setAwake(!awake);
   };
-
-  const RoundBtn = ({ icon, label, onPress, color }: { icon: IconName; label: string; onPress: () => void; color?: string }) => (
-    <IconButton icon={icon} label={label} onPress={onPress} color={color ?? c.text} size={20} style={[styles.round, { backgroundColor: c.surface }, shadow(c, 1)]} />
-  );
 
   return (
     <Screen edges={['bottom']}>
@@ -336,6 +334,12 @@ export default function RecipeScreen() {
 }
 
 const AWAKE_TAG = 'mypopote-recipe';
+
+/** Bouton rond posé sur la grande image de la recette. */
+function RoundBtn({ icon, label, onPress, color }: { icon: IconName; label: string; onPress: () => void; color?: string }) {
+  const { c } = useTheme();
+  return <IconButton icon={icon} label={label} onPress={onPress} color={color ?? c.text} size={20} style={[styles.round, { backgroundColor: c.surface }, shadow(c, 1)]} />;
+}
 
 const styles = StyleSheet.create({
   round: { width: 44, height: 44, borderRadius: 22 },
