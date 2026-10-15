@@ -15,6 +15,11 @@ import { didYouMean, parseIngredientText, searchIngredients } from '../src/logic
 import { bestUnlock, evaluateRecipe, matchRecipes, PANTRY_RECIPE_IDS } from '../src/logic/matching';
 import { formatQty, parseQtyInput, scaleQty } from '../src/logic/scaling';
 import { parseCommand } from '../src/services/voiceParse';
+import { CONTACT_EMAIL, DEVELOPER_NAME } from '../src/config';
+import { en } from '../src/i18n/en';
+import { fr } from '../src/i18n/fr';
+import { BADGES, progressCards, visibleBadges } from '../src/logic/badges';
+import { formatMessage } from '../src/logic/text';
 
 const ALL = [...FREE_RECIPES, ...PREMIUM_RECIPES];
 const noFilter = { diets: [], allergies: [] };
@@ -153,4 +158,56 @@ test('saisie en phrase : « 2 œufs, un demi brocoli, du cheddar »', () => {
   const r2 = parseIngredientText('des tomates et 200 g de pâtes + reste de poulet');
   assert.deepEqual(r2.found.map((i) => i.id), ['tomato', 'pasta', 'chicken']);
   assert.deepEqual(parseIngredientText('xyzzz').found, []);
+});
+
+// ——— V1.1 : les mots ———
+
+test('textes : aucun « (s) », en français comme en anglais', () => {
+  for (const [lang, dict] of Object.entries({ fr, en })) {
+    for (const [k, v] of Object.entries(dict)) assert.ok(!/\((s|es)\)/.test(v), `${lang}.${k} contient encore « (s) » : ${v}`);
+  }
+});
+
+test('textes : chaque pluriel porte sur un paramètre connu et a ses deux formes', () => {
+  for (const [lang, dict] of Object.entries({ fr, en })) {
+    for (const [k, v] of Object.entries(dict)) {
+      for (const m of v.matchAll(/\{(\w+)\|/g)) assert.match(v, new RegExp(`\\{${m[1]}\\|[^|{}]*(\\{\\w+\\}[^|{}]*)*\\|[^{}]*(\\{\\w+\\}[^{}]*)*\\}`), `${lang}.${k}`);
+    }
+  }
+});
+
+test('pluriels : règle française (0 et 1 au singulier) et anglaise', () => {
+  assert.equal(formatMessage('{n} {n|produit|produits}', { n: 0 }, 'fr'), '0 produit');
+  assert.equal(formatMessage('{n} {n|produit|produits}', { n: 1 }, 'fr'), '1 produit');
+  assert.equal(formatMessage('{n} {n|produit|produits}', { n: 2 }, 'fr'), '2 produits');
+  assert.equal(formatMessage('{n} {n|item|items}', { n: 0 }, 'en'), '0 items');
+  assert.equal(formatMessage('{n} {n|item|items}', { n: 1 }, 'en'), '1 item');
+  assert.equal(formatMessage(fr.resultsSubtitle, { n: 3, k: 1 }, 'fr'), '3 recettes avec ton ingrédient');
+  assert.equal(formatMessage(fr.resultsSubtitle, { n: 1, k: 11 }, 'fr'), '1 recette avec tes 11 ingrédients');
+  assert.equal(formatMessage(en.resultsSubtitle, { n: 72, k: 11 }, 'en'), '72 recipes with your 11 ingredients');
+});
+
+test('progrès : on ne fête jamais un zéro, on salue ce qui a été fait', () => {
+  const vide = progressCards({ monthSaved: 0, weekCooked: 0, weekSaved: 0 });
+  assert.equal(vide.month, null);
+  assert.equal(vide.week, null);
+  const semaine = progressCards({ monthSaved: 0, weekCooked: 2, weekSaved: 0 });
+  assert.equal(semaine.month, null);
+  assert.deepEqual(semaine.week, { cooked: 2, saved: 0 });
+  assert.equal(progressCards({ monthSaved: 3, weekCooked: 0, weekSaved: 1 }).month, 3);
+  // aucun texte de l'appli ne fête un zéro ni ne reproche le gaspillage
+  for (const k of ['statsWasteRate', 'statsWasted', 'statsTopWasted']) assert.ok(!(k in fr), `${k} existe encore`);
+});
+
+test('badges : seulement ceux obtenus, plus le prochain', () => {
+  const debut = visibleBadges(new Set());
+  assert.deepEqual(debut.map((b) => [b.def.id, b.got]), [['first_cook', false]]);
+  const deux = visibleBadges(new Set(['first_cook', 'save_25']));
+  assert.deepEqual(deux.map((b) => [b.def.id, b.got]), [['first_cook', true], ['save_25', true], ['first_save', false]]);
+  assert.equal(visibleBadges(new Set(BADGES.map((b) => b.id))).filter((b) => !b.got).length, 0);
+});
+
+test('contact : une vraie adresse, éditeur R-Aclés', () => {
+  assert.equal(CONTACT_EMAIL, 'jocelyn.lebon.ae@gmail.com');
+  assert.equal(DEVELOPER_NAME, 'R-Aclés');
 });
