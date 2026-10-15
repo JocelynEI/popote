@@ -8,8 +8,10 @@ import { useToast } from '../../components/Toast';
 import { Button, Chip, haptic, IconButton, MAX_FONT_SCALE, Screen, styles as ui, Txt } from '../../components/ui';
 import { INGREDIENT_BY_ID } from '../../data/ingredients';
 import type { Ingredient } from '../../data/types';
+import { addFridgeItem, deleteFridgeItem, type FridgeItem, ingredientName, restoreFridgeItem } from '../../db/repo';
 import { useFridge } from '../../hooks/useData';
 import { useI18n } from '../../i18n';
+import { newFridgeEntries } from '../../logic/fridge';
 import { parseIngredientText, searchIngredients } from '../../logic/ingredientSearch';
 import { useDictation } from '../../services/voice';
 import { useSettings } from '../../state/settings';
@@ -18,10 +20,13 @@ import { FONTS, radius, shadow, space, TOUCH, useTheme } from '../../theme/theme
 /** Basiques du placard proposés en « Ajout rapide » (scroll horizontal) */
 const QUICK_TAGS = ['pasta', 'rice', 'egg', 'cream', 'onion', 'tomato', 'emmental', 'potato', 'milk', 'butter', 'chicken', 'garlic', 'bread', 'zucchini', 'lemon'];
 const GUTTER = space(5);
+/** Produits montrés sur l'accueil ; le reste est dans l'onglet Frigo. */
+const MAX_CHIPS = 12;
 
 /**
  * Écran 1 — L'inventaire spontané.
  * Objectif : saisir ses restes en moins de 3 secondes, puis « Créer ma Mypopote ».
+ * Un seul frigo : ce qu'on tape ou dicte entre dans le frigo (sans date), et la recherche part de tout le frigo.
  */
 export default function HomeScreen() {
   const { c } = useTheme();
@@ -31,9 +36,7 @@ export default function HomeScreen() {
   const fridge = useFridge();
   const inputRef = useRef<TextInput>(null);
 
-  const [selected, setSelected] = useState<string[]>([]);
   const [text, setText] = useState('');
-  const [includeSaved, setIncludeSaved] = useState(true);
   const [tipStep, setTipStep] = useState(settings.tipsSeen.includes('home2') ? -1 : 0);
 
   useEffect(() => {
@@ -50,13 +53,17 @@ export default function HomeScreen() {
     } else setTipStep(tipStep + 1);
   };
 
+  /** Ajoute au frigo les ingrédients qui n'y sont pas encore, sans date. */
   const add = (ids: string[]) => {
-    const fresh = ids.filter((id) => !selected.includes(id));
-    if (fresh.length) {
-      haptic();
-      setSelected((s) => [...s, ...fresh.filter((id) => !s.includes(id))]);
-    }
+    const fresh = newFridgeEntries(ids, fridge.items);
+    fresh.forEach((e) => addFridgeItem(e));
+    if (fresh.length) haptic();
     return fresh.length;
+  };
+
+  const remove = (it: FridgeItem) => {
+    const snapshot = deleteFridgeItem(it.id);
+    toast.show(t('deletedToast'), { onUndo: () => snapshot && restoreFridgeItem(snapshot) });
   };
 
   /** Validation de la saisie libre : « 2 œufs, un demi brocoli, du cheddar » -> 3 puces */
@@ -65,7 +72,7 @@ export default function HomeScreen() {
     if (!v) return [];
     const { found, unknown } = parseIngredientText(v);
     const n = add(found.map((i) => i.id));
-    if (n > 1) toast.show(t('parsedToast', { n }));
+    if (n > 0) toast.show(t('addedSelectionToFridge', { n }));
     if (unknown.length) toast.show(t('notUnderstood', { list: unknown.join(', ') }));
     setText('');
     return found.map((i) => i.id);
@@ -80,30 +87,29 @@ export default function HomeScreen() {
   // suggestions pendant la frappe (sur le dernier morceau de la phrase)
   const lastPart = text.split(/[,;]/).pop()?.trim() ?? '';
   const suggestions = useMemo(
-    () => (lastPart.length >= 1 ? searchIngredients(lastPart, new Set(selected), 5).map((h) => h.ing) : []),
-    [lastPart, selected],
+    () => (lastPart.length >= 1 ? searchIngredients(lastPart, fridge.ids, 5).map((h) => h.ing) : []),
+    [lastPart, fridge.ids],
   );
 
   const pickSuggestion = (ing: Ingredient) => {
-    add([ing.id]);
+    if (add([ing.id])) toast.show(t('addedSelectionToFridge', { n: 1 }));
     const parts = text.split(/[,;]/);
     parts.pop();
     const rest = parts.join(',').trim();
     setText(rest ? `${rest}, ` : '');
   };
 
-  const savedCount = fridge.ids.size;
-  const total = new Set([...selected, ...(includeSaved ? [...fridge.ids] : [])]).size;
+  const total = fridge.ids.size;
   const name = (id: string) => `${INGREDIENT_BY_ID[id]?.emoji ?? ''} ${l(INGREDIENT_BY_ID[id]?.name ?? { fr: id, en: id })}`;
+  const itemName = (it: FridgeItem) => `${(it.ingredient_id && INGREDIENT_BY_ID[it.ingredient_id]?.emoji) || '🥡'} ${ingredientName(it.ingredient_id, it.custom_name, lang)}`;
 
   const create = () => {
-    // le texte encore dans le champ est pris en compte
-    const typed = text.trim() ? submitText() : [];
-    const all = [...new Set([...selected, ...typed])];
-    router.push({ pathname: '/results', params: { ing: all.join(','), fridge: includeSaved ? '1' : '0' } });
+    // le texte encore dans le champ est d'abord ajouté au frigo
+    if (text.trim()) submitText();
+    router.push({ pathname: '/results', params: { fridge: '1' } });
   };
 
-  const quick = QUICK_TAGS.filter((id) => !selected.includes(id));
+  const quick = QUICK_TAGS.filter((id) => !fridge.ids.has(id));
 
   return (
     <Screen>
@@ -206,26 +212,29 @@ export default function HomeScreen() {
             <Txt v="h2" style={{ flex: 1 }}>
               {t('myFridgeZone')}
             </Txt>
-            {selected.length > 0 && (
-              <Pressable accessibilityRole="button" onPress={() => setSelected([])} hitSlop={8}>
+            {fridge.items.length > 0 && (
+              <Pressable accessibilityRole="button" onPress={() => router.push('/fridge')} hitSlop={8}>
                 <Txt v="small" color={c.primaryText} style={{ fontWeight: '600' }}>
-                  {t('clearSelection')}
+                  {t('manageFridge')}
                 </Txt>
               </Pressable>
             )}
           </View>
 
-          {selected.length ? (
+          {fridge.items.length ? (
             <View style={[ui.wrap, { marginTop: space(4) }]}>
-              {selected.map((id) => (
+              {fridge.items.slice(0, MAX_CHIPS).map((it) => (
                 <Chip
-                  key={id}
+                  key={it.id}
                   selected
-                  label={name(id)}
-                  onRemove={() => setSelected((s) => s.filter((x) => x !== id))}
-                  removeLabel={t('removeIngredientA11y', { name: l(INGREDIENT_BY_ID[id]?.name ?? { fr: id, en: id }) })}
+                  label={itemName(it)}
+                  onRemove={() => remove(it)}
+                  removeLabel={t('removeIngredientA11y', { name: ingredientName(it.ingredient_id, it.custom_name, lang) })}
                 />
               ))}
+              {fridge.items.length > MAX_CHIPS && (
+                <Chip label={t('moreInFridge', { n: fridge.items.length - MAX_CHIPS })} onPress={() => router.push('/fridge')} />
+              )}
             </View>
           ) : (
             <View style={[styles.emptyZone, { borderColor: c.border }]}>
@@ -236,17 +245,7 @@ export default function HomeScreen() {
             </View>
           )}
 
-          {savedCount > 0 ? (
-            <Pressable
-              accessibilityRole="switch"
-              accessibilityState={{ checked: includeSaved }}
-              onPress={() => (haptic(), setIncludeSaved(!includeSaved))}
-              style={styles.includeRow}
-            >
-              <Icon name={includeSaved ? 'checkbox' : 'square-outline'} size={22} color={includeSaved ? c.primaryText : c.textMuted} />
-              <Txt style={{ marginLeft: space(2), flex: 1 }}>{t('includeSaved', { n: savedCount })}</Txt>
-            </Pressable>
-          ) : (
+          {fridge.items.length === 0 && (
             <Pressable accessibilityRole="button" onPress={() => router.push('/quick-fill')} style={styles.includeRow}>
               <Txt color={c.primaryText} style={{ fontWeight: '600' }}>
                 {t('emptyQuickFill')} →

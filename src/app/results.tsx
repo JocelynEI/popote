@@ -12,6 +12,7 @@ import { addShopping, listFavorites, recentlyCookedMap, toggleFavorite } from '.
 import { useAllRecipes, useData, useFridge } from '../hooks/useData';
 import { type TKey, useI18n } from '../i18n';
 import { DIETS } from '../logic/diets';
+import { searchIngredientsFrom } from '../logic/fridge';
 import { bestUnlock, type RecipeMatch } from '../logic/matching';
 import { getRecipeEngine } from '../services/recipeEngine';
 import { usePremium } from '../services/premium';
@@ -41,12 +42,22 @@ export default function ResultsScreen() {
   const [matches, setMatches] = useState<RecipeMatch[]>([]);
   const [easy, setEasy] = useState(false);
   const [course, setCourse] = useState<Course | null>(null);
+  // produits décochés pour cette recherche seulement : le frigo n'est pas modifié
+  const [excluded, setExcluded] = useState<Set<string>>(new Set());
+  const toggleExcluded = (id: string) =>
+    setExcluded((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
 
   const available = useMemo(() => {
     const s = new Set(selected);
-    if (useFridgeParam === '1') fridge.ids.forEach((id) => s.add(id));
+    if (useFridgeParam === '1') searchIngredientsFrom(fridge.ids, excluded).forEach((id) => s.add(id));
     return s;
-  }, [selected, useFridgeParam, fridge.ids]);
+  }, [selected, useFridgeParam, fridge.ids, excluded]);
+  const fridgeChoices = useMemo(() => [...fridge.ids].filter((id) => INGREDIENT_BY_ID[id]), [fridge.ids]);
 
   const filters = useMemo(
     () => ({ maxTime: settings.lastMaxTime, difficulty: easy ? (1 as const) : null, course, diets: settings.diets, allergies: settings.allergies }),
@@ -103,6 +114,23 @@ export default function ResultsScreen() {
       <Txt muted style={{ marginTop: space(1) }}>
         {t('resultsSubtitle', { n: visible.length, k: available.size })}
       </Txt>
+      {useFridgeParam === '1' && fridgeChoices.length > 1 && (
+        <View style={{ marginTop: space(3) }}>
+          <Txt v="small" muted>
+            {t('resultsUncheckHint')}
+          </Txt>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: space(2), marginHorizontal: -space(4) }} contentContainerStyle={{ gap: space(2), paddingHorizontal: space(4) }}>
+            {fridgeChoices.map((id) => (
+              <Chip
+                key={id}
+                label={`${INGREDIENT_BY_ID[id].emoji} ${l(INGREDIENT_BY_ID[id].name)}`}
+                selected={!excluded.has(id)}
+                onPress={() => toggleExcluded(id)}
+              />
+            ))}
+          </ScrollView>
+        </View>
+      )}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: space(4), marginHorizontal: -space(4) }} contentContainerStyle={{ gap: space(2), paddingHorizontal: space(4), paddingBottom: space(2) }}>
         {([15, 30, 60] as const).map((n) => (
           <Chip key={n} label={`⏱ ${t('filterTime', { n })}`} selected={settings.lastMaxTime === n} onPress={() => update({ lastMaxTime: settings.lastMaxTime === n ? null : n })} />

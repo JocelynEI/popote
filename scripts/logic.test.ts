@@ -20,6 +20,7 @@ import { en } from '../src/i18n/en';
 import { fr } from '../src/i18n/fr';
 import { BADGES, progressCards, visibleBadges } from '../src/logic/badges';
 import { formatMessage } from '../src/logic/text';
+import { groupFridge, newFridgeEntries, searchIngredientsFrom } from '../src/logic/fridge';
 
 const ALL = [...FREE_RECIPES, ...PREMIUM_RECIPES];
 const noFilter = { diets: [], allergies: [] };
@@ -210,4 +211,37 @@ test('badges : seulement ceux obtenus, plus le prochain', () => {
 test('contact : une vraie adresse, éditeur R-Aclés', () => {
   assert.equal(CONTACT_EMAIL, 'jocelyn.lebon.ae@gmail.com');
   assert.equal(DEVELOPER_NAME, 'R-Aclés');
+});
+
+// ——— V1.2 : un seul frigo ———
+
+test('frigo : trois blocs, le plus proche de la date en premier', () => {
+  const now = new Date();
+  const today = todayISO(now);
+  const items = [
+    { id: 1, ingredient_id: 'milk', expires_at: addDays(today, 5) },
+    { id: 2, ingredient_id: 'egg', expires_at: null },
+    { id: 3, ingredient_id: 'cream', expires_at: addDays(today, 0) },
+    { id: 4, ingredient_id: 'tomato', expires_at: addDays(today, 2) },
+    { id: 5, ingredient_id: 'ham', expires_at: addDays(today, -1) },
+    { id: 6, ingredient_id: 'butter', expires_at: addDays(today, 3) },
+  ];
+  const g = groupFridge(items, now);
+  assert.deepEqual(g.urgent.map((i) => i.id), [5, 3, 4]);
+  assert.deepEqual(g.dated.map((i) => i.id), [6, 1]);
+  assert.deepEqual(g.undated.map((i) => i.id), [2]);
+});
+
+test('accueil : ce qu’on tape entre dans le frigo, sans doublon et sans date préremplie', () => {
+  const existing = [{ ingredient_id: 'egg', expires_at: null }];
+  const add = newFridgeEntries(['egg', 'tomato', 'tomato', 'pasta'], existing);
+  assert.deepEqual(add.map((e) => e.ingredientId), ['tomato', 'pasta']);
+  assert.ok(add.every((e) => e.expiresAt === null));
+});
+
+test('résultats : décocher un produit ne touche pas au frigo', () => {
+  const fridgeIds = new Set(['egg', 'tomato', 'pasta']);
+  const search = searchIngredientsFrom(fridgeIds, new Set(['tomato']));
+  assert.deepEqual([...search], ['egg', 'pasta']);
+  assert.equal(fridgeIds.size, 3);
 });
