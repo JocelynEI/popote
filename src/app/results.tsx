@@ -59,8 +59,8 @@ export default function ResultsScreen() {
   const fridgeChoices = useMemo(() => [...fridge.ids].filter((id) => INGREDIENT_BY_ID[id]), [fridge.ids]);
 
   const filters = useMemo(
-    () => ({ maxTime: settings.lastMaxTime, difficulty: easy ? (1 as const) : null, course, diets: settings.diets, allergies: settings.allergies }),
-    [settings.lastMaxTime, easy, course, settings.diets, settings.allergies],
+    () => ({ maxTime: settings.lastMaxTime, difficulty: easy ? (1 as const) : null, course, diets: settings.diets, allergies: settings.allergies, dislikes: settings.dislikes, tools: settings.tools }),
+    [settings.lastMaxTime, easy, course, settings.diets, settings.allergies, settings.dislikes, settings.tools],
   );
 
   // première recherche : animation minimale pour le plaisir (courte si « réduire les animations »)

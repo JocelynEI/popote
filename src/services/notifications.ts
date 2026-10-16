@@ -87,7 +87,7 @@ async function scheduleExpiry(items: FridgeItem[], s: Settings, lang: Lang) {
     // petite idée de recette avec ces produits
     const ids = new Set(urgent.map((u) => u.ingredient_id).filter(Boolean) as string[]);
     const allIds = new Set(items.map((u) => u.ingredient_id).filter(Boolean) as string[]);
-    const idea = matchRecipes(FREE_RECIPES, allIds, { diets: s.diets, allergies: s.allergies }, { urgent: ids, maxMissing: 0 }).find(
+    const idea = matchRecipes(FREE_RECIPES, allIds, { diets: s.diets, allergies: s.allergies, dislikes: s.dislikes, tools: s.tools }, { urgent: ids, maxMissing: 0 }).find(
       (m) => m.usedUrgent.length > 0,
     );
     if (idea) body += ' ' + translate(lang, 'notifExpiryIdea', { recipe: idea.recipe.title[lang] });
