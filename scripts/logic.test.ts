@@ -23,6 +23,7 @@ import { fr } from '../src/i18n/fr';
 import { BADGES, progressCards, visibleBadges } from '../src/logic/badges';
 import { formatMessage } from '../src/logic/text';
 import { groupFridge, newFridgeEntries, searchIngredientsFrom } from '../src/logic/fridge';
+import { groupResults, lowerFirst, visibleMatches } from '../src/logic/results';
 import { homeCards, namesPreview, namesSentence, pantryIdeas, quickIdeas } from '../src/logic/home';
 
 const ALL = [...FREE_RECIPES, ...PREMIUM_RECIPES];
@@ -306,4 +307,31 @@ test('accueil : la liste des produits à finir se lit comme une phrase', () => {
   assert.equal(namesSentence(['Crème fraîche', 'Courgette'], fr), 'Crème fraîche et courgette');
   assert.equal(namesSentence(['Pâtes', 'Ail', 'ton placard'], fr), 'Pâtes, ail et ton placard');
   assert.equal(namesSentence(['Aa', 'Bb', 'Cc', 'Dd', 'Ee'], fr), 'Aa, bb, cc, dd et 1 autre');
+});
+
+// ——— V1.4 : des résultats plus serrés ———
+
+test('idées : deux groupes, l’ordre du moteur est gardé', () => {
+  const fridge = new Set(['egg', 'milk', 'butter', 'pasta', 'emmental', 'tomato', 'cream', 'onion']);
+  const matches = matchRecipes(ALL, fridge, { ...noFilter, maxTime: null, difficulty: null, course: null });
+  const { now, almost } = groupResults(matches);
+  assert.ok(now.length > 0 && almost.length > 0);
+  assert.ok(now.every((m) => m.missing.length === 0));
+  assert.ok(almost.every((m) => m.missing.length > 0));
+  assert.deepEqual([...now, ...almost].map((m) => m.recipe.id), matches.map((m) => m.recipe.id));
+});
+
+test('idées : au plus deux recettes Premium verrouillées, toutes pour un abonné', () => {
+  const premium = ALL.filter((r) => r.premium).map((r) => evaluateRecipe(r, new Set(['egg'])));
+  const free = FREE_RECIPES.slice(0, 5).map((r) => evaluateRecipe(r, new Set(['egg'])));
+  const mixed = [premium[0], free[0], premium[1], free[1], premium[2], free[2]];
+  const v = visibleMatches(mixed, false);
+  assert.equal(v.filter((m) => m.recipe.premium).length, 2);
+  assert.equal(v.filter((m) => !m.recipe.premium).length, 3);
+  assert.equal(visibleMatches(mixed, true).length, mixed.length);
+});
+
+test('idées : la liste après « Il manque : » commence en minuscule', () => {
+  assert.equal(lowerFirst('Jambon'), 'jambon');
+  assert.equal(lowerFirst(''), '');
 });

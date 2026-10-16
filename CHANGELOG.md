@@ -2,6 +2,28 @@
 
 Chaque version porte un seul sujet. Le plan de la refonte est dans `CAHIER_DES_CHARGES.md`.
 
+## V1.4 : des résultats plus serrés (16 octobre 2026)
+
+L'écran des idées montre beaucoup plus de recettes à la fois.
+
+- **Cartes compactes** : vignette de 72 px, titre sur deux lignes au plus, temps et niveau, un seul badge (« Anti-gaspi », sinon « Rapide »), ce qui manque en orange, favori. Six à sept recettes par écran au lieu de deux. Le grand visuel reste sur la fiche recette.
+- **Deux groupes avec leur nombre** : « Tout de suite » et « Presque prêt » (le même mot que sur l'accueil). La liste après « Il manque : » commence en minuscule.
+- **Filtres visibles d'un coup d'œil**, sur deux lignes au lieu d'une bande à faire défiler : temps (≤ 15, 30, 60 min) et « Facile », puis entrée, plat, dessert.
+- **Régime** : une seule pastille qui montre le régime choisi (ou « Régime ») et ouvre les préférences. Avant, quatre pastilles changeaient le profil depuis cet écran sans le dire.
+- La règle des recettes Premium (deux verrouillées au plus pour un non-abonné) passe dans `src/logic/results.ts`, avec son test.
+
+Écart au cahier des charges : le filtre par ustensiles arrive avec la V1.5, qui ajoute les ustensiles aux recettes.
+
+Tests ajoutés : les deux groupes gardent l'ordre du moteur, deux recettes Premium verrouillées au plus, minuscule après « Il manque : ».
+
+### Recette sur le téléphone
+
+1. Avec quelques produits dans le frigo, ouvre les idées : les cartes sont compactes, au moins six par écran une fois les filtres passés.
+2. « Tout de suite » puis « Presque prêt », chacun avec son nombre ; dans « Presque prêt », la ligne orange dit ce qui manque.
+3. Touche « ≤ 15 min » puis « Plat » : la liste se réduit, les nombres changent.
+4. Touche « Régime » : les préférences s'ouvrent. Choisis « Végétarien », reviens : la pastille affiche « Végétarien » et les recettes avec viande ont disparu.
+5. Sans Premium : au plus deux recettes « 🔒 Premium » dans la liste. Le cœur d'une carte ajoute la recette aux favoris sans l'ouvrir.
+
 ## V1.3.1 : contact et pages pour les stores (16 octobre 2026)
 
 Reprend la demande de fusion #2 du 23 septembre dans la refonte.

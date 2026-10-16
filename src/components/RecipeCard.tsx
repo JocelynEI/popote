@@ -5,7 +5,8 @@ import { ingredientDisplay } from '../data/ingredients';
 import type { Recipe } from '../data/types';
 import { useI18n } from '../i18n';
 import type { RecipeMatch } from '../logic/matching';
-import { radius, shadow, space, useTheme } from '../theme/theme';
+import { lowerFirst } from '../logic/results';
+import { FONTS, radius, shadow, space, useTheme } from '../theme/theme';
 import { DishArt } from './Dish';
 import { haptic, Txt } from './ui';
 
@@ -172,64 +173,55 @@ const styles = StyleSheet.create({
   tag: { borderRadius: radius.pill, paddingHorizontal: space(2.5), paddingVertical: 4, flexDirection: 'row', alignItems: 'center' },
   urgentDot: { position: 'absolute', bottom: space(2.5), right: space(2.5), borderRadius: radius.pill, paddingHorizontal: space(2), paddingVertical: 3 },
   hero: { borderRadius: radius.xl, overflow: 'hidden' },
-  feedBadges: { position: 'absolute', left: space(3), bottom: space(3), right: space(3), flexDirection: 'row', flexWrap: 'wrap', gap: space(1.5) },
-  badge: { flexDirection: 'row', alignItems: 'center', borderRadius: radius.pill, paddingHorizontal: space(2.5), paddingVertical: 5 },
-  fav: { position: 'absolute', top: space(3), right: space(3), width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
-  lock: { position: 'absolute', top: space(3), left: space(3), flexDirection: 'row', alignItems: 'center', borderRadius: radius.pill, paddingHorizontal: space(2.5), paddingVertical: 5 },
+  compact: { borderRadius: radius.md, marginBottom: space(2.5) },
+  compactInner: { flexDirection: 'row', alignItems: 'center', padding: space(2.5), minHeight: 92 },
+  compactFav: { position: 'absolute', top: 0, right: 0, width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
+  pill: { borderRadius: radius.pill, paddingHorizontal: space(2), paddingVertical: 1 },
   row: { flexDirection: 'row', alignItems: 'center', borderRadius: radius.lg, padding: space(2.5), marginBottom: space(3) },
 });
 
 /**
- * Carte du feed de résultats (spéc. UX/UI v2) :
- * image vue de dessus sur la moitié haute, badges flottants, favori en haut à droite, titre gourmand.
+ * Carte compacte de l'écran des idées (V1.4) : vignette de 72 px, titre sur deux lignes au plus,
+ * temps et niveau, badges, ce qui manque, favori. Le grand visuel reste sur la fiche recette.
  */
-export function FeedRecipeCard({
+export function CompactRecipeCard({
   recipe,
   match,
   locked,
   onPress,
   favorite,
   onToggleFavorite,
-  dimmed,
-}: Props & { favorite?: boolean; onToggleFavorite?: () => void; /** grisée (ingrédients manquants) mais toujours cliquable */ dimmed?: boolean }) {
+}: Props & { favorite?: boolean; onToggleFavorite?: () => void }) {
   const { c } = useTheme();
   const { a11y, title, t } = useCardText(recipe, match, locked);
   const { lang } = useI18n();
   const missing = match?.missing ?? [];
-  const missingNames = missing.map((id) => ingredientDisplay(id, lang, recipe.ingredients.find((x) => x.id === id)?.label).name).join(', ');
+  const dimmed = missing.length > 0;
+  const missingNames = missing.map((id) => lowerFirst(ingredientDisplay(id, lang, recipe.ingredients.find((x) => x.id === id)?.label).name)).join(', ');
   return (
-    <View style={[{ borderRadius: radius.lg, backgroundColor: c.surface, marginBottom: space(5) }, shadow(c, 1)]}>
-      <Pressable accessibilityRole="button" accessibilityLabel={a11y} onPress={() => (haptic(), onPress())} style={({ pressed }) => [{ transform: [{ scale: pressed ? 0.99 : 1 }] }]}>
-        <View style={{ borderTopLeftRadius: radius.lg, borderTopRightRadius: radius.lg, overflow: 'hidden' }}>
-          <DishArt recipe={recipe} radius={0} padding={0.06} style={{ height: 200, width: '100%', opacity: dimmed ? 0.4 : 1 }} />
-          {/* badges flottants */}
-          <View style={styles.feedBadges}>
-            {match && missing.length === 0 && <Badge bg={c.surface} fg={c.herb} icon="checkmark" label={t('badgeMatch')} />}
-            {missing.length > 0 && <Badge bg={c.surface} fg={c.warning} label={t(missing.length === 1 ? 'badgeMissingOne' : 'badgeMissingN', { n: missing.length })} />}
-            {recipe.time <= 15 && <Badge bg={c.accent} fg={c.onAccent} icon="zap" label={t('badgeQuick', { n: recipe.time })} />}
-            {!!match?.usedUrgent.length && <Badge bg={c.surface} fg={c.danger} label={`⏳ ${t('badgeAntiWaste')}`} />}
-          </View>
-          {locked && (
-            <View style={[styles.lock, { backgroundColor: c.surface }]}>
-              <Icon name="lock-closed" size={14} color={c.text} />
-              <Txt v="small" style={{ fontWeight: '700', marginLeft: 4 }}>
-                Premium
-              </Txt>
-            </View>
-          )}
-        </View>
-        <View style={{ padding: space(4), paddingTop: space(3) }}>
-          <Txt v="h3" numberOfLines={2} color={dimmed ? c.textMuted : undefined} style={{ fontSize: 20, lineHeight: 25, paddingRight: space(8) }}>
+    <View style={[styles.compact, { backgroundColor: c.surface }, shadow(c, 1)]}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={a11y}
+        onPress={() => (haptic(), onPress())}
+        style={({ pressed }) => [styles.compactInner, { transform: [{ scale: pressed ? 0.99 : 1 }] }]}
+      >
+        <DishArt recipe={recipe} size={72} radius={12} padding={0.08} style={{ opacity: dimmed ? 0.45 : 1 }} />
+        <View style={{ flex: 1, marginLeft: space(3), paddingRight: onToggleFavorite ? space(8) : 0 }}>
+          <Txt numberOfLines={2} color={dimmed ? c.textMuted : undefined} style={{ fontFamily: FONTS.display, fontSize: 17, lineHeight: 21 }}>
             {title}
           </Txt>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: space(1.5), marginTop: space(1.5) }}>
-            <Icon name="clock" size={15} color={c.textMuted} />
+          <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', gap: space(1.5), marginTop: space(1) }}>
             <Txt v="small" muted>
               {t('minutes', { n: recipe.time })} · {recipe.difficulty === 1 ? t('difficultyEasy') : t('difficultyMedium')}
             </Txt>
+            {!!match?.usedUrgent.length && <Pill bg={c.accentSoft} fg={c.accentText} label={t('badgeAntiWaste')} />}
+            {/* un seul badge de mise en avant : anti-gaspi d'abord, sinon rapide */}
+            {!dimmed && !match?.usedUrgent.length && recipe.time <= 15 && <Pill bg={c.accent} fg={c.onAccent} label={t('badgeQuickShort')} />}
+            {locked && <Pill bg={c.text} fg={c.bg} label={`🔒 ${t('premiumLock')}`} />}
           </View>
-          {missing.length > 0 && (
-            <Txt v="small" muted={!dimmed} color={dimmed ? c.warning : undefined} numberOfLines={2} style={{ marginTop: space(1), fontWeight: dimmed ? '600' : undefined }}>
+          {dimmed && (
+            <Txt v="small" color={c.accentText} numberOfLines={2} style={{ marginTop: 3, fontWeight: '600' }}>
               {t('badgeMissing', { list: missingNames })}
             </Txt>
           )}
@@ -241,21 +233,20 @@ export function FeedRecipeCard({
           accessibilityLabel={favorite ? t('favoriteRemove') : t('favoriteAdd')}
           accessibilityState={{ selected: !!favorite }}
           onPress={() => (haptic(), onToggleFavorite())}
-          hitSlop={8}
-          style={[styles.fav, { backgroundColor: c.surface }, shadow(c, 1)]}
+          hitSlop={4}
+          style={styles.compactFav}
         >
-          <Icon name={favorite ? 'heart' : 'heart-outline'} size={20} color={favorite ? c.accentText : c.text} />
+          <Icon name={favorite ? 'heart' : 'heart-outline'} size={20} color={favorite ? c.accentText : c.textMuted} />
         </Pressable>
       )}
     </View>
   );
 }
 
-function Badge({ label, bg, fg, icon }: { label: string; bg: string; fg: string; icon?: 'checkmark' | 'zap' }) {
+function Pill({ label, bg, fg }: { label: string; bg: string; fg: string }) {
   return (
-    <View style={[styles.badge, { backgroundColor: bg }]}>
-      {icon && <Icon name={icon} size={13} color={fg} strokeWidth={2.5} />}
-      <Txt v="small" color={fg} style={{ fontWeight: '700', fontSize: 12.5, marginLeft: icon ? 4 : 0 }}>
+    <View style={[styles.pill, { backgroundColor: bg }]}>
+      <Txt v="small" color={fg} style={{ fontWeight: '700', fontSize: 12 }}>
         {label}
       </Txt>
     </View>
