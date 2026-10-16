@@ -1,7 +1,7 @@
 import Storage from 'expo-sqlite/kv-store';
 import { Platform } from 'react-native';
 import { createContext, type ReactNode, useCallback, useContext, useMemo, useState } from 'react';
-import type { Diet } from '../data/types';
+import type { Diet, Tool } from '../data/types';
 import type { Allergen } from '../logic/diets';
 
 export type ThemePref = 'auto' | 'light' | 'dark';
@@ -14,6 +14,10 @@ export interface Settings {
   accent: AccentTheme; // Premium (sauf 'sage')
   diets: Diet[];
   allergies: Allergen[];
+  /** ingrédients que l'utilisateur n'aime pas */
+  dislikes: string[];
+  /** ustensiles possédés ; null = question pas encore répondue (rien n'est filtré) */
+  tools: Tool[] | null;
   defaultServings: number;
   // onboarding
   welcomeSeen: boolean;
@@ -46,6 +50,8 @@ export const DEFAULT_SETTINGS: Settings = {
   accent: 'sage',
   diets: [],
   allergies: [],
+  dislikes: [],
+  tools: null,
   defaultServings: 2,
   welcomeSeen: false,
   prefsDone: false,
