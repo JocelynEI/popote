@@ -1,7 +1,8 @@
-import { PANTRY_IDS } from '../data/ingredients';
+import { INGREDIENT_BY_ID, PANTRY_IDS } from '../data/ingredients';
 import { SUBSTITUTIONS, type Substitution } from '../data/substitutions';
 import type { Course, Diet, Recipe, Tool } from '../data/types';
 import { recipeFitsProfile, type Allergen } from './diets';
+import { key } from './text';
 import { fitsTools } from './tools';
 
 export interface MatchFilters {
@@ -41,8 +42,18 @@ function isAvailable(id: string, available: Set<string>): boolean {
   return PANTRY_IDS.has(id) || available.has(id);
 }
 
-export function findSubstitution(id: string, available: Set<string>): Substitution | null {
+/**
+ * Ingrédients qui donnent son nom au plat : leur nom apparaît dans le titre (« Salade tomate-mozzarella »,
+ * « Gratin de courgettes »). On ne les remplace que si le plat reste le même (`keepsDish`).
+ */
+export function starIngredients(recipe: Recipe): Set<string> {
+  const title = ` ${key(recipe.title.fr)} `;
+  return new Set(recipe.ingredients.map((i) => i.id).filter((id) => INGREDIENT_BY_ID[id] && title.includes(` ${key(INGREDIENT_BY_ID[id].name.fr)} `)));
+}
+
+export function findSubstitution(id: string, available: Set<string>, star = false): Substitution | null {
   for (const sub of SUBSTITUTIONS[id] ?? []) {
+    if (star && !sub.keepsDish) continue;
     if (sub.with.every((w) => isAvailable(w, available))) return sub;
   }
   return null;
@@ -53,6 +64,7 @@ export function evaluateRecipe(recipe: Recipe, available: Set<string>, urgent: S
   const missing: string[] = [];
   const substituted: Substituted[] = [];
   const used: string[] = [];
+  const stars = starIngredients(recipe);
   let needed = 0;
   let have = 0;
   for (const ri of recipe.ingredients) {
@@ -63,7 +75,7 @@ export function evaluateRecipe(recipe: Recipe, available: Set<string>, urgent: S
     if (available.has(ri.id)) {
       have++;
     } else {
-      const sub = findSubstitution(ri.id, available);
+      const sub = findSubstitution(ri.id, available, stars.has(ri.id));
       if (sub) {
         substituted.push({ missing: ri.id, sub });
         have += 0.8; // une substitution vaut un peu moins qu'un ingrédient exact

@@ -14,7 +14,7 @@ import { fitsTools, inferTools } from '../src/logic/tools';
 import { planEmptyFridge } from '../src/logic/emptyFridge';
 import { addDays, checkExpiryDate, daysLeft, expiryStatus, isUrgent, todayISO } from '../src/logic/expiry';
 import { didYouMean, parseIngredientText, searchIngredients } from '../src/logic/ingredientSearch';
-import { bestUnlock, evaluateRecipe, matchRecipes, PANTRY_RECIPE_IDS } from '../src/logic/matching';
+import { bestUnlock, evaluateRecipe, matchRecipes, PANTRY_RECIPE_IDS, starIngredients } from '../src/logic/matching';
 import { formatQty, parseQtyInput, scaleQty } from '../src/logic/scaling';
 import { parseCommand } from '../src/services/voiceParse';
 import appConfig from '../app.config';
@@ -376,4 +376,33 @@ test('ustensiles : sans four, aucune recette au four dans les idées', () => {
   const m = matchRecipes(ALL, fridge, { ...noFilter, maxTime: null, difficulty: null, course: null, tools: ['microwave'] });
   assert.ok(m.length > 0);
   assert.ok(m.every((x) => !x.recipe.tools?.includes('oven') && !x.recipe.tools?.includes('blender')));
+});
+
+test('ingrédient vedette : la salade tomate-mozzarella ne se fait pas avec du fromage râpé', () => {
+  const r = ALL.find((x) => x.id === 'tomato_mozza')!;
+  const m = evaluateRecipe(r, new Set(['tomato', 'emmental']));
+  assert.deepEqual(m.missing, ['mozzarella']);
+  assert.equal(groupResults([m]).now.length, 0);
+});
+
+test('ingrédient vedette : des tomates en boîte gardent la soupe de tomates', () => {
+  const r = ALL.find((x) => x.id === 'tomato_soup')!;
+  const m = evaluateRecipe(r, new Set(['tomato', 'onion', 'garlic', 'stock']));
+  assert.deepEqual(m.missing, []);
+  assert.equal(m.substituted[0]?.missing, 'canned_tomato');
+});
+
+test('ingrédient vedette : sur tout le catalogue, jamais remplacé sauf si le plat reste le même', () => {
+  for (const r of ALL) {
+    for (const star of starIngredients(r)) {
+      const ri = r.ingredients.find((i) => i.id === star)!;
+      if (ri.optional || PANTRY_IDS.has(star)) continue;
+      // tout le reste de la recette + tous les remplaçants possibles de la vedette
+      const available = new Set(r.ingredients.map((i) => i.id).filter((id) => id !== star));
+      for (const sub of SUBSTITUTIONS[star] ?? []) sub.with.forEach((id) => id !== star && available.add(id));
+      const m = evaluateRecipe(r, available);
+      const allowed = (SUBSTITUTIONS[star] ?? []).some((s) => s.keepsDish && s.with.every((id) => available.has(id)));
+      assert.equal(m.missing.includes(star), !allowed, `${r.id} : « ${star} » ${allowed ? 'devrait être remplaçable' : 'a été remplacé'}`);
+    }
+  }
 });
