@@ -107,7 +107,7 @@
 - « Appli intéressante mais qui ne fonctionne plus correctement : impossible de valider un panier depuis plusieurs semaines ! » (trustpilot, 2★) https://fr.trustpilot.com/reviews/6a76202130061f4594d695ee
 - « Hélas, toujours impossible de choisir le montant calorique journalier, alors qu'ils ont pu faire cette possibilité pour mettre une limite de budget. » (trustpilot, 3★) https://fr.trustpilot.com/reviews/69a294eccbc18f883425e6bb
 - « Bon principe pourtant mais je vais m'asseoir sur la somme car impossible de les contacter puisque toute reconnexion ou création de nouveau compte est impossible ! » (trustpilot, 1★) https://fr.trustpilot.com/reviews/69861f9dee7b247d5964aa58
-- « – Impossible de les joindre par téléphone » (trustpilot, 1★) https://fr.trustpilot.com/reviews/6850deb183ee053860d43c62
+- « Impossible de les joindre par téléphone » (trustpilot, 1★) https://fr.trustpilot.com/reviews/6850deb183ee053860d43c62
 - « Je trouve tout de même que l'application manque en variété et en nombre de recette, surtout au niveau du salé, du végétarien et des plats d'autres cultures. » (google-play, 4★) https://play.google.com/store/apps/details?id=com.supercook.app&hl=fr&gl=FR
 - « Très bonne application quand je manque d'inspiration pour cuisiner. » (google-play, 5★) https://play.google.com/store/apps/details?id=com.supercook.app&hl=fr&gl=FR
 - « j'aime beaucoup l'appli : on peut entrer tous les ingrédients contenus dans nos placards, les recettes proposées sont variées et pertinentes et j'apprécie que des recettes où il nous manque 1 ingrédient (spécifié en roug… » (google-play, 5★) https://play.google.com/store/apps/details?id=com.supercook.app&hl=fr&gl=FR
