@@ -1,6 +1,6 @@
 # Mypopote : textes pour les stores
 
-> Remplace `contact@example.com` par ton adresse de contact publique et l'URL de la politique de confidentialité par celle où tu l'héberges (voir `politique-confidentialite.html`).
+> Adresse de contact : `jocelyn.lebon.ae@gmail.com`. Remplace l'URL de la politique de confidentialité par celle où tu l'héberges (voir `politique-confidentialite.html`).
 
 ---
 
@@ -16,7 +16,7 @@
 | Catégorie secondaire | Style de vie | — |
 | Mots-clés | `recette,frigo,anti gaspi,restes,que cuisiner,ingredients,repas,courses,peremption,hors ligne` | 100 |
 | URL de confidentialité | https://TON-DOMAINE/popote/confidentialite | — |
-| URL d'assistance | mailto:contact@example.com (ou une page simple) | — |
+| URL d'assistance | mailto:jocelyn.lebon.ae@gmail.com (ou une page simple) | — |
 
 **Texte promotionnel (170)**
 > Tu ouvres le frigo, tu ne sais pas quoi faire ? Coche ce que tu as, Mypopote te propose des recettes. Sans compte, sans pub, même sans réseau.
@@ -141,7 +141,7 @@ Une capture de l'écran Premium est demandée pour la validation de l'achat int�
 | Description complète | Reprendre la description App Store ci-dessus | idem EN |
 | Catégorie | Cuisine et boissons | Food & Drink |
 | Tags | Recettes, Cuisine, Anti-gaspillage | — |
-| Adresse e-mail | contact@example.com | — |
+| Adresse e-mail | jocelyn.lebon.ae@gmail.com | — |
 
 ### Sécurité des données (Data safety)
 - Votre appli collecte-t-elle ou partage-t-elle des types de données utilisateur requis ? → **Non**.

@@ -37,3 +37,27 @@ export const AVG_SAVED_VALUE_EUR = 1.3;
 export function estimatedSavings(saved: number): number {
   return Math.round(saved * AVG_SAVED_VALUE_EUR);
 }
+
+/**
+ * Badges à montrer : ceux obtenus, dans l'ordre de la liste, puis le premier pas encore obtenu.
+ * Jamais de mur de badges verrouillés.
+ */
+export function visibleBadges(unlocked: { has: (id: string) => boolean }): { def: BadgeDef; got: boolean }[] {
+  const got = BADGES.filter((b) => unlocked.has(b.id)).map((def) => ({ def, got: true }));
+  const next = BADGES.find((b) => !unlocked.has(b.id));
+  return next ? [...got, { def: next, got: false }] : got;
+}
+
+/**
+ * Cartes du haut de l'écran Progrès. Une carte n'existe que s'il y a quelque chose à saluer :
+ * on ne fête jamais un zéro.
+ */
+export function progressCards(p: { monthSaved: number; weekCooked: number; weekSaved: number }): {
+  month: number | null;
+  week: { cooked: number; saved: number } | null;
+} {
+  return {
+    month: p.monthSaved > 0 ? p.monthSaved : null,
+    week: p.weekCooked > 0 || p.weekSaved > 0 ? { cooked: p.weekCooked, saved: p.weekSaved } : null,
+  };
+}

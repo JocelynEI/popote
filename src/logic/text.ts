@@ -42,3 +42,23 @@ export function levenshtein(a: string, b: string, max = 3): number {
   }
   return prev[b.length];
 }
+
+/**
+ * Remplit un texte de l'appli : pluriels puis paramètres.
+ * Pluriel : « {n|produit|produits} » choisit la forme selon le paramètre n
+ * (français : 0 et 1 au singulier ; anglais : 1 seul au singulier). Une forme peut contenir un paramètre :
+ * « {k|ton ingrédient|tes {k} ingrédients} ».
+ */
+export function formatMessage(template: string, params: Record<string, string | number> | undefined, lang: 'fr' | 'en'): string {
+  let s = template;
+  if (params) {
+    s = s.replace(/\{(\w+)\|([^|{}]*(?:\{\w+\}[^|{}]*)*)\|([^{}]*(?:\{\w+\}[^{}]*)*)\}/g, (m, name: string, one: string, many: string) => {
+      if (!(name in params)) return m;
+      const n = Math.abs(Number(params[name]));
+      const singulier = lang === 'fr' ? n < 2 : n === 1;
+      return singulier ? one : many;
+    });
+    for (const [k, v] of Object.entries(params)) s = s.split(`{${k}}`).join(String(v));
+  }
+  return s;
+}

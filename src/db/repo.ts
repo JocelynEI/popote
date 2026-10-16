@@ -371,15 +371,6 @@ export function monthlySeries(months = 6): { month: string; cooked: number; save
   }
   return out;
 }
-export function topWasted(limit = 5): { name: string; n: number }[] {
-  return db()
-    .getAllSync<{ ingredient_id: string | null; custom_name: string | null; n: number }>(
-      `SELECT ingredient_id, custom_name, COUNT(*) AS n FROM waste_log WHERE outcome = 'wasted'
-       GROUP BY COALESCE(ingredient_id, custom_name) ORDER BY n DESC LIMIT ?`,
-      limit,
-    )
-    .map((r) => ({ name: r.ingredient_id ?? r.custom_name ?? '?', n: r.n }));
-}
 export function unlockedBadges(): Map<string, string> {
   return new Map(
     db()
