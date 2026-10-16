@@ -466,3 +466,13 @@ test('accords : « 1 Œuf », « 2 Oignons », « ½ Concombre »', () => {
   // tout ingrédient compté à l'unité dans une recette a ses deux formes
   for (const r of ALL) for (const i of r.ingredients) if (i.unit === 'pc' && i.qty) assert.ok(INGREDIENT_BY_ID[i.id].count, `${r.id} : « ${i.id} » sans singulier ni pluriel`);
 });
+
+// V1.6.3 : « Remplir mon frigo »
+test('remplir mon frigo : même chemin que « Ajouter ce que j’ai », bouton sans zéro', () => {
+  const src = readFileSync('src/app/quick-fill.tsx', 'utf8');
+  assert.ok(src.includes('newFridgeEntries') && src.includes('addFridgeItem'), 'l’écran doit ajouter produit par produit');
+  assert.ok(!/withTransaction|addManyToFridge/.test(src), 'plus de transaction dans cet écran');
+  assert.ok(src.includes('catch'), 'une erreur doit s’afficher, jamais un bouton qui ne fait rien');
+  for (const d of [fr, en]) assert.ok(!/\d/.test(d.quickFillPick), `bouton vide : « ${d.quickFillPick} »`);
+  assert.deepEqual(newFridgeEntries(['egg', 'milk', 'egg'], [{ ingredient_id: 'milk', expires_at: null }] as never), [{ ingredientId: 'egg', expiresAt: null }]);
+});

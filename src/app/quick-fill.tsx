@@ -3,9 +3,10 @@ import { FlatList, Pressable, View } from 'react-native';
 import { useToast } from '../components/Toast';
 import { Button, haptic, Screen, Txt } from '../components/ui';
 import { INGREDIENT_BY_ID, QUICK_FILL_IDS } from '../data/ingredients';
-import { addManyToFridge } from '../db/repo';
+import { addFridgeItem } from '../db/repo';
 import { useFridge } from '../hooks/useData';
 import { useI18n } from '../i18n';
+import { newFridgeEntries } from '../logic/fridge';
 import { radius, space, useTheme } from '../theme/theme';
 import { goBack } from '../navigation/goBack';
 
@@ -77,14 +78,21 @@ export default function QuickFillScreen() {
       />
       <View style={{ position: 'absolute', left: space(4), right: space(4), bottom: space(8) }}>
         <Button
-          title={t('quickFillAdd', { n: picked.size })}
+          title={picked.size ? t('quickFillAdd', { n: picked.size }) : t('quickFillPick')}
           icon="checkmark"
           disabled={picked.size === 0}
           onPress={() => {
-            addManyToFridge([...picked]);
-            haptic('success');
-            toast.show(t('addedSelectionToFridge', { n: picked.size }));
-            goBack();
+            // même chemin que « Ajouter ce que j'ai » : une insertion par produit, sans transaction
+            // (la transaction ne répondait pas dans certains navigateurs, et le bouton semblait mort)
+            try {
+              const entries = newFridgeEntries([...picked], fridge.items);
+              for (const e of entries) addFridgeItem(e);
+              haptic('success');
+              toast.show(t('addedSelectionToFridge', { n: entries.length || picked.size }));
+              goBack();
+            } catch (e) {
+              toast.show(t('quickFillError', { error: e instanceof Error ? e.message : String(e) }));
+            }
           }}
         />
       </View>

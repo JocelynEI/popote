@@ -188,6 +188,8 @@ export const fr = {
   quickFillTitle: 'Remplir mon frigo',
   quickFillText: 'Coche ce que tu as. Tu pourras ajouter les dates plus tard.',
   quickFillAdd: 'Ajouter {n} {n|produit|produits}',
+  quickFillPick: 'Coche tes produits',
+  quickFillError: 'L’ajout n’a pas marché ({error}). Réessaie ou écris-nous.',
 
   // Courses
   shoppingTitle: 'Courses',

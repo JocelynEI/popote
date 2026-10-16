@@ -183,6 +183,8 @@ export const en: Dict = {
   quickFillTitle: 'Fill my fridge',
   quickFillText: 'Tick what you have. You can add dates later.',
   quickFillAdd: 'Add {n} {n|item|items}',
+  quickFillPick: 'Tick your items',
+  quickFillError: 'Adding didn’t work ({error}). Try again or contact us.',
 
   shoppingTitle: 'Shopping',
   shoppingEmpty: 'Your shopping list is empty.',
