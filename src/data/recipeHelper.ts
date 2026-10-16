@@ -11,7 +11,7 @@ interface Def {
   time: number;
   diff?: 1 | 2;
   serv?: number;
-  /** "id qty unit; id qty; id; id?" — suffixe ? = optionnel, unité par défaut = pc */
+  /** "id qty unit; id qty; id; id?" : suffixe ? = optionnel, unité par défaut = pc */
   ing: string;
   steps: StepTuple[];
   /** ustensiles au-delà d'une poêle et d'une casserole ; [] si aucun */

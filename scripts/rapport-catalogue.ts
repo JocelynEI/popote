@@ -16,7 +16,7 @@ for (const r of all) {
   const stars = [...starIngredients(r)];
   const refused = stars.flatMap((id) => (SUBSTITUTIONS[id] ?? []).filter((s) => !s.keepsDish).map((s) => `${id}→${s.with.join('+')}`));
   blocked += refused.length;
-  rows.push(`${r.id.padEnd(24)} | vedettes : ${stars.map((id) => INGREDIENT_BY_ID[id].name.fr).join(', ') || '—'}${refused.length ? ` | refusés : ${refused.join(', ')}` : ''}`);
+  rows.push(`${r.id.padEnd(24)} | vedettes : ${stars.map((id) => INGREDIENT_BY_ID[id].name.fr).join(', ') || 'aucune'}${refused.length ? ` | refusés : ${refused.join(', ')}` : ''}`);
 }
 console.log(rows.join('\n'));
 console.log(`\n${all.length} recettes, ${all.filter((r) => starIngredients(r).size === 0).length} sans ingrédient vedette, ${blocked} remplacements refusés.`);

@@ -79,7 +79,7 @@ export default function CookMode() {
       // si l'appli passe en arrière-plan, une notification locale prend le relais
       if ((await getPermissionStatus()) === 'granted') {
         notifId = await Notifications.scheduleNotificationAsync({
-          content: { title: t('timerDone'), body: `${recipe ? l(recipe.title) : ''} — ${label}` },
+          content: { title: t('timerDone'), body: `${recipe ? l(recipe.title) : ''} : ${label}` },
           trigger: { type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL, seconds: secs, channelId: 'reminders' },
         }).catch(() => undefined);
       }

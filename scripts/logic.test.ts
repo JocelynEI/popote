@@ -15,7 +15,7 @@ import { planEmptyFridge } from '../src/logic/emptyFridge';
 import { addDays, checkExpiryDate, daysLeft, expiryStatus, isUrgent, todayISO } from '../src/logic/expiry';
 import { didYouMean, parseIngredientText, searchIngredients } from '../src/logic/ingredientSearch';
 import { bestUnlock, evaluateRecipe, matchRecipes, PANTRY_RECIPE_IDS, starIngredients } from '../src/logic/matching';
-import { formatQty, parseQtyInput, scaleQty } from '../src/logic/scaling';
+import { countedName, formatQty, parseQtyInput, scaleQty, shownQty } from '../src/logic/scaling';
 import { parseCommand } from '../src/services/voiceParse';
 import appConfig from '../app.config';
 import { CONTACT_EMAIL, DEVELOPER_NAME } from '../src/config';
@@ -166,7 +166,7 @@ test('saisie en phrase : « 2 œufs, un demi brocoli, du cheddar »', () => {
   assert.deepEqual(parseIngredientText('xyzzz').found, []);
 });
 
-// ——— V1.1 : les mots ———
+// V1.1 : les mots
 
 test('textes : aucun « (s) », en français comme en anglais', () => {
   for (const [lang, dict] of Object.entries({ fr, en })) {
@@ -219,12 +219,12 @@ test('contact : une vraie adresse, éditeur R-Aclés, partout la même', () => {
   for (const f of ['store-listing/politique-confidentialite.html', 'store-listing/assistance.html', 'store-listing/fiches-stores.md']) {
     const txt = readFileSync(f, 'utf8');
     assert.ok(txt.includes(CONTACT_EMAIL), `${f} : adresse absente`);
-    for (const m of txt.matchAll(/[\w.+-]+@[\w-]+\.[\w.]+/g)) assert.equal(m[0], CONTACT_EMAIL, `${f} : autre adresse ${m[0]}`);
+    for (const m of txt.matchAll(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g)) assert.equal(m[0], CONTACT_EMAIL, `${f} : autre adresse ${m[0]}`);
     assert.ok(!/misterJ|example\.com/.test(txt), `${f} : ancien éditeur ou adresse d'exemple`);
   }
 });
 
-// ——— V1.2 : un seul frigo ———
+// V1.2 : un seul frigo
 
 test('frigo : trois blocs, le plus proche de la date en premier', () => {
   const now = new Date();
@@ -257,7 +257,7 @@ test('résultats : décocher un produit ne touche pas au frigo', () => {
   assert.equal(fridgeIds.size, 3);
 });
 
-// ——— V1.2.1 : corrections ———
+// V1.2.1 : corrections
 
 test('anglais : aucun texte resté en français', () => {
   for (const [k, v] of Object.entries(en)) assert.ok(!/[éèàùçêâôûîœ]/i.test(v), `en.${k} semble en français : ${v}`);
@@ -268,7 +268,7 @@ test('identifiant de l’appli : éditeur R-Aclés', () => {
   assert.equal(appConfig.android?.package, 'com.racles.mypopote');
 });
 
-// ——— V1.3 : l'accueil en cartes ———
+// V1.3 : l'accueil en cartes
 
 test('accueil : ordre fixe des cartes', () => {
   assert.deepEqual(homeCards({ fridgeEmpty: false, urgentCount: 2 }), ['urgent', 'now', 'add', 'fill']);
@@ -310,7 +310,7 @@ test('accueil : la liste des produits à finir se lit comme une phrase', () => {
   assert.equal(namesSentence(['Aa', 'Bb', 'Cc', 'Dd', 'Ee'], fr), 'Aa, bb, cc, dd et 1 autre');
 });
 
-// ——— V1.4 : des résultats plus serrés ———
+// V1.4 : des résultats plus serrés
 
 test('idées : deux groupes, l’ordre du moteur est gardé', () => {
   const fridge = new Set(['egg', 'milk', 'butter', 'pasta', 'emmental', 'tomato', 'cream', 'onion']);
@@ -337,7 +337,7 @@ test('idées : la liste après « Il manque : » commence en minuscule', () => {
   assert.equal(lowerFirst(''), '');
 });
 
-// ——— V1.5 : « je n'aime pas » et ustensiles ———
+// V1.5 : « je n'aime pas » et ustensiles
 
 test('ustensiles : chaque recette a sa liste, cohérente avec ses étapes', () => {
   for (const r of ALL) {
@@ -431,4 +431,38 @@ test('pertinence : un seul produit suffit quand il donne son nom au plat', () =>
   assert.ok(ids(['potato']).includes('sauteed_potatoes'));
   assert.ok(ids(['pear']).includes('poached_pears'));
   assert.ok(!ids(['lemon']).includes('fruit_salad'));
+});
+
+// V1.6.1 : des textes sans tics de texte généré
+test('textes : aucun tiret long, aucun émoji décoratif dans les phrases', () => {
+  const dash = /[—–]/;
+  for (const [lang, dict] of [['fr', fr], ['en', en]] as const)
+    for (const [k, v] of Object.entries(dict)) {
+      assert.ok(!dash.test(v), `${lang}.${k} : tiret long`);
+      if (!k.startsWith('accent_')) assert.ok(!/\p{Extended_Pictographic}/u.test(v), `${lang}.${k} : émoji « ${v} »`);
+    }
+  for (const r of ALL) for (const s of [r.title.fr, r.title.en, ...r.steps.flatMap((x) => [x.text.fr, x.text.en])]) assert.ok(!dash.test(s), `${r.id} : tiret long dans « ${s} »`);
+  for (const f of ['store-listing/fiches-stores.md', 'store-listing/politique-confidentialite.html', 'store-listing/assistance.html', 'src/app/privacy.tsx'])
+    assert.ok(!dash.test(readFileSync(f, 'utf8')), `${f} : tiret long`);
+});
+
+// V1.6.2 : quantités et accords
+test('quantités : une moitié reste une moitié, un œuf entier jamais', () => {
+  assert.equal(formatQty({ id: 'onion', qty: 0.5, unit: 'pc' }, 1, 'fr'), '½');
+  assert.equal(formatQty({ id: 'onion', qty: 0.5, unit: 'pc' }, 2, 'fr'), '1');
+  assert.equal(formatQty({ id: 'egg', qty: 1, unit: 'pc' }, 0.5, 'fr'), '1');
+  assert.equal(formatQty({ id: 'onion', qty: 0.5, unit: 'pc' }, 4, 'en'), '2');
+});
+
+test('accords : « 1 Œuf », « 2 Oignons », « ½ Concombre »', () => {
+  const name = (id: string, qty: number, factor = 1, lang: 'fr' | 'en' = 'fr') =>
+    countedName(INGREDIENT_BY_ID[id].count?.[lang], INGREDIENT_BY_ID[id].name[lang], shownQty({ id, qty, unit: 'pc' }, factor));
+  assert.equal(name('egg', 1), 'Œuf');
+  assert.equal(name('egg', 3), 'Œufs');
+  assert.equal(name('onion', 2), 'Oignons');
+  assert.equal(name('cucumber', 0.5), 'Concombre');
+  assert.equal(name('leek', 3), 'Poireaux');
+  assert.equal(name('tomato', 1, 1, 'en'), 'Tomato');
+  // tout ingrédient compté à l'unité dans une recette a ses deux formes
+  for (const r of ALL) for (const i of r.ingredients) if (i.unit === 'pc' && i.qty) assert.ok(INGREDIENT_BY_ID[i.id].count, `${r.id} : « ${i.id} » sans singulier ni pluriel`);
 });

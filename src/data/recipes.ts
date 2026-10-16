@@ -3,7 +3,7 @@ import type { Recipe } from './types';
 
 /**
  * Base de recettes GRATUITE.
- * Lot initial — à compléter jusqu'à ~300 recettes (même format, voir README > « Ajouter des recettes »).
+ * Lot initial, à compléter jusqu'à ~300 recettes (même format, voir README > « Ajouter des recettes »).
  */
 export const FREE_RECIPES: Recipe[] = [
   // ---------- Recettes « placard » (faisables avec presque rien) ----------
@@ -301,7 +301,7 @@ export const FREE_RECIPES: Recipe[] = [
     ing: 'white_fish 2; rice 150 g; lemon 1; butter 20 g; parsley?; salt; pepper',
     steps: [
       ['Faites cuire le riz.', 'Cook the rice.', 12],
-      ['Poêlez le poisson au beurre, 3 à 4 minutes par face.', 'Pan-fry the fish in butter, 3–4 minutes per side.', 7],
+      ['Poêlez le poisson au beurre, 3 à 4 minutes par face.', 'Pan-fry the fish in butter, 3 to 4 minutes per side.', 7],
       ['Déglacez avec le jus de citron, ajoutez le persil, servez sur le riz.', 'Deglaze with lemon juice, add parsley, serve over rice.'],
     ],
   }),
@@ -482,7 +482,7 @@ export const FREE_RECIPES: Recipe[] = [
     ing: 'banana 1; egg 2; flour 60 g?; oats 40 g?; baking_powder 1 pinch?; oil 1 tsp',
     steps: [
       ['Écrasez la banane, ajoutez les œufs (et farine ou avoine, levure).', 'Mash the banana, add the eggs (and flour or oats, baking powder).'],
-      ['Faites cuire de petites louches dans une poêle huilée, 1 à 2 minutes par face.', 'Cook small ladlefuls in an oiled pan, 1–2 minutes per side.', 6],
+      ['Faites cuire de petites louches dans une poêle huilée, 1 à 2 minutes par face.', 'Cook small ladlefuls in an oiled pan, 1 to 2 minutes per side.', 6],
     ],
   }),
   r({
@@ -1146,7 +1146,7 @@ export const FREE_RECIPES: Recipe[] = [
   }),
   r({
     id: 'panzanella', fr: 'Salade de pain et tomates (panzanella)', en: 'Bread and tomato salad (panzanella)', icon: '🥗', course: 'starter', time: 20, tools: [],
-    ing: 'bread 150 g; tomato 3; vinegar 1 tbsp; oil 4 tbsp; cucumber 1?; onion 1?; basil?; salt; pepper',
+    ing: 'bread 150 g; tomato 3; vinegar 1 tbsp; oil 4 tbsp; cucumber 0.5?; onion 0.5?; basil?; salt; pepper',
     steps: [
       ['Coupez le pain rassis en cubes.', 'Cut the stale bread into cubes.'],
       ['Coupez les tomates, le concombre et l’oignon, salez et laissez-les rendre leur jus.', 'Chop the tomatoes, cucumber and onion, salt them and let the juices run.', 10],
@@ -1213,7 +1213,7 @@ export const FREE_RECIPES: Recipe[] = [
   }),
   r({
     id: 'rostis', fr: 'Röstis de pommes de terre', en: 'Potato rosti', icon: '🥔', course: 'main', time: 30, tools: [],
-    ing: 'potato 4; oil 3 tbsp; onion 1?; egg 1?; emmental 40 g?; salt; pepper',
+    ing: 'potato 4; oil 3 tbsp; onion 0.5?; egg 1?; emmental 40 g?; salt; pepper',
     steps: [
       ['Râpez les pommes de terre et pressez-les dans un torchon pour enlever l’eau.', 'Grate the potatoes and squeeze them in a tea towel to remove the water.'],
       ['Mélangez avec l’oignon râpé, l’œuf, le fromage, le sel et le poivre.', 'Mix with the grated onion, egg, cheese, salt and pepper.'],
@@ -1222,7 +1222,7 @@ export const FREE_RECIPES: Recipe[] = [
   }),
   r({
     id: 'tomato_eggs', fr: 'Œufs brouillés à la tomate', en: 'Tomato and egg stir-fry', icon: '🍅', course: 'main', time: 15, tools: [],
-    ing: 'egg 4; tomato 3; sugar 1 tsp; oil 2 tbsp; onion 1?; soy_sauce 1 tbsp?; chives 1 tbsp?; salt',
+    ing: 'egg 4; tomato 3; sugar 1 tsp; oil 2 tbsp; onion 0.5?; soy_sauce 1 tbsp?; chives 1 tbsp?; salt',
     steps: [
       ['Battez les œufs avec une pincée de sel, brouillez-les à peine dans l’huile et réservez.', 'Beat the eggs with a pinch of salt, barely scramble them in the oil and set aside.', 2],
       ['Faites fondre les tomates en quartiers avec l’oignon et le sucre.', 'Cook the tomato wedges with the onion and sugar until soft.', 5],
@@ -1278,7 +1278,7 @@ export const FREE_RECIPES: Recipe[] = [
   }),
   r({
     id: 'tuna_patties', fr: 'Galettes de thon', en: 'Tuna cakes', icon: '🐟', course: 'main', time: 30, tools: [],
-    ing: 'tuna 1 can; potato 2; egg 1; flour 2 tbsp; oil 3 tbsp; onion 1?; parsley 1 tbsp?; lemon 1?; salt; pepper',
+    ing: 'tuna 1 can; potato 2; egg 1; flour 2 tbsp; oil 3 tbsp; onion 0.5?; parsley 1 tbsp?; lemon 1?; salt; pepper',
     steps: [
       ['Faites cuire les pommes de terre à l’eau, puis écrasez-les.', 'Boil the potatoes, then mash them.', 15],
       ['Mélangez avec le thon émietté, l’œuf, l’oignon haché, le persil et le citron.', 'Mix with the flaked tuna, egg, chopped onion, parsley and lemon.'],
@@ -1326,7 +1326,7 @@ export const FREE_RECIPES: Recipe[] = [
   }),
   r({
     id: 'quinoa_salad', fr: 'Salade de quinoa', en: 'Quinoa salad', icon: '🥗', course: 'starter', time: 20, tools: [],
-    ing: 'quinoa 120 g; tomato 2; cucumber 1; lemon 1; oil 3 tbsp; feta 80 g?; avocado 1?; parsley 1 tbsp?; salt; pepper',
+    ing: 'quinoa 120 g; tomato 2; cucumber 0.5; lemon 1; oil 3 tbsp; feta 80 g?; avocado 1?; parsley 1 tbsp?; salt; pepper',
     steps: [
       ['Rincez le quinoa, faites-le cuire puis laissez-le refroidir.', 'Rinse the quinoa, cook it, then let it cool.', 12],
       ['Coupez les légumes en dés.', 'Dice the vegetables.'],
