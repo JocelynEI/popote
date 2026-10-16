@@ -36,14 +36,21 @@ export function recipeAllergens(recipe: Recipe): Allergen[] {
   return ALLERGENS.filter((a) => tags.has(a));
 }
 
-/** L'ingrédient (souvent optionnel) est-il incompatible avec les régimes / allergies de l'utilisateur ? */
-export function ingredientConflicts(ingredientId: string, diets: Diet[], allergies: Allergen[]): boolean {
+/** L'ingrédient (souvent optionnel) est-il incompatible avec les régimes, allergies ou goûts de l'utilisateur ? */
+export function ingredientConflicts(ingredientId: string, diets: Diet[], allergies: Allergen[], dislikes: string[] = []): boolean {
+  if (dislikes.includes(ingredientId)) return true;
   const tags = INGREDIENT_BY_ID[ingredientId]?.tags ?? [];
   if (allergies.some((a) => tags.includes(a))) return true;
   return diets.some((d) => dietConflicts(d).some((t) => tags.includes(t)));
 }
 
-export function recipeFitsProfile(recipe: Recipe, diets: Diet[], allergies: Allergen[]): boolean {
+/** Un ingrédient obligatoire que l'utilisateur n'aime pas ? (les facultatifs sont seulement signalés) */
+export function hasDislikedRequired(recipe: Recipe, dislikes: string[]): boolean {
+  return recipe.ingredients.some((i) => !i.optional && dislikes.includes(i.id));
+}
+
+export function recipeFitsProfile(recipe: Recipe, diets: Diet[], allergies: Allergen[], dislikes: string[] = []): boolean {
+  if (hasDislikedRequired(recipe, dislikes)) return false;
   const ok = recipeDiets(recipe);
   if (!diets.every((d) => ok.includes(d))) return false;
   const al = recipeAllergens(recipe);

@@ -1,4 +1,4 @@
-import type { Course, Recipe, RecipeIngredient, Unit } from './types';
+import type { Course, Recipe, RecipeIngredient, Tool, Unit } from './types';
 
 type StepTuple = [fr: string, en: string, timer?: number];
 
@@ -11,9 +11,11 @@ interface Def {
   time: number;
   diff?: 1 | 2;
   serv?: number;
-  /** "id qty unit; id qty; id; id?" — suffixe ? = optionnel, unité par défaut = pc */
+  /** "id qty unit; id qty; id; id?" : suffixe ? = optionnel, unité par défaut = pc */
   ing: string;
   steps: StepTuple[];
+  /** ustensiles au-delà d'une poêle et d'une casserole ; [] si aucun */
+  tools: Tool[];
   premium?: boolean;
 }
 
@@ -49,6 +51,7 @@ export function r(d: Def): Recipe {
     servings: d.serv ?? 2,
     ingredients: parseIngredients(d.ing),
     steps: d.steps.map(([fr, en, timer]) => ({ text: { fr, en }, ...(timer ? { timer } : {}) })),
+    tools: d.tools,
     ...(d.premium ? { premium: true } : {}),
   };
 }

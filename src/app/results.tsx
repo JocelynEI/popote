@@ -1,9 +1,9 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, SectionList, StyleSheet, View } from 'react-native';
 import { Illo } from '../components/Dish';
 import { MypopoteLoader } from '../components/MypopoteLoader';
-import { FeedRecipeCard } from '../components/RecipeCard';
+import { CompactRecipeCard } from '../components/RecipeCard';
 import { useToast } from '../components/Toast';
 import { Button, Chip, EmptyState, IconButton, Screen, Txt } from '../components/ui';
 import { INGREDIENT_BY_ID } from '../data/ingredients';
@@ -11,7 +11,8 @@ import type { Course, Diet, Recipe } from '../data/types';
 import { addShopping, listFavorites, recentlyCookedMap, toggleFavorite } from '../db/repo';
 import { useAllRecipes, useData, useFridge } from '../hooks/useData';
 import { type TKey, useI18n } from '../i18n';
-import { DIETS } from '../logic/diets';
+import { searchIngredientsFrom } from '../logic/fridge';
+import { groupResults, visibleMatches } from '../logic/results';
 import { bestUnlock, type RecipeMatch } from '../logic/matching';
 import { getRecipeEngine } from '../services/recipeEngine';
 import { usePremium } from '../services/premium';
@@ -21,7 +22,6 @@ import { goBack } from '../navigation/goBack';
 
 const DIET_KEYS: Record<Diet, TKey> = { vegetarian: 'dietVegetarian', vegan: 'dietVegan', glutenFree: 'dietGlutenFree', lactoseFree: 'dietLactoseFree' };
 const COURSE_KEYS: Record<Course, TKey> = { starter: 'courseStarter', main: 'courseMain', dessert: 'courseDessert' };
-const MAX_LOCKED = 2;
 
 /** Écrans 2 et 3 : transition « magique » puis feed des suggestions */
 export default function ResultsScreen() {
@@ -41,16 +41,26 @@ export default function ResultsScreen() {
   const [matches, setMatches] = useState<RecipeMatch[]>([]);
   const [easy, setEasy] = useState(false);
   const [course, setCourse] = useState<Course | null>(null);
+  // produits décochés pour cette recherche seulement : le frigo n'est pas modifié
+  const [excluded, setExcluded] = useState<Set<string>>(new Set());
+  const toggleExcluded = (id: string) =>
+    setExcluded((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
 
   const available = useMemo(() => {
     const s = new Set(selected);
-    if (useFridgeParam === '1') fridge.ids.forEach((id) => s.add(id));
+    if (useFridgeParam === '1') searchIngredientsFrom(fridge.ids, excluded).forEach((id) => s.add(id));
     return s;
-  }, [selected, useFridgeParam, fridge.ids]);
+  }, [selected, useFridgeParam, fridge.ids, excluded]);
+  const fridgeChoices = useMemo(() => [...fridge.ids].filter((id) => INGREDIENT_BY_ID[id]), [fridge.ids]);
 
   const filters = useMemo(
-    () => ({ maxTime: settings.lastMaxTime, difficulty: easy ? (1 as const) : null, course, diets: settings.diets, allergies: settings.allergies }),
-    [settings.lastMaxTime, easy, course, settings.diets, settings.allergies],
+    () => ({ maxTime: settings.lastMaxTime, difficulty: easy ? (1 as const) : null, course, diets: settings.diets, allergies: settings.allergies, dislikes: settings.dislikes, tools: settings.tools }),
+    [settings.lastMaxTime, easy, course, settings.diets, settings.allergies, settings.dislikes, settings.tools],
   );
 
   // première recherche : animation minimale pour le plaisir (courte si « réduire les animations »)
@@ -75,10 +85,14 @@ export default function ResultsScreen() {
     };
   }, [recipes, available, filters, fridge.urgent, recent]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const visible = useMemo(() => {
-    let locked = 0;
-    return matches.filter((m) => isPremium || !m.recipe.premium || ++locked <= MAX_LOCKED);
-  }, [matches, isPremium]);
+  const visible = useMemo(() => visibleMatches(matches, isPremium), [matches, isPremium]);
+  const sections = useMemo(() => {
+    const g = groupResults(visible);
+    return [
+      { key: 'now', title: t('resultsReadyTitle'), data: g.now },
+      { key: 'almost', title: t('resultsAlmostTitle'), data: g.almost },
+    ].filter((sec) => sec.data.length > 0);
+  }, [visible, t]);
   const complete = matches.filter((m) => m.missing.length === 0).length;
   const unlock = complete === 0 ? bestUnlock(matches) : null;
 
@@ -103,23 +117,39 @@ export default function ResultsScreen() {
       <Txt muted style={{ marginTop: space(1) }}>
         {t('resultsSubtitle', { n: visible.length, k: available.size })}
       </Txt>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: space(4), marginHorizontal: -space(4) }} contentContainerStyle={{ gap: space(2), paddingHorizontal: space(4), paddingBottom: space(2) }}>
+      {useFridgeParam === '1' && fridgeChoices.length > 1 && (
+        <View style={{ marginTop: space(3) }}>
+          <Txt v="small" muted>
+            {t('resultsUncheckHint')}
+          </Txt>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: space(2), marginHorizontal: -space(4) }} contentContainerStyle={{ gap: space(2), paddingHorizontal: space(4) }}>
+            {fridgeChoices.map((id) => (
+              <Chip
+                key={id}
+                label={`${INGREDIENT_BY_ID[id].emoji} ${l(INGREDIENT_BY_ID[id].name)}`}
+                selected={!excluded.has(id)}
+                onPress={() => toggleExcluded(id)}
+              />
+            ))}
+          </ScrollView>
+        </View>
+      )}
+      <View style={[styles.filters, { marginTop: space(4) }]}>
         {([15, 30, 60] as const).map((n) => (
-          <Chip key={n} label={`⏱ ${t('filterTime', { n })}`} selected={settings.lastMaxTime === n} onPress={() => update({ lastMaxTime: settings.lastMaxTime === n ? null : n })} />
+          <Chip key={n} label={t('filterTime', { n })} selected={settings.lastMaxTime === n} onPress={() => update({ lastMaxTime: settings.lastMaxTime === n ? null : n })} />
         ))}
         <Chip label={t('filterEasy')} selected={easy} onPress={() => setEasy(!easy)} />
+      </View>
+      <View style={[styles.filters, { marginTop: space(2) }]}>
         {(['starter', 'main', 'dessert'] as Course[]).map((k) => (
           <Chip key={k} label={t(COURSE_KEYS[k])} selected={course === k} onPress={() => setCourse(course === k ? null : k)} />
         ))}
-        {DIETS.map((d) => (
-          <Chip
-            key={d}
-            label={t(DIET_KEYS[d])}
-            selected={settings.diets.includes(d)}
-            onPress={() => update({ diets: settings.diets.includes(d) ? settings.diets.filter((x) => x !== d) : [...settings.diets, d] })}
-          />
-        ))}
-      </ScrollView>
+        <Chip
+          label={`${settings.diets.length ? settings.diets.map((d) => t(DIET_KEYS[d])).join(', ') : t('filterDiet')} ›`}
+          selected={settings.diets.length > 0}
+          onPress={() => router.push('/preferences')}
+        />
+      </View>
 
       {unlock && INGREDIENT_BY_ID[unlock.id] && (
         <View style={[styles.unlock, { backgroundColor: c.accentSoft }]}>
@@ -146,28 +176,30 @@ export default function ResultsScreen() {
 
   return (
     <Screen edges={['top']}>
-      <FlatList
-        data={visible}
+      <SectionList
+        sections={sections}
         keyExtractor={(m) => m.recipe.id}
         ListHeaderComponent={header}
         contentContainerStyle={{ paddingBottom: space(16) }}
-        initialNumToRender={4}
+        stickySectionHeadersEnabled={false}
+        initialNumToRender={8}
         windowSize={7}
-        renderItem={({ item, index }) => (
+        renderSectionHeader={({ section }) => (
+          <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: space(2), paddingHorizontal: space(4), marginTop: section.key === 'almost' ? space(4) : 0, marginBottom: space(3) }}>
+            <Txt v="h2" accessibilityRole="header" style={{ flexShrink: 1 }}>
+              {section.title}
+              <Txt v="small" muted style={{ fontWeight: '600' }}>
+                {'  '}
+                {section.data.length}
+              </Txt>
+            </Txt>
+          </View>
+        )}
+        renderItem={({ item }) => (
           <View style={{ paddingHorizontal: space(4) }}>
-            {index === 0 && item.missing.length === 0 && <Txt v="h2" style={{ marginBottom: space(3) }}>{t('resultsReadyTitle')}</Txt>}
-            {item.missing.length > 0 && (index === 0 || visible[index - 1].missing.length === 0) && (
-              <View style={{ marginBottom: space(4), marginTop: index === 0 ? 0 : space(2) }}>
-                <Txt v="h2">{t('resultsAlmostTitle')}</Txt>
-                <Txt muted style={{ marginTop: space(1) }}>
-                  {t('resultsAlmostHint')}
-                </Txt>
-              </View>
-            )}
-            <FeedRecipeCard
+            <CompactRecipeCard
               recipe={item.recipe}
               match={item}
-              dimmed={item.missing.length > 0}
               locked={!!item.recipe.premium && !isPremium}
               onPress={() => open(item.recipe)}
               favorite={favs.includes(item.recipe.id)}
@@ -188,4 +220,5 @@ export default function ResultsScreen() {
 const styles = StyleSheet.create({
   round: { width: 44, height: 44, borderRadius: 22 },
   unlock: { borderRadius: radius.lg, padding: space(4), marginTop: space(4) },
+  filters: { flexDirection: 'row', flexWrap: 'wrap', gap: space(2) },
 });

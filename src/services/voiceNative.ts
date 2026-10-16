@@ -13,7 +13,9 @@ export function useVoiceCommandsNative(lang: Lang, onCommand: (c: VoiceCommand) 
   const activeRef = useRef(false);
   const lastRef = useRef<{ cmd: VoiceCommand; at: number } | null>(null);
   const cbRef = useRef(onCommand);
-  cbRef.current = onCommand;
+  useEffect(() => {
+    cbRef.current = onCommand;
+  });
 
   const startSession = useCallback(() => {
     ExpoSpeechRecognitionModule.start({
@@ -81,7 +83,9 @@ export function useVoiceCommandsNative(lang: Lang, onCommand: (c: VoiceCommand) 
 export function useDictationNative(lang: Lang, onText: (text: string) => void) {
   const [state, setState] = useState<VoiceState>('off');
   const cbRef = useRef(onText);
-  cbRef.current = onText;
+  useEffect(() => {
+    cbRef.current = onText;
+  });
   const activeRef = useRef(false);
 
   useSpeechRecognitionEvent('result', (e) => {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AccessibilityInfo, Animated, Easing, StyleSheet, Text, View } from 'react-native';
 import Svg, { Ellipse, Path, Rect } from 'react-native-svg';
 import { useI18n, type TKey } from '../i18n';
@@ -33,9 +33,9 @@ export function MypopoteLoader() {
   const { c, reduceMotion } = useTheme();
   const { t } = useI18n();
   const [msg, setMsg] = useState(0);
-  const lid = useRef(new Animated.Value(0)).current;
-  const steam = useRef([0, 1, 2].map(() => new Animated.Value(0))).current;
-  const drops = useRef(FALLING.map(() => new Animated.Value(0))).current;
+  const [lid] = useState(() => new Animated.Value(0));
+  const [steam] = useState(() => [0, 1, 2].map(() => new Animated.Value(0)));
+  const [drops] = useState(() => FALLING.map(() => new Animated.Value(0)));
 
   useEffect(() => {
     const id = setInterval(() => setMsg((m) => (m + 1) % MESSAGES.length), 900);

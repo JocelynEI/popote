@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Animated, Easing } from 'react-native';
 import Svg, { Circle, Ellipse, G, Path, Rect } from 'react-native-svg';
 import { useTheme } from '../theme/theme';
@@ -12,8 +12,8 @@ export type Mood = 'happy' | 'wow' | 'wink' | 'love';
  */
 export function Mascot({ size = 220, mood = 'happy' }: { size?: number; mood?: Mood }) {
   const { c, reduceMotion } = useTheme();
-  const bob = useRef(new Animated.Value(0)).current;
-  const wave = useRef(new Animated.Value(0)).current;
+  const [bob] = useState(() => new Animated.Value(0));
+  const [wave] = useState(() => new Animated.Value(0));
   const [blink, setBlink] = useState(false);
 
   useEffect(() => {
