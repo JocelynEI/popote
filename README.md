@@ -100,14 +100,14 @@ scripts/logic.test.ts     ← tests
 
 ## 5. Règles métier clés
 
-- **Score d'une recette** = ingrédients disponibles ÷ ingrédients nécessaires (hors base placard ; une substitution compte 0,8).
-- **Tri** : manquants (0 → 1 → 2) › produits bientôt périmés utilisés › pas cuisinée depuis moins de 4 jours › score › temps. Au-delà de 2 manquants, la recette est masquée (on élargit à 3 seulement s'il n'y a aucun résultat).
-- **Base placard** (jamais manquante) : sel, poivre, huile, farine, sucre, eau.
-- **Péremption** : rouge ≤ 1 jour, orange 2 à 3 jours, vert au-delà ; « à utiliser vite » ≤ 2 jours.
-- **Produit sauvé** = marqué « Utilisé » alors qu'il périmait dans 3 jours ou moins. Économie estimée : 1,30 € par produit (affiché comme estimation).
-- **Régimes et allergènes** calculés automatiquement à partir des ingrédients obligatoires ; les ingrédients facultatifs incompatibles sont signalés.
-- **Rappels** : une notification par jour (17 h 30 par défaut) seulement s'il y a des produits qui périment dans 2 jours ou moins, reprogrammée à chaque changement du frigo. Pas d'alarmes exactes.
-- **Premium** : non consommable `mypopote_premium_lifetime`, déblocage stocké localement, bouton « Restaurer mes achats ».
+- Score d'une recette = ingrédients disponibles ÷ ingrédients nécessaires (hors base placard ; une substitution compte 0,8).
+- Tri : manquants (0 → 1 → 2) › produits bientôt périmés utilisés › pas cuisinée depuis moins de 4 jours › score › temps. Au-delà de 2 manquants, la recette est masquée (on élargit à 3 seulement s'il n'y a aucun résultat).
+- Base placard (jamais manquante) : sel, poivre, huile, farine, sucre, eau.
+- Péremption : rouge ≤ 1 jour, orange 2 à 3 jours, vert au-delà ; « à utiliser vite » ≤ 2 jours.
+- Produit sauvé = marqué « Utilisé » alors qu'il périmait dans 3 jours ou moins. Économie estimée : 1,30 € par produit (affiché comme estimation).
+- Régimes et allergènes calculés automatiquement à partir des ingrédients obligatoires ; les ingrédients facultatifs incompatibles sont signalés.
+- Rappels : une notification par jour (17 h 30 par défaut) seulement s'il y a des produits qui périment dans 2 jours ou moins, reprogrammée à chaque changement du frigo. Pas d'alarmes exactes.
+- Premium : non consommable `mypopote_premium_lifetime`, déblocage stocké localement, bouton « Restaurer mes achats ».
 
 ## 6. Ajouter des recettes
 
@@ -128,7 +128,7 @@ Puis lance `npm test` : le test vérifie les ids, les ingrédients et les traduc
 
 ## 7. Prévu en version 1.1
 
-- **Widget écran d'accueil** « produits bientôt périmés » (gratuit) : il demande du code natif spécifique (WidgetKit iOS / App Widget Android) via un *config plugin* ; il est volontairement reporté pour ne pas retarder la sortie.
+- Widget écran d'accueil « produits bientôt périmés » (gratuit) : il demande du code natif spécifique (WidgetKit iOS / App Widget Android) via un *config plugin* ; il est volontairement reporté pour ne pas retarder la sortie.
 - Compléter la base de recettes (voir §5).
 
 ## 8. Confidentialité (vérifiée)

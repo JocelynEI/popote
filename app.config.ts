@@ -11,7 +11,7 @@ const config: ExpoConfig = {
   name: IS_DEV ? 'Mypopote (dev)' : 'Mypopote',
   slug: 'mypopote',
   scheme: 'mypopote',
-  version: '1.6.0',
+  version: '1.6.1',
   orientation: 'portrait',
   icon: './assets/icon.png',
   userInterfaceStyle: 'automatic', // mode sombre suivi automatiquement

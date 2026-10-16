@@ -3,7 +3,7 @@ import type { Recipe } from './types';
 
 /**
  * Base de recettes GRATUITE.
- * Lot initial — à compléter jusqu'à ~300 recettes (même format, voir README > « Ajouter des recettes »).
+ * Lot initial, à compléter jusqu'à ~300 recettes (même format, voir README > « Ajouter des recettes »).
  */
 export const FREE_RECIPES: Recipe[] = [
   // ---------- Recettes « placard » (faisables avec presque rien) ----------
@@ -301,7 +301,7 @@ export const FREE_RECIPES: Recipe[] = [
     ing: 'white_fish 2; rice 150 g; lemon 1; butter 20 g; parsley?; salt; pepper',
     steps: [
       ['Faites cuire le riz.', 'Cook the rice.', 12],
-      ['Poêlez le poisson au beurre, 3 à 4 minutes par face.', 'Pan-fry the fish in butter, 3–4 minutes per side.', 7],
+      ['Poêlez le poisson au beurre, 3 à 4 minutes par face.', 'Pan-fry the fish in butter, 3 to 4 minutes per side.', 7],
       ['Déglacez avec le jus de citron, ajoutez le persil, servez sur le riz.', 'Deglaze with lemon juice, add parsley, serve over rice.'],
     ],
   }),
@@ -482,7 +482,7 @@ export const FREE_RECIPES: Recipe[] = [
     ing: 'banana 1; egg 2; flour 60 g?; oats 40 g?; baking_powder 1 pinch?; oil 1 tsp',
     steps: [
       ['Écrasez la banane, ajoutez les œufs (et farine ou avoine, levure).', 'Mash the banana, add the eggs (and flour or oats, baking powder).'],
-      ['Faites cuire de petites louches dans une poêle huilée, 1 à 2 minutes par face.', 'Cook small ladlefuls in an oiled pan, 1–2 minutes per side.', 6],
+      ['Faites cuire de petites louches dans une poêle huilée, 1 à 2 minutes par face.', 'Cook small ladlefuls in an oiled pan, 1 to 2 minutes per side.', 6],
     ],
   }),
   r({

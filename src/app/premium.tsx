@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useToast } from '../components/Toast';
 import { Illo } from '../components/Dish';
+import { Icon } from '../components/Icon';
 import { Button, Card, haptic, Screen, Txt } from '../components/ui';
 import { useI18n } from '../i18n';
 import { usePremium } from '../services/premium';
@@ -47,9 +48,10 @@ export default function PremiumScreen() {
         </View>
         <Card>
           {features.map((f) => (
-            <Txt key={f} style={{ marginVertical: space(2) }}>
-              {f}
-            </Txt>
+            <View key={f} style={{ flexDirection: 'row', alignItems: 'center', gap: space(2), marginVertical: space(2) }}>
+              <Icon name="checkmark" size={20} color={c.primaryText} />
+              <Txt style={{ flex: 1 }}>{f}</Txt>
+            </View>
           ))}
         </Card>
         <Txt v="small" muted style={{ textAlign: 'center' }}>
