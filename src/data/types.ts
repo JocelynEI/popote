@@ -38,6 +38,8 @@ export interface Ingredient {
   pantry?: boolean;
   /** proposé dans la grille « Remplir mon frigo rapidement » */
   quick?: boolean;
+  /** compté à l'unité : [singulier, pluriel] par langue (« Oignon », « Oignons ») */
+  count?: { fr: [string, string]; en: [string, string] };
 }
 
 export type Unit = 'g' | 'ml' | 'pc' | 'tbsp' | 'tsp' | 'pinch' | 'slice' | 'clove' | 'can' | 'bunch';

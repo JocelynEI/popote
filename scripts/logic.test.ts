@@ -15,7 +15,7 @@ import { planEmptyFridge } from '../src/logic/emptyFridge';
 import { addDays, checkExpiryDate, daysLeft, expiryStatus, isUrgent, todayISO } from '../src/logic/expiry';
 import { didYouMean, parseIngredientText, searchIngredients } from '../src/logic/ingredientSearch';
 import { bestUnlock, evaluateRecipe, matchRecipes, PANTRY_RECIPE_IDS, starIngredients } from '../src/logic/matching';
-import { formatQty, parseQtyInput, scaleQty } from '../src/logic/scaling';
+import { countedName, formatQty, parseQtyInput, scaleQty, shownQty } from '../src/logic/scaling';
 import { parseCommand } from '../src/services/voiceParse';
 import appConfig from '../app.config';
 import { CONTACT_EMAIL, DEVELOPER_NAME } from '../src/config';
@@ -444,4 +444,25 @@ test('textes : aucun tiret long, aucun émoji décoratif dans les phrases', () =
   for (const r of ALL) for (const s of [r.title.fr, r.title.en, ...r.steps.flatMap((x) => [x.text.fr, x.text.en])]) assert.ok(!dash.test(s), `${r.id} : tiret long dans « ${s} »`);
   for (const f of ['store-listing/fiches-stores.md', 'store-listing/politique-confidentialite.html', 'store-listing/assistance.html', 'src/app/privacy.tsx'])
     assert.ok(!dash.test(readFileSync(f, 'utf8')), `${f} : tiret long`);
+});
+
+// V1.6.2 : quantités et accords
+test('quantités : une moitié reste une moitié, un œuf entier jamais', () => {
+  assert.equal(formatQty({ id: 'onion', qty: 0.5, unit: 'pc' }, 1, 'fr'), '½');
+  assert.equal(formatQty({ id: 'onion', qty: 0.5, unit: 'pc' }, 2, 'fr'), '1');
+  assert.equal(formatQty({ id: 'egg', qty: 1, unit: 'pc' }, 0.5, 'fr'), '1');
+  assert.equal(formatQty({ id: 'onion', qty: 0.5, unit: 'pc' }, 4, 'en'), '2');
+});
+
+test('accords : « 1 Œuf », « 2 Oignons », « ½ Concombre »', () => {
+  const name = (id: string, qty: number, factor = 1, lang: 'fr' | 'en' = 'fr') =>
+    countedName(INGREDIENT_BY_ID[id].count?.[lang], INGREDIENT_BY_ID[id].name[lang], shownQty({ id, qty, unit: 'pc' }, factor));
+  assert.equal(name('egg', 1), 'Œuf');
+  assert.equal(name('egg', 3), 'Œufs');
+  assert.equal(name('onion', 2), 'Oignons');
+  assert.equal(name('cucumber', 0.5), 'Concombre');
+  assert.equal(name('leek', 3), 'Poireaux');
+  assert.equal(name('tomato', 1, 1, 'en'), 'Tomato');
+  // tout ingrédient compté à l'unité dans une recette a ses deux formes
+  for (const r of ALL) for (const i of r.ingredients) if (i.unit === 'pc' && i.qty) assert.ok(INGREDIENT_BY_ID[i.id].count, `${r.id} : « ${i.id} » sans singulier ni pluriel`);
 });

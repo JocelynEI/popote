@@ -2,6 +2,23 @@
 
 Chaque version porte un seul sujet. Le plan de la refonte est dans `CAHIER_DES_CHARGES.md`.
 
+## V1.6.2 : les quantités qui se lisent bien (16 octobre 2026)
+
+Deux erreurs d'affichage relevées pendant la V1.6, dans la liste des ingrédients d'une recette.
+
+- Les noms s'accordent avec la quantité : « 1 Œuf », « 3 Œufs », « 2 Oignons », « 3 Poireaux », « 1 Tomate ». Avant, on lisait « 2 Oignon » ou « 1 Tomates ». Les 34 ingrédients comptés à l'unité ont leur singulier et leur pluriel, en français et en anglais. Pour le saumon et le poisson blanc, on lit « 2 Pavés de saumon », « 2 Filets de poisson blanc ».
+- Une moitié reste une moitié : un demi-oignon s'affiche « ½ Oignon » au lieu de « 1 Oignon ». Cinq recettes de la V1.6 retrouvent leur demi-concombre ou leur demi-oignon (panzanella, salade de quinoa, röstis, œufs brouillés à la tomate, galettes de thon). Si tu augmentes les portions, l'arrondi reprend (2 personnes de plus, 1 oignon). Un œuf entier ne devient jamais un demi-œuf quand tu baisses les portions.
+
+Tests ajoutés : moitiés et arrondis, accords en français et en anglais, et sur tout le catalogue, chaque ingrédient compté à l'unité a ses deux formes.
+
+### Recette sur le téléphone
+
+1. Ouvre « Rougail saucisses » : « 4 Saucisses », « 4 Tomates », « 2 Oignons ».
+2. Ouvre « Omelette baveuse » et descends à 1 personne : « 2 Œufs ». Puis à 4 personnes : « 8 Œufs ».
+3. Ouvre « Salade de quinoa » : « ½ Concombre ». Passe à 4 personnes : « 1 Concombre ».
+4. Ouvre « Saumon à la crème citronnée » : « 2 Pavés de saumon ».
+5. Passe en anglais : « 2 Onions », « 1 Lemon ».
+
 ## V1.6.1 : des textes plus simples (16 octobre 2026)
 
 Les textes de l'appli, des pages web et de la fiche store sont réécrits pour ne plus sonner comme un texte généré.
