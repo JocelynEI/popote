@@ -2,6 +2,20 @@
 
 Chaque version porte un seul sujet. Le plan de la refonte est dans `CAHIER_DES_CHARGES.md`.
 
+## V1.3.1 : contact et pages pour les stores (16 octobre 2026)
+
+Reprend la demande de fusion #2 du 23 septembre dans la refonte.
+
+- **Adresse de contact : meo.compagnie@gmail.com** dans les Réglages, la politique de confidentialité, la page d'assistance et la fiche store (elle remplace celle de la V1.1). L'éditeur reste R-Aclés.
+- **Page d'assistance** FR/EN (questions fréquentes : compte, changement de téléphone, restaurer Premium).
+- **Les deux pages demandées par Apple et Google sont publiées avec l'aperçu web** : `…/popote/confidentialite/` et `…/popote/assistance/`. Leurs adresses sont dans la fiche store.
+- Test renforcé : la même adresse partout, aucune autre adresse, ni ancien éditeur, ni adresse d'exemple.
+
+### Recette
+
+1. Réglages, en bas : « Contact : meo.compagnie@gmail.com » et « R-Aclés ».
+2. Après la fusion sur `main`, ouvre https://jocelynei.github.io/popote/confidentialite/ et https://jocelynei.github.io/popote/assistance/ : les deux pages s'affichent, avec la bonne adresse.
+
 ## V1.3 : l'accueil en cartes (15 octobre 2026)
 
 L'accueil montre tout de suite quoi cuisiner, sans rien taper quand le frigo est rempli.

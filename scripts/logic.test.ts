@@ -3,6 +3,7 @@
  * Lancer : npm test
  */
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { INGREDIENT_BY_ID, INGREDIENTS, PANTRY_IDS, QUICK_FILL_IDS } from '../src/data/ingredients';
 import { FREE_RECIPES } from '../src/data/recipes';
@@ -210,9 +211,15 @@ test('badges : seulement ceux obtenus, plus le prochain', () => {
   assert.equal(visibleBadges(new Set(BADGES.map((b) => b.id))).filter((b) => !b.got).length, 0);
 });
 
-test('contact : une vraie adresse, éditeur R-Aclés', () => {
-  assert.equal(CONTACT_EMAIL, 'jocelyn.lebon.ae@gmail.com');
+test('contact : une vraie adresse, éditeur R-Aclés, partout la même', () => {
+  assert.equal(CONTACT_EMAIL, 'meo.compagnie@gmail.com');
   assert.equal(DEVELOPER_NAME, 'R-Aclés');
+  for (const f of ['store-listing/politique-confidentialite.html', 'store-listing/assistance.html', 'store-listing/fiches-stores.md']) {
+    const txt = readFileSync(f, 'utf8');
+    assert.ok(txt.includes(CONTACT_EMAIL), `${f} : adresse absente`);
+    for (const m of txt.matchAll(/[\w.+-]+@[\w-]+\.[\w.]+/g)) assert.equal(m[0], CONTACT_EMAIL, `${f} : autre adresse ${m[0]}`);
+    assert.ok(!/misterJ|example\.com/.test(txt), `${f} : ancien éditeur ou adresse d'exemple`);
+  }
 });
 
 // ——— V1.2 : un seul frigo ———
