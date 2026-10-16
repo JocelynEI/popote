@@ -76,16 +76,17 @@ const KEY = 'settings.v1';
 
 /**
  * Sur le web (aperçu), les réglages vont dans localStorage : plus simple et plus fiable
- * que SQLite dans le navigateur (Safari notamment). Sur iOS / Android : SQLite (kv-store).
+ * que SQLite dans le navigateur (Safari notamment), et kv-store n'est jamais utilisé sur le web. Sur iOS / Android : SQLite (kv-store).
  */
 const WEB = Platform.OS === 'web' && typeof localStorage !== 'undefined';
 
 function readRaw(): string | null {
   if (WEB) {
     try {
-      const v = localStorage.getItem(KEY);
-      if (v) return v;
-    } catch {}
+      return localStorage.getItem(KEY);
+    } catch {
+      return null;
+    }
   }
   try {
     return Storage.getItemSync(KEY);
@@ -113,8 +114,9 @@ export function saveSettings(s: Settings) {
   if (WEB) {
     try {
       localStorage.setItem(KEY, json);
-      return;
     } catch {}
+    // jamais kv-store sur le web : il passe par le worker SQLite qui figeait l'écran
+    return;
   }
   try {
     Storage.setItemSync(KEY, json);
