@@ -1,178 +1,160 @@
 # Mypopote : textes pour les stores
 
-> Adresse de contact : `jocelyn.lebon.ae@gmail.com`. Remplace l'URL de la politique de confidentialité par celle où tu l'héberges (voir `politique-confidentialite.html`).
+> Adresse de contact : `meo.compagnie@gmail.com`. Les pages « confidentialité » et « assistance » sont publiées automatiquement sur GitHub Pages (voir `scripts/build-pages.mjs`).
 
 ---
 
-## 🍎 App Store (App Store Connect)
+## App Store (App Store Connect)
 
 ### Français (langue principale)
 
 | Champ | Valeur | Limite |
 |---|---|---|
-| Nom | **Mypopote** | 30 |
-| Sous-titre | **Cuisine ce qu'il y a au frigo** | 30 (29) |
-| Catégorie principale | Cuisine et boissons (*Food & Drink*) | — |
-| Catégorie secondaire | Style de vie | — |
+| Nom | Mypopote | 30 |
+| Sous-titre | Cuisine ce qu'il y a au frigo | 30 (29) |
+| Catégorie principale | Cuisine et boissons (*Food & Drink*) | |
+| Catégorie secondaire | Style de vie | |
 | Mots-clés | `recette,frigo,anti gaspi,restes,que cuisiner,ingredients,repas,courses,peremption,hors ligne` | 100 |
-| URL de confidentialité | https://TON-DOMAINE/popote/confidentialite | — |
-| URL d'assistance | mailto:jocelyn.lebon.ae@gmail.com (ou une page simple) | — |
+| URL de confidentialité | https://jocelynei.github.io/popote/confidentialite/ | |
+| URL d'assistance | https://jocelynei.github.io/popote/assistance/ | |
 
 **Texte promotionnel (170)**
-> Tu ouvres le frigo, tu ne sais pas quoi faire ? Coche ce que tu as, Mypopote te propose des recettes. Sans compte, sans pub, même sans réseau.
+> Tu ouvres le frigo et tu ne sais pas quoi faire ? Dis ce que tu as, Mypopote te montre ce que tu peux cuisiner. Sans compte, sans pub, même sans réseau.
 
 **Description (4000)**
 ```
-Qu'est-ce qu'on mange ce soir ? Mypopote répond en quelques secondes, avec ce que tu as déjà.
+Qu'est-ce qu'on mange ce soir ? Tu dis à Mypopote ce que tu as, il te montre ce que tu peux cuisiner tout de suite.
 
-🥕 TAPE TES INGRÉDIENTS, C'EST TOUT
-Quelques ingrédients suffisent : Mypopote trie les recettes en « Tout est là ✓ », « Il manque 1 ingrédient », « Il manque 2 ingrédients ». Sel, huile, farine… la base du placard n'est jamais comptée comme manquante.
+Tape tes ingrédients ou coche-les dans la grille. Les recettes se rangent en deux groupes : celles que tu peux faire tout de suite, et celles où il manque une ou deux choses, écrites en orange. Sel, poivre, huile, farine et sucre ne sont jamais comptés comme manquants.
 
-🧊 TON FRIGO, SANS GASPI
-Garde ton frigo en mémoire, ajoute une date de péremption si tu veux : rouge, orange, vert, tu vois tout de suite quoi utiliser en premier. Les recettes qui sauvent tes produits passent devant, et un petit rappel te prévient avant qu'il soit trop tard.
+Mypopote garde ton frigo en mémoire. Si tu notes une date de péremption, les produits à finir passent en haut de la liste, et les recettes qui les utilisent aussi. Un rappel peut te prévenir avant la date.
 
-✨ MODE « VIDER LE FRIGO »
-Mypopote combine 2 ou 3 recettes pour utiliser un maximum de produits qui vont périmer.
+Pas de crème ? L'appli te propose du lait et du beurre. Elle ne remplace jamais l'ingrédient qui donne son nom au plat : tu n'auras pas de salade tomate-mozzarella avec de l'emmental.
 
-🔄 PAS DE CRÈME ? PAS DE PANIQUE
-Remplacements proposés automatiquement : crème → lait + beurre, échalote → oignon…
+181 recettes gratuites, dont 72 prêtes en 20 minutes ou moins. Chaque fiche dit si la recette est végétarienne, végane, sans gluten ou sans lactose, et quels allergènes elle contient.
 
-👩‍🍳 MODE CUISINE
-Étapes une par une en gros caractères, écran qui reste allumé, minuteurs multiples, lecture à voix haute et commande vocale (« suivant », « répète ») pour les mains pleines de farine.
+En cuisine, les étapes défilent une par une en gros caractères et l'écran reste allumé. Tu peux lancer plusieurs minuteurs, faire lire la recette à voix haute ou dire « suivant » quand tu as les mains pleines de farine (la reconnaissance se fait sur le téléphone).
 
-🛒 LISTE DE COURSES
-Les ingrédients manquants en un geste. Une fois les courses finies, tout part dans le frigo.
+Les ingrédients manquants partent dans la liste de courses d'un geste. Une fois les courses faites, ils rejoignent le frigo.
 
-❤️ ET AUSSI
-• Favoris, historique, notes perso
-• Tes propres recettes, proposées comme les autres
-• Filtres : temps, difficulté, végétarien, végan, sans gluten, sans lactose, allergies
-• Compteur anti-gaspi, badges et récap du dimanche
-• Mode sombre, textes agrandis, VoiceOver
-• Français et anglais
+Et aussi :
+• favoris, historique et notes perso
+• tes propres recettes, proposées comme les autres
+• ce que tu n'aimes pas et tes ustensiles : sans four, pas de recette au four
+• mode sombre, grands textes, VoiceOver
+• français et anglais
 
-🔒 TA VIE PRIVÉE, VRAIMENT
-Aucun compte. Aucune donnée collectée. Aucune pub. Tout reste sur ton téléphone et fonctionne sans internet. Une sauvegarde manuelle te permet de changer de téléphone.
+Pas de compte, pas de pub, aucune donnée collectée. Tout reste sur ton téléphone et marche sans internet. Pour changer de téléphone, tu exportes une sauvegarde.
 
-⭐ POPOTE PREMIUM (achat unique, pas d'abonnement)
-Pack de recettes supplémentaires, statistiques anti-gaspi détaillées, planning de la semaine et thèmes de couleur. Tout le reste est gratuit, pour toujours.
+Mypopote Premium est un achat unique, sans abonnement : des recettes en plus, des statistiques détaillées, le planning de la semaine et des thèmes de couleur. Chercher une recette, gérer ton frigo, les courses et le mode cuisine restent gratuits.
 ```
 
 **Nouveautés (version 1.0)**
-> Première version de Mypopote ! Dis-nous ce que tu en penses 🍳
+> Première version de Mypopote. Une remarque ou un bug ? Écris à meo.compagnie@gmail.com.
 
 ### English (localisation)
 
 | Field | Value |
 |---|---|
-| Name | **Mypopote** |
-| Subtitle | **Cook what's in your fridge** (27) |
+| Name | Mypopote |
+| Subtitle | Cook what's in your fridge (27) |
 | Keywords | `fridge,recipes,leftovers,food waste,what to cook,ingredients,meal ideas,shopping list,expiry,offline` |
 
 **Promotional text**
-> Open the fridge, no idea what to make? Tick what you have and Mypopote suggests recipes. No account, no ads, works offline.
+> Open the fridge and no idea what to make? Say what you have and Mypopote shows you what you can cook. No account, no ads, works offline.
 
 **Description**
 ```
-What's for dinner tonight? Mypopote answers in seconds, using what you already have.
+What's for dinner tonight? Tell Mypopote what you have and it shows you what you can cook right now.
 
-🥕 JUST TYPE YOUR INGREDIENTS
-A few ingredients are enough: recipes are sorted into "You have everything ✓", "1 ingredient missing", "2 ingredients missing". Salt, oil, flour… pantry basics never count as missing.
+Type your ingredients or tick them on the grid. Recipes are sorted into two groups: the ones you can make right now, and the ones missing one or two things, shown in orange. Salt, pepper, oil, flour and sugar never count as missing.
 
-🧊 YOUR FRIDGE, ZERO WASTE
-Keep your fridge in memory and add expiry dates if you like: red, orange, green, you instantly see what to use first. Recipes that rescue your food come first, and a gentle reminder warns you before it's too late.
+Mypopote remembers what's in your fridge. Add an expiry date and the items to use up move to the top, along with the recipes that use them. A reminder can warn you before the date.
 
-✨ "CLEAR THE FRIDGE" MODE
-Mypopote combines 2–3 recipes to use as many soon-to-expire items as possible.
+No cream? The app suggests milk and butter. It never swaps the ingredient the dish is named after: you won't get a tomato and mozzarella salad made with cheddar.
 
-🔄 NO CREAM? NO PROBLEM
-Smart swaps: cream → milk + butter, shallot → onion…
+181 free recipes, 72 of them ready in 20 minutes or less. Each one says whether it is vegetarian, vegan, gluten-free or dairy-free, and which allergens it contains.
 
-👩‍🍳 COOKING MODE
-One step at a time in big letters, screen stays on, multiple timers, read-aloud and voice control ("next", "repeat") for floury hands.
+In cooking mode, steps show one at a time in large text and the screen stays on. Run several timers, have the recipe read aloud, or say "next" when your hands are covered in flour (recognition happens on the phone).
 
-🛒 SHOPPING LIST
-Add missing ingredients in one tap. When you're done shopping, everything goes into the fridge.
+Missing ingredients go to the shopping list in one tap. Once you've done the shopping, they move into the fridge.
 
-❤️ ALSO
-• Favourites, history, personal notes
-• Your own recipes, suggested like the others
-• Filters: time, difficulty, vegetarian, vegan, gluten-free, dairy-free, allergies
-• Food-waste counter, badges and Sunday recap
-• Dark mode, large text, VoiceOver
+Also:
+• favourites, history and personal notes
+• your own recipes, suggested like the others
+• what you don't like and the kitchen tools you have: no oven, no oven recipes
+• dark mode, large text, VoiceOver
 • English and French
 
-🔒 REAL PRIVACY
-No account. No data collected. No ads. Everything stays on your phone and works offline. A manual backup lets you move to a new phone.
+No account, no ads, no data collected. Everything stays on your phone and works offline. To move to a new phone, export a backup.
 
-⭐ POPOTE PREMIUM (one-time purchase, no subscription)
-Extra recipe pack, detailed food-waste statistics, weekly meal planner and colour themes. Everything else is free, forever.
+Mypopote Premium is a one-time purchase, no subscription: extra recipes, detailed statistics, a weekly meal planner and colour themes. Searching for recipes, managing your fridge, the shopping list and cooking mode stay free.
 ```
 
 ### Confidentialité de l'app (questionnaire App Store Connect)
-- **Collectez-vous des données depuis cette app ?** → **Non, nous ne collectons pas de données.**
-- Résultat affiché sur la fiche : **« Données non collectées »**.
+- Collectez-vous des données depuis cette app ? Réponse : « Non, nous ne collectons pas de données ».
+- Résultat affiché sur la fiche : « Données non collectées ».
 - Suivi publicitaire (ATT) : non, aucun.
 
 ### Classification par âge
-Répondre « Aucun » à toutes les rubriques → **4+**.
+Répondre « Aucun » à toutes les rubriques, ce qui donne 4+.
 
 ### Achat intégré à créer
 | Champ | Valeur |
 |---|---|
-| Type | **Non consommable** |
+| Type | Non consommable |
 | ID produit | `mypopote_premium_lifetime` (identique dans le code) |
 | Nom de référence | Mypopote Premium à vie |
 | Prix | Palier 2,99 € |
 | Nom affiché FR / EN | Mypopote Premium / Mypopote Premium |
-| Description FR | Recettes en plus, stats anti-gaspi, planning et thèmes. À vie. |
-| Description EN | Extra recipes, waste stats, meal planner and themes. For life. |
+| Description FR | Recettes en plus, statistiques, planning et thèmes. À vie. |
+| Description EN | Extra recipes, statistics, meal planner and themes. For life. |
 
-Une capture de l'écran Premium est demandée pour la validation de l'achat intégré.
+Apple demande une capture de l'écran Premium pour valider l'achat intégré.
 
 ---
 
-## 🤖 Google Play (Play Console)
+## Google Play (Play Console)
 
 | Champ | FR | EN |
 |---|---|---|
 | Nom de l'appli (30) | Mypopote : recettes du frigo | Mypopote: Fridge Recipes |
-| Description courte (80) | Que cuisiner avec ce qu'il y a au frigo ? Anti-gaspi, sans compte, hors ligne. | What to cook with what's in your fridge? Zero waste, no account, offline. |
-| Description complète | Reprendre la description App Store ci-dessus | idem EN |
+| Description courte (80) | Que cuisiner avec ce qu'il y a au frigo ? Sans compte et hors ligne. | What to cook with what's in your fridge? No account, works offline. |
+| Description complète | Reprendre la description App Store ci-dessus | Same, in English |
 | Catégorie | Cuisine et boissons | Food & Drink |
-| Tags | Recettes, Cuisine, Anti-gaspillage | — |
-| Adresse e-mail | jocelyn.lebon.ae@gmail.com | — |
+| Tags | Recettes, Cuisine, Anti-gaspillage | |
+| Adresse e-mail | meo.compagnie@gmail.com | |
 
 ### Sécurité des données (Data safety)
-- Votre appli collecte-t-elle ou partage-t-elle des types de données utilisateur requis ? → **Non**.
-- Les données sont-elles chiffrées en transit ? → Sans objet (aucune donnée transmise).
-- Les utilisateurs peuvent-ils demander la suppression des données ? → Les données sont uniquement sur l'appareil ; désinstaller l'appli les supprime.
-- Résultat affiché : **« Aucune donnée collectée » / « Aucune donnée partagée avec des tiers »**.
+- Votre appli collecte-t-elle ou partage-t-elle des types de données utilisateur requis ? Non.
+- Les données sont-elles chiffrées en transit ? Sans objet, aucune donnée n'est transmise.
+- Les utilisateurs peuvent-ils demander la suppression des données ? Les données sont uniquement sur l'appareil, désinstaller l'appli les supprime.
+- Résultat affiché : « Aucune donnée collectée » et « Aucune donnée partagée avec des tiers ».
 
-> Note : les achats sont traités par Google Play Billing, ce qui ne compte pas comme une collecte par ton appli.
+> Les achats passent par Google Play Billing, ce qui ne compte pas comme une collecte par ton appli.
 
 ### Autres déclarations Play Console
-- **Publicités** : Non, l'appli ne contient pas de publicités.
-- **Accès à l'appli** : Tout est accessible sans identifiants.
-- **Classification du contenu** (questionnaire IARC) : catégorie « Utilitaire / Productivité », aucune violence, etc. → **Tout public / PEGI 3**.
-- **Public cible** : 13 ans et plus (conseillé : évite les contraintes « Famille » ; l'appli reste utilisable par tous).
-- **Appli d'actualités** : Non. **Appli de santé** : Non.
-- **Autorisation micro (RECORD_AUDIO)** : fonctionnalité facultative de commande vocale en mode cuisine, reconnaissance sur l'appareil.
+- Publicités : non, l'appli n'en contient pas.
+- Accès à l'appli : tout est accessible sans identifiants.
+- Classification du contenu (questionnaire IARC) : catégorie « Utilitaire / Productivité », aucune violence. Résultat : tout public, PEGI 3.
+- Public cible : 13 ans et plus. Ça évite les contraintes du programme « Famille », et l'appli reste utilisable par tous.
+- Appli d'actualités : non. Appli de santé : non.
+- Autorisation micro (RECORD_AUDIO) : commande vocale facultative en mode cuisine, reconnaissance sur l'appareil.
 
 ### Produit intégré à créer
-- Produits > Produits intégrés > **Produit unique** : ID `mypopote_premium_lifetime`, prix 2,99 €.
+Produits, puis Produits intégrés, puis Produit unique : ID `mypopote_premium_lifetime`, prix 2,99 €.
 
 ---
 
-## 📸 Captures d'écran à produire (6 par plateforme)
+## Captures d'écran à produire (6 par plateforme)
 
 Tailles : iPhone 6,9" (1320 × 2868) obligatoire ; Android téléphone 1080 × 1920 minimum.
 
-1. **Cuisiner** avec 4 ingrédients choisis et « Tout est là ✓ » → *« Tape ce que tu as. Mypopote trouve la recette. »*
-2. **Mon frigo** avec pastilles rouge/orange/vert → *« Fini le gaspillage : utilise d'abord ce qui périme. »*
-3. **Fiche recette** avec ✓/✗ et une substitution → *« Il manque la crème ? Mypopote te propose une solution. »*
-4. **Mode cuisine** en gros caractères avec minuteur → *« Pas à pas, mains libres. »*
-5. **Mes progrès** (compteur + badges) → *« Chaque produit sauvé compte. »*
-6. **Écran confidentialité / réglages** → *« Sans compte. Sans pub. Hors ligne. »*
+1. Accueil avec la carte « Tout de suite » remplie : « Dis ce que tu as, Mypopote trouve quoi cuisiner. »
+2. Mon frigo avec le bloc « À finir vite » : « Ce qui périme d'abord, en haut. »
+3. Fiche recette avec un remplacement (crème → lait + beurre) : « Pas de crème ? Lait et beurre font l'affaire. »
+4. Mode cuisine en gros caractères avec un minuteur : « Une étape à la fois, en gros. »
+5. Mes progrès avec quelques produits sauvés : « 12 produits sauvés ce mois-ci. »
+6. Réglages, confidentialité : « Sans compte, sans pub, sans internet. »
 
-Astuce : lance l'appli sur un simulateur iOS (`npx expo run:ios`) ou un émulateur Android, remplis le frigo avec la grille rapide, puis fais les captures ; ajoute le texte avec un outil de mise en page de captures.
+Pour les faire : lance l'appli sur un simulateur iOS (`npx expo run:ios`) ou un émulateur Android, remplis le frigo avec la grille rapide, fais les captures, puis ajoute le texte avec un outil de mise en page de captures.

@@ -3,24 +3,29 @@
  * Lancer : npm test
  */
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { INGREDIENT_BY_ID, INGREDIENTS, PANTRY_IDS, QUICK_FILL_IDS } from '../src/data/ingredients';
 import { FREE_RECIPES } from '../src/data/recipes';
 import { PREMIUM_RECIPES } from '../src/data/recipesPremium';
 import { SUBSTITUTIONS } from '../src/data/substitutions';
-import { recipeDiets, recipeFitsProfile } from '../src/logic/diets';
+import { ingredientConflicts, recipeDiets, recipeFitsProfile } from '../src/logic/diets';
+import { fitsTools, inferTools } from '../src/logic/tools';
 import { planEmptyFridge } from '../src/logic/emptyFridge';
 import { addDays, checkExpiryDate, daysLeft, expiryStatus, isUrgent, todayISO } from '../src/logic/expiry';
 import { didYouMean, parseIngredientText, searchIngredients } from '../src/logic/ingredientSearch';
-import { bestUnlock, evaluateRecipe, matchRecipes, PANTRY_RECIPE_IDS } from '../src/logic/matching';
-import { formatQty, parseQtyInput, scaleQty } from '../src/logic/scaling';
+import { bestUnlock, evaluateRecipe, matchRecipes, PANTRY_RECIPE_IDS, starIngredients } from '../src/logic/matching';
+import { countedName, formatQty, parseQtyInput, scaleQty, shownQty } from '../src/logic/scaling';
 import { parseCommand } from '../src/services/voiceParse';
+import appConfig from '../app.config';
 import { CONTACT_EMAIL, DEVELOPER_NAME } from '../src/config';
 import { en } from '../src/i18n/en';
 import { fr } from '../src/i18n/fr';
 import { BADGES, progressCards, visibleBadges } from '../src/logic/badges';
 import { formatMessage } from '../src/logic/text';
 import { groupFridge, newFridgeEntries, searchIngredientsFrom } from '../src/logic/fridge';
+import { groupResults, lowerFirst, visibleMatches } from '../src/logic/results';
+import { homeCards, namesPreview, namesSentence, pantryIdeas, quickIdeas } from '../src/logic/home';
 
 const ALL = [...FREE_RECIPES, ...PREMIUM_RECIPES];
 const noFilter = { diets: [], allergies: [] };
@@ -161,7 +166,7 @@ test('saisie en phrase : « 2 œufs, un demi brocoli, du cheddar »', () => {
   assert.deepEqual(parseIngredientText('xyzzz').found, []);
 });
 
-// ——— V1.1 : les mots ———
+// V1.1 : les mots
 
 test('textes : aucun « (s) », en français comme en anglais', () => {
   for (const [lang, dict] of Object.entries({ fr, en })) {
@@ -208,12 +213,18 @@ test('badges : seulement ceux obtenus, plus le prochain', () => {
   assert.equal(visibleBadges(new Set(BADGES.map((b) => b.id))).filter((b) => !b.got).length, 0);
 });
 
-test('contact : une vraie adresse, éditeur R-Aclés', () => {
-  assert.equal(CONTACT_EMAIL, 'jocelyn.lebon.ae@gmail.com');
+test('contact : une vraie adresse, éditeur R-Aclés, partout la même', () => {
+  assert.equal(CONTACT_EMAIL, 'meo.compagnie@gmail.com');
   assert.equal(DEVELOPER_NAME, 'R-Aclés');
+  for (const f of ['store-listing/politique-confidentialite.html', 'store-listing/assistance.html', 'store-listing/fiches-stores.md']) {
+    const txt = readFileSync(f, 'utf8');
+    assert.ok(txt.includes(CONTACT_EMAIL), `${f} : adresse absente`);
+    for (const m of txt.matchAll(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g)) assert.equal(m[0], CONTACT_EMAIL, `${f} : autre adresse ${m[0]}`);
+    assert.ok(!/misterJ|example\.com/.test(txt), `${f} : ancien éditeur ou adresse d'exemple`);
+  }
 });
 
-// ——— V1.2 : un seul frigo ———
+// V1.2 : un seul frigo
 
 test('frigo : trois blocs, le plus proche de la date en premier', () => {
   const now = new Date();
@@ -244,4 +255,214 @@ test('résultats : décocher un produit ne touche pas au frigo', () => {
   const search = searchIngredientsFrom(fridgeIds, new Set(['tomato']));
   assert.deepEqual([...search], ['egg', 'pasta']);
   assert.equal(fridgeIds.size, 3);
+});
+
+// V1.2.1 : corrections
+
+test('anglais : aucun texte resté en français', () => {
+  for (const [k, v] of Object.entries(en)) assert.ok(!/[éèàùçêâôûîœ]/i.test(v), `en.${k} semble en français : ${v}`);
+});
+
+test('identifiant de l’appli : éditeur R-Aclés', () => {
+  assert.equal(appConfig.ios?.bundleIdentifier, 'com.racles.mypopote');
+  assert.equal(appConfig.android?.package, 'com.racles.mypopote');
+});
+
+// V1.3 : l'accueil en cartes
+
+test('accueil : ordre fixe des cartes', () => {
+  assert.deepEqual(homeCards({ fridgeEmpty: false, urgentCount: 2 }), ['urgent', 'now', 'add', 'fill']);
+  assert.deepEqual(homeCards({ fridgeEmpty: false, urgentCount: 0 }), ['now', 'add', 'fill']);
+  assert.deepEqual(homeCards({ fridgeEmpty: true, urgentCount: 0 }), ['add', 'pantry', 'fill']);
+});
+
+test('accueil : trois idées tout de suite, jamais de recette Premium verrouillée', () => {
+  const fridge = new Set(['egg', 'milk', 'butter', 'pasta', 'emmental', 'tomato', 'cream', 'onion']);
+  const matches = matchRecipes(ALL, fridge, { ...noFilter, maxTime: null, difficulty: null, course: null });
+  const { ideas, complete } = quickIdeas(matches, false);
+  assert.equal(ideas.length, 3);
+  assert.ok(complete);
+  assert.ok(ideas.every((m) => m.missing.length === 0 && !m.recipe.premium));
+  // rien de faisable : on propose les plus proches, en le disant
+  const presque = quickIdeas(matchRecipes(ALL, new Set(['zucchini']), { ...noFilter, maxTime: null, difficulty: null, course: null }), false);
+  assert.equal(presque.complete, false);
+});
+
+test('accueil : idées avec trois fois rien quand le frigo est vide', () => {
+  const ideas = pantryIdeas(ALL);
+  assert.equal(ideas.length, 3);
+  assert.ok(ideas.every((m) => m.missing.length <= 2 && !m.recipe.premium && m.recipe.course === 'main'), JSON.stringify(ideas.map((m) => [m.recipe.id, m.missing])));
+  const demandes = ideas.flatMap((m) => m.missing);
+  assert.equal(new Set(demandes).size, demandes.length, 'deux idées demandent le même ingrédient');
+  console.log('   idées de placard :', ideas.map((m) => `${m.recipe.id} (${m.missing.join(', ')}, ${m.recipe.time} min)`).join(' · '));
+});
+
+test('accueil : quatre produits à finir au plus, puis « et n autres »', () => {
+  assert.deepEqual(namesPreview(['a', 'b']), { shown: ['a', 'b'], rest: 0 });
+  assert.deepEqual(namesPreview(['a', 'b', 'c', 'd', 'e', 'f']), { shown: ['a', 'b', 'c', 'd'], rest: 2 });
+});
+
+test('accueil : la liste des produits à finir se lit comme une phrase', () => {
+  const fr = { and: 'et', others: (n: number) => formatMessage('{n} {n|autre|autres}', { n }, 'fr') };
+  assert.equal(namesSentence(['Crème'], fr), 'Crème');
+  assert.equal(namesSentence(['Crème fraîche', 'Courgette'], fr), 'Crème fraîche et courgette');
+  assert.equal(namesSentence(['Pâtes', 'Ail', 'ton placard'], fr), 'Pâtes, ail et ton placard');
+  assert.equal(namesSentence(['Aa', 'Bb', 'Cc', 'Dd', 'Ee'], fr), 'Aa, bb, cc, dd et 1 autre');
+});
+
+// V1.4 : des résultats plus serrés
+
+test('idées : deux groupes, l’ordre du moteur est gardé', () => {
+  const fridge = new Set(['egg', 'milk', 'butter', 'pasta', 'emmental', 'tomato', 'cream', 'onion']);
+  const matches = matchRecipes(ALL, fridge, { ...noFilter, maxTime: null, difficulty: null, course: null });
+  const { now, almost } = groupResults(matches);
+  assert.ok(now.length > 0 && almost.length > 0);
+  assert.ok(now.every((m) => m.missing.length === 0));
+  assert.ok(almost.every((m) => m.missing.length > 0));
+  assert.deepEqual([...now, ...almost].map((m) => m.recipe.id), matches.map((m) => m.recipe.id));
+});
+
+test('idées : au plus deux recettes Premium verrouillées, toutes pour un abonné', () => {
+  const premium = ALL.filter((r) => r.premium).map((r) => evaluateRecipe(r, new Set(['egg'])));
+  const free = FREE_RECIPES.slice(0, 5).map((r) => evaluateRecipe(r, new Set(['egg'])));
+  const mixed = [premium[0], free[0], premium[1], free[1], premium[2], free[2]];
+  const v = visibleMatches(mixed, false);
+  assert.equal(v.filter((m) => m.recipe.premium).length, 2);
+  assert.equal(v.filter((m) => !m.recipe.premium).length, 3);
+  assert.equal(visibleMatches(mixed, true).length, mixed.length);
+});
+
+test('idées : la liste après « Il manque : » commence en minuscule', () => {
+  assert.equal(lowerFirst('Jambon'), 'jambon');
+  assert.equal(lowerFirst(''), '');
+});
+
+// V1.5 : « je n'aime pas » et ustensiles
+
+test('ustensiles : chaque recette a sa liste, cohérente avec ses étapes', () => {
+  for (const r of ALL) {
+    assert.ok(Array.isArray(r.tools), `${r.id} : ustensiles manquants`);
+    for (const tool of inferTools(r)) assert.ok(r.tools!.includes(tool), `${r.id} : les étapes demandent « ${tool} »`);
+  }
+  // « fourchette » ne veut pas dire four
+  assert.deepEqual(inferTools({ steps: [{ text: { fr: 'Écrasez à la fourchette.', en: '' } }] }), []);
+  assert.deepEqual(inferTools({ steps: [{ text: { fr: 'Gratinez à 200 °C.', en: '' } }] }), ['oven']);
+});
+
+test('ustensiles : rien n’est caché tant que la question n’a pas de réponse', () => {
+  const quiche = ALL.find((r) => r.id === 'quiche')!;
+  const omelette = ALL.find((r) => r.id === 'omelette')!;
+  assert.ok(fitsTools(quiche, null));
+  assert.ok(!fitsTools(quiche, []));
+  assert.ok(fitsTools(quiche, ['oven']));
+  assert.ok(fitsTools(omelette, []));
+  assert.ok(fitsTools({ tools: undefined }, []), 'recette perso sans ustensiles : jamais cachée');
+});
+
+test('je n’aime pas : obligatoire = recette cachée, facultatif = seulement signalé', () => {
+  const fridge = new Set(['egg', 'butter', 'emmental', 'chives', 'mushroom', 'onion', 'pasta', 'cream']);
+  const base = { ...noFilter, maxTime: null, difficulty: null, course: null };
+  const sans = matchRecipes(ALL, fridge, { ...base, dislikes: ['egg'] });
+  assert.ok(sans.length > 0);
+  assert.ok(sans.every((m) => !m.recipe.ingredients.some((i) => !i.optional && i.id === 'egg')), 'une recette avec des œufs obligatoires est restée');
+  // la ciboulette est facultative dans l'omelette : la recette reste, l'ingrédient est signalé
+  const avec = matchRecipes(ALL, fridge, { ...base, dislikes: ['chives'] });
+  assert.ok(avec.some((m) => m.recipe.id === 'omelette'));
+  assert.ok(ingredientConflicts('chives', [], [], ['chives']));
+});
+
+test('ustensiles : sans four, aucune recette au four dans les idées', () => {
+  const fridge = new Set(['egg', 'milk', 'butter', 'pasta', 'emmental', 'tomato', 'cream', 'onion', 'zucchini', 'potato']);
+  const m = matchRecipes(ALL, fridge, { ...noFilter, maxTime: null, difficulty: null, course: null, tools: ['microwave'] });
+  assert.ok(m.length > 0);
+  assert.ok(m.every((x) => !x.recipe.tools?.includes('oven') && !x.recipe.tools?.includes('blender')));
+});
+
+test('ingrédient vedette : la salade tomate-mozzarella ne se fait pas avec du fromage râpé', () => {
+  const r = ALL.find((x) => x.id === 'tomato_mozza')!;
+  const m = evaluateRecipe(r, new Set(['tomato', 'emmental']));
+  assert.deepEqual(m.missing, ['mozzarella']);
+  assert.equal(groupResults([m]).now.length, 0);
+});
+
+test('ingrédient vedette : des tomates en boîte gardent la soupe de tomates', () => {
+  const r = ALL.find((x) => x.id === 'tomato_soup')!;
+  const m = evaluateRecipe(r, new Set(['tomato', 'onion', 'garlic', 'stock']));
+  assert.deepEqual(m.missing, []);
+  assert.equal(m.substituted[0]?.missing, 'canned_tomato');
+});
+
+test('ingrédient vedette : sur tout le catalogue, jamais remplacé sauf si le plat reste le même', () => {
+  for (const r of ALL) {
+    for (const star of starIngredients(r)) {
+      const ri = r.ingredients.find((i) => i.id === star)!;
+      if (ri.optional || PANTRY_IDS.has(star)) continue;
+      // tout le reste de la recette + tous les remplaçants possibles de la vedette
+      const available = new Set(r.ingredients.map((i) => i.id).filter((id) => id !== star));
+      for (const sub of SUBSTITUTIONS[star] ?? []) sub.with.forEach((id) => id !== star && available.add(id));
+      const m = evaluateRecipe(r, available);
+      const allowed = (SUBSTITUTIONS[star] ?? []).some((s) => s.keepsDish && s.with.every((id) => available.has(id)));
+      assert.equal(m.missing.includes(star), !allowed, `${r.id} : « ${star} » ${allowed ? 'devrait être remplaçable' : 'a été remplacé'}`);
+    }
+  }
+});
+
+test('catalogue : au moins 180 recettes gratuites', () => {
+  assert.ok(FREE_RECIPES.length >= 180, `${FREE_RECIPES.length} recettes gratuites`);
+});
+
+test('catalogue : chaque recette a un vrai ingrédient, des étapes et des minuteurs entiers', () => {
+  for (const r of ALL) {
+    assert.ok(r.ingredients.some((i) => !PANTRY_IDS.has(i.id)), `${r.id} : seulement des ingrédients du placard`);
+    assert.ok(r.steps.length >= 2, `${r.id} : moins de deux étapes`);
+    assert.ok(r.title.fr && r.title.en && r.steps.every((s) => s.text.fr && s.text.en), `${r.id} : traduction manquante`);
+    for (const s of r.steps) if (s.timer != null) assert.ok(Number.isInteger(s.timer) && s.timer > 0, `${r.id} : minuteur ${s.timer}`);
+  }
+});
+
+test('catalogue : aucun dessert avec de la viande ou du poisson', () => {
+  for (const r of ALL.filter((x) => x.course === 'dessert'))
+    for (const i of r.ingredients) assert.ok(!INGREDIENT_BY_ID[i.id].tags.some((t) => t === 'meat' || t === 'fish' || t === 'shellfish'), `${r.id} : ${i.id}`);
+});
+
+test('pertinence : un seul produit suffit quand il donne son nom au plat', () => {
+  const ids = (fridge: string[]) => matchRecipes(ALL, new Set(fridge), { ...noFilter, maxTime: null, difficulty: null, course: null }).filter((m) => !m.missing.length).map((m) => m.recipe.id);
+  assert.ok(ids(['apple']).includes('apple_compote'));
+  assert.ok(ids(['potato']).includes('sauteed_potatoes'));
+  assert.ok(ids(['pear']).includes('poached_pears'));
+  assert.ok(!ids(['lemon']).includes('fruit_salad'));
+});
+
+// V1.6.1 : des textes sans tics de texte généré
+test('textes : aucun tiret long, aucun émoji décoratif dans les phrases', () => {
+  const dash = /[—–]/;
+  for (const [lang, dict] of [['fr', fr], ['en', en]] as const)
+    for (const [k, v] of Object.entries(dict)) {
+      assert.ok(!dash.test(v), `${lang}.${k} : tiret long`);
+      if (!k.startsWith('accent_')) assert.ok(!/\p{Extended_Pictographic}/u.test(v), `${lang}.${k} : émoji « ${v} »`);
+    }
+  for (const r of ALL) for (const s of [r.title.fr, r.title.en, ...r.steps.flatMap((x) => [x.text.fr, x.text.en])]) assert.ok(!dash.test(s), `${r.id} : tiret long dans « ${s} »`);
+  for (const f of ['store-listing/fiches-stores.md', 'store-listing/politique-confidentialite.html', 'store-listing/assistance.html', 'src/app/privacy.tsx'])
+    assert.ok(!dash.test(readFileSync(f, 'utf8')), `${f} : tiret long`);
+});
+
+// V1.6.2 : quantités et accords
+test('quantités : une moitié reste une moitié, un œuf entier jamais', () => {
+  assert.equal(formatQty({ id: 'onion', qty: 0.5, unit: 'pc' }, 1, 'fr'), '½');
+  assert.equal(formatQty({ id: 'onion', qty: 0.5, unit: 'pc' }, 2, 'fr'), '1');
+  assert.equal(formatQty({ id: 'egg', qty: 1, unit: 'pc' }, 0.5, 'fr'), '1');
+  assert.equal(formatQty({ id: 'onion', qty: 0.5, unit: 'pc' }, 4, 'en'), '2');
+});
+
+test('accords : « 1 Œuf », « 2 Oignons », « ½ Concombre »', () => {
+  const name = (id: string, qty: number, factor = 1, lang: 'fr' | 'en' = 'fr') =>
+    countedName(INGREDIENT_BY_ID[id].count?.[lang], INGREDIENT_BY_ID[id].name[lang], shownQty({ id, qty, unit: 'pc' }, factor));
+  assert.equal(name('egg', 1), 'Œuf');
+  assert.equal(name('egg', 3), 'Œufs');
+  assert.equal(name('onion', 2), 'Oignons');
+  assert.equal(name('cucumber', 0.5), 'Concombre');
+  assert.equal(name('leek', 3), 'Poireaux');
+  assert.equal(name('tomato', 1, 1, 'en'), 'Tomato');
+  // tout ingrédient compté à l'unité dans une recette a ses deux formes
+  for (const r of ALL) for (const i of r.ingredients) if (i.unit === 'pc' && i.qty) assert.ok(INGREDIENT_BY_ID[i.id].count, `${r.id} : « ${i.id} » sans singulier ni pluriel`);
 });

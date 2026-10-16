@@ -2,9 +2,9 @@ import * as Speech from 'expo-speech';
 import { useCallback, useState } from 'react';
 import { NO_NATIVE_EXTRAS } from '../runtime';
 import type { Lang } from '../data/types';
+import type { VoiceCommand } from './voiceParse';
 
 export { parseCommand, type VoiceCommand } from './voiceParse';
-import type { VoiceCommand } from './voiceParse';
 
 export type VoiceState = 'off' | 'listening' | 'unavailable' | 'denied' | 'onlineOnly';
 

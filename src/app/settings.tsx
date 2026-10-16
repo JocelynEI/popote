@@ -122,7 +122,7 @@ export default function SettingsScreen() {
         </Section>
 
         <Section title={t('sectionProfile')}>
-          <Button kind="secondary" icon="nutrition-outline" title={`${t('prefsDiet')} · ${t('prefsAllergies')} · ${t('prefsServings')}`} onPress={() => router.push('/preferences')} />
+          <Button kind="secondary" icon="nutrition-outline" title={`${t('prefsDiet')} · ${t('prefsAllergies')} · ${t('dislikesShort')} · ${t('toolsShort')}`} onPress={() => router.push('/preferences')} />
         </Section>
 
         <Section title={t('sectionNotifications')}>

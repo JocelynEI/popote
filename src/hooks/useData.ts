@@ -10,7 +10,8 @@ import { key } from '../logic/text';
 /** Ré-exécute `fn` à chaque modification de la base locale. */
 export function useData<T>(fn: () => T, deps: unknown[] = []): T {
   const v = useSyncExternalStore(subscribe, getVersion);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // hook générique : les dépendances viennent de l'appelant, la liste ne peut pas être écrite en dur
+  // eslint-disable-next-line react-hooks/use-memo, react-hooks/exhaustive-deps
   return useMemo(fn, [v, ...deps]);
 }
 

@@ -1,5 +1,5 @@
 import { getAvailablePurchases, useIAP } from 'expo-iap';
-import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { type ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useSettings } from '../state/settings';
 import { type BuyResult, PremiumContext, PREMIUM_SKU } from './premium';
 
@@ -12,7 +12,6 @@ import { type BuyResult, PremiumContext, PREMIUM_SKU } from './premium';
 export function NativePremiumProvider({ children }: { children: ReactNode }) {
   const { settings, update } = useSettings();
   const pending = useRef<((r: BuyResult) => void) | null>(null);
-  const [price, setPrice] = useState<string | null>(null);
 
   const { connected, products, fetchProducts, requestPurchase, finishTransaction, restorePurchases, availablePurchases } = useIAP({
     onPurchaseSuccess: async (purchase) => {
@@ -38,10 +37,7 @@ export function NativePremiumProvider({ children }: { children: ReactNode }) {
     if (connected) fetchProducts({ skus: [PREMIUM_SKU], type: 'in-app' }).catch(() => {});
   }, [connected, fetchProducts]);
 
-  useEffect(() => {
-    const p = products.find((x) => x.id === PREMIUM_SKU);
-    if (p) setPrice(p.displayPrice);
-  }, [products]);
+  const price = useMemo(() => products.find((x) => x.id === PREMIUM_SKU)?.displayPrice ?? null, [products]);
 
   // Si le store signale un achat existant (réinstallation, nouveau téléphone), on débloque.
   useEffect(() => {

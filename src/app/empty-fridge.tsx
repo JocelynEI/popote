@@ -27,9 +27,9 @@ export default function EmptyFridgeScreen() {
         recipes.filter((r) => isPremium || !r.premium),
         fridge.ids,
         fridge.urgent,
-        { diets: settings.diets, allergies: settings.allergies },
+        { diets: settings.diets, allergies: settings.allergies, dislikes: settings.dislikes, tools: settings.tools },
       ),
-    [recipes, isPremium, fridge.ids, fridge.urgent, settings.diets, settings.allergies],
+    [recipes, isPremium, fridge.ids, fridge.urgent, settings.diets, settings.allergies, settings.dislikes, settings.tools],
   );
 
   if (!plan.picks.length) {
