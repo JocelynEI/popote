@@ -46,7 +46,7 @@ export default function HomeScreen() {
       .suggest({
         recipes,
         available: fridge.ids,
-        filters: { maxTime: null, difficulty: null, course: null, diets: settings.diets, allergies: settings.allergies },
+        filters: { maxTime: null, difficulty: null, course: null, diets: settings.diets, allergies: settings.allergies, dislikes: settings.dislikes, tools: settings.tools },
         urgent: fridge.urgent,
         recentlyCooked: recent,
       })
@@ -55,7 +55,7 @@ export default function HomeScreen() {
     return () => {
       alive = false;
     };
-  }, [recipes, fridge.ids, fridge.urgent, recent, settings.diets, settings.allergies]);
+  }, [recipes, fridge.ids, fridge.urgent, recent, settings.diets, settings.allergies, settings.dislikes, settings.tools]);
 
   const cards = homeCards({ fridgeEmpty: fridge.items.length === 0, urgentCount: fridge.urgentItems.length });
   const now = quickIdeas(matches, isPremium);

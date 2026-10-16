@@ -4,6 +4,11 @@ export interface Substitution {
   /** ingrédients (tous requis) qui remplacent l'ingrédient manquant */
   with: string[];
   note: L10n;
+  /**
+   * Le plat reste le même avec ce remplacement (tomates en boîte pour des tomates cuites, échalote pour l'oignon) :
+   * il reste permis même pour l'ingrédient qui donne son nom au plat.
+   */
+  keepsDish?: boolean;
 }
 
 /** ingrédient manquant -> remplacements possibles, par ordre de préférence */
@@ -15,8 +20,8 @@ export const SUBSTITUTIONS: Record<string, Substitution[]> = {
     { with: ['coconut_milk'], note: { fr: 'Lait de coco (version sans lactose)', en: 'Coconut milk (dairy-free)' } },
   ],
   butter: [{ with: ['oil'], note: { fr: 'Huile (un peu moins que la quantité de beurre)', en: 'Oil (slightly less than the butter)' } }],
-  shallot: [{ with: ['onion'], note: { fr: 'Oignon (un demi pour une échalote)', en: 'Onion (half per shallot)' } }],
-  onion: [{ with: ['shallot'], note: { fr: 'Échalote', en: 'Shallot' } }],
+  shallot: [{ with: ['onion'], note: { fr: 'Oignon (un demi pour une échalote)', en: 'Onion (half per shallot)' }, keepsDish: true }],
+  onion: [{ with: ['shallot'], note: { fr: 'Échalote', en: 'Shallot' }, keepsDish: true }],
   milk: [
     { with: ['coconut_milk'], note: { fr: 'Lait de coco', en: 'Coconut milk' } },
     { with: ['water', 'butter'], note: { fr: 'Eau + un peu de beurre', en: 'Water + a little butter' } },
@@ -34,9 +39,9 @@ export const SUBSTITUTIONS: Record<string, Substitution[]> = {
     { with: ['cream_cheese'], note: { fr: 'Fromage frais', en: 'Cream cheese' } },
   ],
   lemon: [{ with: ['vinegar'], note: { fr: 'Un trait de vinaigre', en: 'A dash of vinegar' } }],
-  canned_tomato: [{ with: ['tomato'], note: { fr: 'Tomates fraîches concassées', en: 'Chopped fresh tomatoes' } }],
-  tomato: [{ with: ['canned_tomato'], note: { fr: 'Tomates en boîte (en cuisson)', en: 'Canned tomatoes (for cooked dishes)' } }],
-  tomato_paste: [{ with: ['canned_tomato'], note: { fr: 'Tomates concassées, réduites plus longtemps', en: 'Canned tomatoes, reduced longer' } }],
+  canned_tomato: [{ with: ['tomato'], note: { fr: 'Tomates fraîches concassées', en: 'Chopped fresh tomatoes' }, keepsDish: true }],
+  tomato: [{ with: ['canned_tomato'], note: { fr: 'Tomates en boîte (en cuisson)', en: 'Canned tomatoes (for cooked dishes)' }, keepsDish: true }],
+  tomato_paste: [{ with: ['canned_tomato'], note: { fr: 'Tomates concassées, réduites plus longtemps', en: 'Canned tomatoes, reduced longer' }, keepsDish: true }],
   ham: [
     { with: ['bacon'], note: { fr: 'Lardons', en: 'Bacon' } },
     { with: ['turkey'], note: { fr: 'Dinde', en: 'Turkey' } },

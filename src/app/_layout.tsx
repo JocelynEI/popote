@@ -104,7 +104,7 @@ function AppStack() {
   useEffect(() => {
     const id = setTimeout(() => rescheduleAll(fridge, settings, lang), 800);
     return () => clearTimeout(id);
-  }, [fridge, settings.expiryNotif, settings.expiryHour, settings.expiryMinute, settings.dinnerNotif, settings.dinnerHour, settings.recapNotif, settings.diets, settings.allergies, lang]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [fridge, settings.expiryNotif, settings.expiryHour, settings.expiryMinute, settings.dinnerNotif, settings.dinnerHour, settings.recapNotif, settings.diets, settings.allergies, settings.dislikes, settings.tools, lang]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Toucher une notification ouvre le bon écran
   useEffect(() => {

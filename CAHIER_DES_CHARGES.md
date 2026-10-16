@@ -58,7 +58,7 @@ La bulle d'aide orange qui recouvrait la saisie disparaît. Une seule aide au pr
 - On ne fête jamais un zéro. « 0 produit sauvé ce mois-ci 🎉 » disparaît : sans rien à saluer, la carte n'apparaît pas.
 - Le « taux de gaspillage » disparaît des progrès. Le bouton « Jeté » reste dans le frigo pour retirer un produit, sans statistique derrière.
 - Badges : seuls ceux obtenus sont affichés, plus le prochain à portée. Fini le mur de neuf cadenas.
-- Adresse de contact : jocelyn.lebon.ae@gmail.com à la place de `contact@example.com`.
+- Adresse de contact : meo.compagnie@gmail.com à la place de `contact@example.com` (décidé le 16 octobre 2026).
 
 ### 3.5 Préférences : ce que je n'aime pas, ce que j'ai comme ustensiles
 
