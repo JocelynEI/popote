@@ -2,6 +2,27 @@
 
 Chaque version porte un seul sujet. Le plan de la refonte est dans `CAHIER_DES_CHARGES.md`.
 
+## V1.6.4 : l'aperçu web ne fige plus sur téléphone (16 octobre 2026)
+
+Sur l'aperçu GitHub Pages ouvert depuis un téléphone, l'écran se figeait quand on ajoutait des produits avec « Remplir mon frigo ».
+
+- La cause : sur le web, la base locale (expo-sqlite) tourne dans un processus à part, et chaque lecture ou écriture bloque l'écran en attendant sa réponse. Sur ordinateur, la réponse arrive vite. Sur téléphone, elle pouvait ne jamais arriver. La V1.6.3 n'y changeait rien.
+- L'aperçu web utilise maintenant sql.js, le même SQLite compilé pour le navigateur, qui tourne directement dans la page : plus d'attente bloquante. La base est gardée dans le navigateur (IndexedDB) et enregistrée peu après chaque modification, ou dès qu'on quitte l'onglet.
+- Les réglages de l'aperçu restent dans le navigateur (localStorage) et ne passent plus jamais par l'ancien moteur.
+- L'appli iPhone et Android ne change pas : elle garde expo-sqlite. Le schéma de la base est maintenant dans un fichier commun (`src/db/migrate.ts`), utilisé par les deux.
+- Nouvelle dépendance : `sql.js`, pour le web seulement. Ses deux fichiers sont servis depuis `public/sqljs/`. Rien n'est envoyé sur internet.
+- Les données de test déjà saisies dans l'aperçu web repartent de zéro (elles étaient dans l'ancien moteur).
+
+Tests ajoutés : la base sql.js se comporte comme expo-sqlite (insertion, lecture, transaction tout ou rien, relecture de ce qui est enregistré), et les fichiers web n'appellent plus expo-sqlite ni kv-store.
+
+### Recette sur le téléphone (aperçu web)
+
+1. Ouvre l'aperçu sur ton téléphone. S'il affiche encore l'ancienne version, ajoute `?reset` à la fin de l'adresse.
+2. « Remplir mon frigo », coche trois produits, touche « Ajouter 3 produits » : l'écran se ferme tout de suite et le message s'affiche.
+3. Onglet « Mon frigo » : les trois produits sont là.
+4. Ferme l'onglet du navigateur, rouvre l'aperçu : les produits sont toujours là.
+5. Ajoute un produit avec « Ajouter ce que j'ai », puis marque-le « Utilisé » dans le frigo : rien ne fige.
+
 ## V1.6.3 : le bouton de « Remplir mon frigo » (16 octobre 2026)
 
 Sur l'aperçu web, le bouton « Ajouter … produits » de la grille « Remplir mon frigo » pouvait ne rien faire.

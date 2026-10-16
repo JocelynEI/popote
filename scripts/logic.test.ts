@@ -25,6 +25,8 @@ import { BADGES, progressCards, visibleBadges } from '../src/logic/badges';
 import { formatMessage } from '../src/logic/text';
 import { groupFridge, newFridgeEntries, searchIngredientsFrom } from '../src/logic/fridge';
 import { groupResults, lowerFirst, visibleMatches } from '../src/logic/results';
+import { migrate, SCHEMA_VERSION } from '../src/db/migrate';
+import { wrapSqlJs } from '../src/db/sqljsAdapter';
 import { homeCards, namesPreview, namesSentence, pantryIdeas, quickIdeas } from '../src/logic/home';
 
 const ALL = [...FREE_RECIPES, ...PREMIUM_RECIPES];
@@ -475,4 +477,48 @@ test('remplir mon frigo : même chemin que « Ajouter ce que j’ai », bouton s
   assert.ok(src.includes('catch'), 'une erreur doit s’afficher, jamais un bouton qui ne fait rien');
   for (const d of [fr, en]) assert.ok(!/\d/.test(d.quickFillPick), `bouton vide : « ${d.quickFillPick} »`);
   assert.deepEqual(newFridgeEntries(['egg', 'milk', 'egg'], [{ ingredient_id: 'milk', expires_at: null }] as never), [{ ingredientId: 'egg', expiresAt: null }]);
+});
+
+// V1.6.4 : base de l'aperçu web sur sql.js (dans la page, sans attente bloquante)
+test('aperçu web : la base sql.js se comporte comme expo-sqlite', async () => {
+  const initSqlJs = (await import('sql.js')).default;
+  const SQL = await initSqlJs();
+  let writes = 0;
+  const raw = new SQL.Database();
+  const d = wrapSqlJs(raw, () => writes++);
+  migrate(d, true);
+  const before = writes;
+  const r = d.runSync('INSERT INTO fridge_items (ingredient_id, custom_name, expires_at, added_at) VALUES (?, ?, ?, ?)', 'egg', null, undefined, '2026-10-16');
+  assert.equal(r.lastInsertRowId, 1);
+  assert.equal(r.changes, 1);
+  assert.ok(writes > before, 'une écriture déclenche la sauvegarde');
+  assert.deepEqual(d.getFirstSync('SELECT ingredient_id, expires_at FROM fridge_items WHERE id = ?', 1), { ingredient_id: 'egg', expires_at: null });
+  assert.equal(d.getAllSync('SELECT * FROM fridge_items WHERE ingredient_id = ?', ['egg']).length, 1);
+  assert.equal(d.getFirstSync('SELECT * FROM fridge_items WHERE ingredient_id = ?', 'milk'), null);
+  // transaction : tout ou rien, une seule sauvegarde
+  const w = writes;
+  assert.throws(() =>
+    d.withTransactionSync(() => {
+      d.runSync('INSERT INTO fridge_items (ingredient_id, added_at) VALUES (?, ?)', 'milk', 'x');
+      throw new Error('stop');
+    }),
+  );
+  assert.equal(d.getAllSync('SELECT * FROM fridge_items').length, 1, 'la transaction ratée est annulée');
+  d.withTransactionSync(() => {
+    d.runSync('INSERT INTO fridge_items (ingredient_id, added_at) VALUES (?, ?)', 'milk', 'x');
+    d.runSync('INSERT INTO fridge_items (ingredient_id, added_at) VALUES (?, ?)', 'butter', 'x');
+  });
+  assert.equal(writes - w, 1);
+  // ce qui est enregistré se relit tel quel
+  const again = wrapSqlJs(new SQL.Database(raw.export()), () => {});
+  migrate(again, true);
+  assert.equal(again.getAllSync('SELECT * FROM fridge_items').length, 3);
+  assert.equal(again.getFirstSync<{ user_version: number }>('PRAGMA user_version')?.user_version, SCHEMA_VERSION);
+});
+
+test('aperçu web : plus aucun appel à expo-sqlite ni à kv-store dans le navigateur', () => {
+  for (const f of ['src/db/database.web.ts', 'src/db/warmup.web.ts', 'src/db/sqljsStore.ts'])
+    assert.ok(!/from 'expo-sqlite(\/kv-store)?'/.test(readFileSync(f, 'utf8').replace(/import type[^;]+;/g, '')), `${f} importe expo-sqlite`);
+  const settings = readFileSync('src/state/settings.tsx', 'utf8');
+  assert.ok(/if \(WEB\) \{[\s\S]*?return localStorage\.getItem\(KEY\);[\s\S]*?return null;/.test(settings), 'les réglages web restent dans localStorage');
 });
