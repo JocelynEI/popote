@@ -65,17 +65,6 @@ export function mergeFridgeItem(existing: FridgeItem, expiresAt: string | null) 
   emitChange();
 }
 
-export function addManyToFridge(ingredientIds: string[]) {
-  const d = db();
-  d.withTransactionSync(() => {
-    for (const id of ingredientIds) {
-      const exists = d.getFirstSync('SELECT id FROM fridge_items WHERE ingredient_id = ?', id);
-      if (!exists) d.runSync('INSERT INTO fridge_items (ingredient_id, added_at) VALUES (?, ?)', id, nowIso());
-    }
-  });
-  emitChange();
-}
-
 export function updateFridgeExpiry(id: number, expiresAt: string | null) {
   db().runSync('UPDATE fridge_items SET expires_at = ? WHERE id = ?', expiresAt, id);
   emitChange();

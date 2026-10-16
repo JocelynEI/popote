@@ -2,6 +2,26 @@
 
 Chaque version porte un seul sujet. Le plan de la refonte est dans `CAHIER_DES_CHARGES.md`.
 
+## V1.6.3 : le bouton de « Remplir mon frigo » (16 octobre 2026)
+
+Sur l'aperçu web, le bouton « Ajouter … produits » de la grille « Remplir mon frigo » pouvait ne rien faire.
+
+- L'ajout passe maintenant par le même chemin que « Ajouter ce que j'ai », qui marchait : un produit à la fois, sans transaction. L'ancienne fonction d'ajout groupé, devenue inutile, est retirée.
+- Si l'ajout échoue malgré tout, un message s'affiche avec la raison, au lieu d'un bouton qui ne réagit pas.
+- Tant que rien n'est coché, le bouton dit « Coche tes produits » au lieu de « Ajouter 0 produit ».
+
+Je n'ai pas réussi à reproduire le bug dans mon navigateur de test (Chromium) : la correction vise la seule différence avec l'écran qui marchait. Si le bouton ne réagit toujours pas, le message d'erreur dira pourquoi.
+
+Test ajouté : l'écran ajoute produit par produit, sans transaction, affiche une erreur au lieu de se taire, et son bouton vide ne montre pas de zéro.
+
+### Recette sur le téléphone (ou l'aperçu web)
+
+1. Recharge l'aperçu web (ou ajoute `?reset` à l'adresse pour repartir de zéro).
+2. Accueil, « Remplir mon frigo » : le bouton dit « Coche tes produits » et reste grisé.
+3. Coche trois produits : il devient « Ajouter 3 produits ». Touche-le : l'écran se ferme, le message « 3 produits ajoutés au frigo » s'affiche.
+4. Onglet « Mon frigo » : les trois produits sont là, sans date.
+5. Rouvre la grille : les trois produits n'y sont plus proposés.
+
 ## V1.6.2 : les quantités qui se lisent bien (16 octobre 2026)
 
 Deux erreurs d'affichage relevées pendant la V1.6, dans la liste des ingrédients d'une recette.
