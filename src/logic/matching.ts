@@ -1,7 +1,8 @@
 import { PANTRY_IDS } from '../data/ingredients';
 import { SUBSTITUTIONS, type Substitution } from '../data/substitutions';
-import type { Course, Diet, Recipe } from '../data/types';
+import type { Course, Diet, Recipe, Tool } from '../data/types';
 import { recipeFitsProfile, type Allergen } from './diets';
+import { fitsTools } from './tools';
 
 export interface MatchFilters {
   maxTime?: 15 | 30 | 60 | null;
@@ -9,6 +10,10 @@ export interface MatchFilters {
   course?: Course | null;
   diets: Diet[];
   allergies: Allergen[];
+  /** ingrédients que l'utilisateur n'aime pas */
+  dislikes?: string[];
+  /** ustensiles de l'utilisateur ; null ou absent = pas répondu, on ne filtre pas */
+  tools?: Tool[] | null;
 }
 
 export interface Substituted {
@@ -79,7 +84,7 @@ function passesFilters(recipe: Recipe, f: MatchFilters): boolean {
   if (f.maxTime && recipe.time > f.maxTime) return false;
   if (f.difficulty && recipe.difficulty > f.difficulty) return false;
   if (f.course && recipe.course !== f.course) return false;
-  return recipeFitsProfile(recipe, f.diets, f.allergies);
+  return recipeFitsProfile(recipe, f.diets, f.allergies, f.dislikes) && fitsTools(recipe, f.tools);
 }
 
 /** La recette utilise-t-elle suffisamment ce que l'utilisateur a vraiment ? (évite « salade de fruits » avec juste un citron) */

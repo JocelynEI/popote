@@ -2,6 +2,27 @@
 
 Chaque version porte un seul sujet. Le plan de la refonte est dans `CAHIER_DES_CHARGES.md`.
 
+## V1.5 : « Je n'aime pas » et ustensiles (16 octobre 2026)
+
+Les idées tiennent compte de ce que tu n'aimes pas et de ce que tu as dans ta cuisine.
+
+- **Préférences en trois écrans**, une question par écran : régime, allergies et nombre de personnes ; ce que tu n'aimes pas ; tes ustensiles. « Passer » reste possible au premier lancement. Dans Réglages, le bouton du profil culinaire ouvre les trois étapes.
+- **Ce que tu n'aimes pas** : recherche d'ingrédient et douze ingrédients souvent cités (coriandre, champignons, poivron, olives…). Une recette qui en a besoin est cachée partout (accueil, idées, « Vider le frigo », idée de la notification). S'il est facultatif, la fiche recette affiche « Facultatif, tu n'aimes pas ».
+- **Ustensiles** : four, micro-ondes, mixeur ou blender, cuiseur multifonction. Rien n'est filtré tant que la question n'a pas de réponse ; « Je ne sais pas, tout afficher » laisse tout visible. Une fois répondu, les recettes qui demandent un ustensile non coché sont cachées. Poêle et casserole sont considérées comme acquises.
+- **Les 117 recettes ont leur liste d'ustensiles**, déduite des étapes puis relue : 29 demandent le four, 8 le mixeur (les falafels, les deux). Deux gratins qui ne nommaient pas le four (« gratinez à 200 °C ») ont été corrigés à la main. Les recettes perso ne sont jamais cachées par les ustensiles.
+- Une ancienne sauvegarde s'importe sans erreur : les deux nouvelles préférences gardent leur valeur actuelle.
+
+Tests ajoutés : chaque recette a sa liste d'ustensiles, cohérente avec ses étapes (« fourchette » ne compte pas pour le four) ; rien n'est caché sans réponse ; ingrédient obligatoire non aimé = recette cachée, facultatif = signalé ; sans four, aucune recette au four dans les idées.
+
+### Recette sur le téléphone
+
+1. Réinstalle ou efface les données : après la présentation, trois écrans de préférences, avec des points d'avancement en haut.
+2. Étape 2 : touche « Coriandre » et cherche « ciboulette » ; elles apparaissent cochées.
+3. Étape 3 : coche seulement « Micro-ondes », puis « C'est parti ! ».
+4. Ajoute œufs, lait, crème, emmental, courgette, pâtes : dans les idées, plus de gratin, de quiche ni de macaroni au four ; l'omelette est là.
+5. Ouvre l'omelette : la ciboulette porte « Facultatif, tu n'aimes pas ».
+6. Réglages → profil culinaire → étape 3 → « Je ne sais pas, tout afficher » : les recettes au four reviennent.
+
 ## V1.4 : des résultats plus serrés (16 octobre 2026)
 
 L'écran des idées montre beaucoup plus de recettes à la fois.

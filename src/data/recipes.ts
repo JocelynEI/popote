@@ -8,7 +8,7 @@ import type { Recipe } from './types';
 export const FREE_RECIPES: Recipe[] = [
   // ---------- Recettes « placard » (faisables avec presque rien) ----------
   r({
-    id: 'omelette', fr: 'Omelette baveuse', en: 'Soft French omelette', icon: '🍳', course: 'main', time: 10,
+    id: 'omelette', fr: 'Omelette baveuse', en: 'Soft French omelette', icon: '🍳', course: 'main', time: 10, tools: [],
     ing: 'egg 4; butter 10 g; salt; pepper; chives 1 tbsp?; emmental 30 g?',
     steps: [
       ['Battez les œufs avec sel et poivre (et la ciboulette).', 'Beat the eggs with salt and pepper (and the chives).'],
@@ -18,7 +18,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'pasta_garlic', fr: "Pâtes à l'ail et à l'huile", en: 'Garlic & oil spaghetti', icon: '🍝', course: 'main', time: 15,
+    id: 'pasta_garlic', fr: "Pâtes à l'ail et à l'huile", en: 'Garlic & oil spaghetti', icon: '🍝', course: 'main', time: 15, tools: [],
     ing: 'pasta 200 g; garlic 3 clove; oil 4 tbsp; chili 1 pinch?; parsley 1 tbsp?; parmesan 30 g?; salt',
     steps: [
       ['Faites cuire les pâtes dans une grande casserole d’eau salée.', 'Cook the pasta in a large pot of salted water.', 10],
@@ -28,7 +28,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'fried_rice', fr: 'Riz sauté aux œufs', en: 'Egg fried rice', icon: '🍚', course: 'main', time: 15,
+    id: 'fried_rice', fr: 'Riz sauté aux œufs', en: 'Egg fried rice', icon: '🍚', course: 'main', time: 15, tools: [],
     ing: 'rice 250 g; egg 2; onion 1; soy_sauce 2 tbsp; oil 2 tbsp; peas 80 g?; carrot 1?; frozen_veg 150 g?',
     steps: [
       ['Utilisez du riz déjà cuit et refroidi (idéal : restes de la veille).', 'Use cooked, cooled rice (leftovers are ideal).'],
@@ -38,7 +38,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'french_toast', fr: 'Pain perdu', en: 'French toast', icon: '🍞', course: 'dessert', time: 15,
+    id: 'french_toast', fr: 'Pain perdu', en: 'French toast', icon: '🍞', course: 'dessert', time: 15, tools: [],
     ing: 'bread 6 slice; egg 2; milk 200 ml; sugar 2 tbsp; butter 20 g; cinnamon 1 pinch?; vanilla?',
     steps: [
       ['Fouettez œufs, lait, sucre (et cannelle ou vanille) dans une assiette creuse.', 'Whisk eggs, milk, sugar (and cinnamon or vanilla) in a shallow dish.'],
@@ -48,7 +48,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'crepes', fr: 'Crêpes', en: 'Crêpes', icon: '🥞', course: 'dessert', time: 30, serv: 4,
+    id: 'crepes', fr: 'Crêpes', en: 'Crêpes', icon: '🥞', course: 'dessert', time: 30, tools: [], serv: 4,
     ing: 'flour 250 g; egg 4; milk 500 ml; sugar 1 tbsp; butter 30 g; salt 1 pinch',
     steps: [
       ['Mettez la farine, le sucre et le sel dans un saladier, creusez un puits.', 'Put flour, sugar and salt in a bowl and make a well.'],
@@ -58,7 +58,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'shakshuka', fr: 'Shakshuka', en: 'Shakshuka', icon: '🍳', course: 'main', time: 25,
+    id: 'shakshuka', fr: 'Shakshuka', en: 'Shakshuka', icon: '🍳', course: 'main', time: 25, tools: [],
     ing: 'egg 4; canned_tomato 400 g; onion 1; bell_pepper 1?; garlic 2 clove; cumin 1 tsp; paprika 1 tsp?; oil 2 tbsp; coriander 1 tbsp?; feta 50 g?',
     steps: [
       ['Faites revenir oignon, poivron et ail dans l’huile.', 'Sauté onion, pepper and garlic in the oil.', 5],
@@ -68,7 +68,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'tuna_pasta', fr: 'Pâtes au thon et tomate', en: 'Tuna tomato pasta', icon: '🍝', course: 'main', time: 20,
+    id: 'tuna_pasta', fr: 'Pâtes au thon et tomate', en: 'Tuna tomato pasta', icon: '🍝', course: 'main', time: 20, tools: [],
     ing: 'pasta 200 g; tuna 1 can; canned_tomato 400 g; onion 1; garlic 1 clove; herbs 1 tsp; oil 1 tbsp; olives 10?',
     steps: [
       ['Faites cuire les pâtes.', 'Cook the pasta.', 10],
@@ -78,7 +78,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'croque', fr: 'Croque-monsieur', en: 'Croque-monsieur', icon: '🥪', course: 'main', time: 15,
+    id: 'croque', fr: 'Croque-monsieur', en: 'Croque-monsieur', icon: '🥪', course: 'main', time: 15, tools: ['oven'],
     ing: 'bread 4 slice; ham 2 slice; emmental 60 g; butter 15 g; cream 2 tbsp?',
     steps: [
       ['Beurrez les tranches de pain à l’extérieur.', 'Butter the outside of the bread slices.'],
@@ -88,7 +88,7 @@ export const FREE_RECIPES: Recipe[] = [
   }),
   // ---------- Plats ----------
   r({
-    id: 'carbonara', fr: 'Pâtes carbonara', en: 'Pasta carbonara', icon: '🍝', course: 'main', time: 20,
+    id: 'carbonara', fr: 'Pâtes carbonara', en: 'Pasta carbonara', icon: '🍝', course: 'main', time: 20, tools: [],
     ing: 'pasta 200 g; bacon 150 g; egg 2; parmesan 50 g; pepper',
     steps: [
       ['Faites cuire les pâtes.', 'Cook the pasta.', 10],
@@ -98,7 +98,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'bolognese', fr: 'Spaghetti bolognaise', en: 'Spaghetti bolognese', icon: '🍝', course: 'main', time: 40, serv: 4,
+    id: 'bolognese', fr: 'Spaghetti bolognaise', en: 'Spaghetti bolognese', icon: '🍝', course: 'main', time: 40, tools: [], serv: 4,
     ing: 'pasta 400 g; ground_beef 400 g; canned_tomato 400 g; onion 1; carrot 1?; garlic 2 clove; tomato_paste 1 tbsp?; herbs 1 tsp; oil 1 tbsp',
     steps: [
       ['Faites revenir oignon, carotte et ail dans l’huile.', 'Sauté onion, carrot and garlic in the oil.', 5],
@@ -108,7 +108,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'chicken_curry', fr: 'Curry de poulet au lait de coco', en: 'Coconut chicken curry', icon: '🍛', course: 'main', time: 30, serv: 3,
+    id: 'chicken_curry', fr: 'Curry de poulet au lait de coco', en: 'Coconut chicken curry', icon: '🍛', course: 'main', time: 30, tools: [], serv: 3,
     ing: 'chicken 400 g; coconut_milk 400 ml; onion 1; garlic 2 clove; curry 2 tsp; ginger 1 tsp?; tomato 2?; rice 200 g; oil 1 tbsp; coriander?',
     steps: [
       ['Lancez la cuisson du riz.', 'Start cooking the rice.', 12],
@@ -118,7 +118,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'chickpea_curry', fr: 'Curry de pois chiches', en: 'Chickpea curry', icon: '🍛', course: 'main', time: 25, serv: 3,
+    id: 'chickpea_curry', fr: 'Curry de pois chiches', en: 'Chickpea curry', icon: '🍛', course: 'main', time: 25, tools: [], serv: 3,
     ing: 'chickpeas 400 g; coconut_milk 400 ml; canned_tomato 200 g; onion 1; garlic 2 clove; curry 2 tsp; spinach 100 g?; rice 200 g; oil 1 tbsp',
     steps: [
       ['Faites cuire le riz.', 'Cook the rice.', 12],
@@ -128,7 +128,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'lentil_dahl', fr: 'Dahl de lentilles corail', en: 'Red lentil dahl', icon: '🥣', course: 'main', time: 30, serv: 3,
+    id: 'lentil_dahl', fr: 'Dahl de lentilles corail', en: 'Red lentil dahl', icon: '🥣', course: 'main', time: 30, tools: [], serv: 3,
     ing: 'lentils 200 g; coconut_milk 200 ml; canned_tomato 200 g; onion 1; garlic 2 clove; curry 2 tsp; ginger 1 tsp?; water 500 ml; lemon 1?',
     steps: [
       ['Faites revenir oignon, ail, gingembre et curry.', 'Sauté onion, garlic, ginger and curry.', 4],
@@ -138,7 +138,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'quiche', fr: 'Quiche lorraine', en: 'Quiche lorraine', icon: '🥧', course: 'main', time: 45, serv: 4, diff: 2,
+    id: 'quiche', fr: 'Quiche lorraine', en: 'Quiche lorraine', icon: '🥧', course: 'main', time: 45, tools: ['oven'], serv: 4, diff: 2,
     ing: 'puff_pastry 1; egg 3; cream 200 ml; milk 100 ml; bacon 200 g; emmental 50 g?; nutmeg 1 pinch?; pepper',
     steps: [
       ['Préchauffez le four à 200 °C. Étalez la pâte dans un moule et piquez-la.', 'Preheat the oven to 200 °C. Line a tin with the pastry and prick it.'],
@@ -148,7 +148,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'veg_quiche', fr: 'Quiche aux légumes du frigo', en: 'Fridge-veg quiche', icon: '🥧', course: 'main', time: 45, serv: 4, diff: 2,
+    id: 'veg_quiche', fr: 'Quiche aux légumes du frigo', en: 'Fridge-veg quiche', icon: '🥧', course: 'main', time: 45, tools: ['oven'], serv: 4, diff: 2,
     ing: 'puff_pastry 1; egg 3; cream 200 ml; zucchini 1?; spinach 100 g?; mushroom 150 g?; leek 1?; goat_cheese 100 g?; emmental 50 g?; salt; pepper',
     steps: [
       ['Préchauffez le four à 200 °C. Foncez le moule avec la pâte.', 'Preheat the oven to 200 °C. Line the tin with pastry.'],
@@ -158,7 +158,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'ratatouille', fr: 'Ratatouille', en: 'Ratatouille', icon: '🍆', course: 'main', time: 50, serv: 4,
+    id: 'ratatouille', fr: 'Ratatouille', en: 'Ratatouille', icon: '🍆', course: 'main', time: 50, tools: [], serv: 4,
     ing: 'zucchini 2; eggplant 1; bell_pepper 1; tomato 3; onion 1; garlic 2 clove; herbs 1 tsp; oil 3 tbsp',
     steps: [
       ['Coupez tous les légumes en dés.', 'Dice all the vegetables.'],
@@ -167,7 +167,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'veg_soup', fr: 'Soupe de légumes', en: 'Vegetable soup', icon: '🥣', course: 'starter', time: 35, serv: 4,
+    id: 'veg_soup', fr: 'Soupe de légumes', en: 'Vegetable soup', icon: '🥣', course: 'starter', time: 35, tools: ['blender'], serv: 4,
     ing: 'potato 2; carrot 2; leek 1?; zucchini 1?; onion 1; stock 1; water 1000 ml; cream 2 tbsp?',
     steps: [
       ['Épluchez et coupez les légumes en morceaux.', 'Peel and chop the vegetables.'],
@@ -177,7 +177,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'pumpkin_soup', fr: 'Velouté de courge', en: 'Squash soup', icon: '🎃', course: 'starter', time: 35, serv: 4,
+    id: 'pumpkin_soup', fr: 'Velouté de courge', en: 'Squash soup', icon: '🎃', course: 'starter', time: 35, tools: ['blender'], serv: 4,
     ing: 'pumpkin 800 g; onion 1; potato 1?; stock 1; water 800 ml; cream 3 tbsp?; nutmeg 1 pinch?',
     steps: [
       ['Coupez la courge et la pomme de terre en cubes, émincez l’oignon.', 'Cube the squash and potato, slice the onion.'],
@@ -186,7 +186,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'tomato_soup', fr: 'Soupe de tomates', en: 'Tomato soup', icon: '🍅', course: 'starter', time: 25, serv: 3,
+    id: 'tomato_soup', fr: 'Soupe de tomates', en: 'Tomato soup', icon: '🍅', course: 'starter', time: 25, tools: ['blender'], serv: 3,
     ing: 'canned_tomato 800 g; onion 1; garlic 1 clove; stock 1; water 300 ml; basil?; cream 2 tbsp?; oil 1 tbsp',
     steps: [
       ['Faites revenir oignon et ail dans l’huile.', 'Sauté onion and garlic in the oil.', 4],
@@ -195,7 +195,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'gratin_dauphinois', fr: 'Gratin dauphinois', en: 'Potato gratin', icon: '🥔', course: 'main', time: 75, serv: 4,
+    id: 'gratin_dauphinois', fr: 'Gratin dauphinois', en: 'Potato gratin', icon: '🥔', course: 'main', time: 75, tools: ['oven'], serv: 4,
     ing: 'potato 1000 g; cream 250 ml; milk 250 ml; garlic 1 clove; butter 10 g; nutmeg 1 pinch?; salt; pepper',
     steps: [
       ['Préchauffez le four à 170 °C. Frottez un plat avec l’ail et beurrez-le.', 'Preheat the oven to 170 °C. Rub a dish with garlic and butter it.'],
@@ -205,7 +205,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'mash', fr: 'Purée maison', en: 'Mashed potatoes', icon: '🥔', course: 'main', time: 30, serv: 3,
+    id: 'mash', fr: 'Purée maison', en: 'Mashed potatoes', icon: '🥔', course: 'main', time: 30, tools: [], serv: 3,
     ing: 'potato 800 g; milk 150 ml; butter 40 g; nutmeg 1 pinch?; salt',
     steps: [
       ['Faites cuire les pommes de terre épluchées dans l’eau salée.', 'Boil the peeled potatoes in salted water.', 20],
@@ -214,7 +214,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'fritatta', fr: 'Frittata aux restes de légumes', en: 'Leftover veg frittata', icon: '🍳', course: 'main', time: 20,
+    id: 'fritatta', fr: 'Frittata aux restes de légumes', en: 'Leftover veg frittata', icon: '🍳', course: 'main', time: 20, tools: ['oven'],
     ing: 'egg 5; potato 1?; zucchini 1?; bell_pepper 1?; spinach 80 g?; onion 1?; emmental 40 g?; oil 1 tbsp; salt; pepper',
     steps: [
       ['Faites revenir les légumes en petits dés dans une poêle allant au four.', 'Sauté the diced vegetables in an ovenproof pan.', 8],
@@ -223,7 +223,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'chili', fr: 'Chili con carne', en: 'Chili con carne', icon: '🌶️', course: 'main', time: 45, serv: 4,
+    id: 'chili', fr: 'Chili con carne', en: 'Chili con carne', icon: '🌶️', course: 'main', time: 45, tools: [], serv: 4,
     ing: 'ground_beef 400 g; kidney_beans 400 g; canned_tomato 400 g; onion 1; bell_pepper 1?; garlic 2 clove; cumin 1 tsp; chili 1 tsp; corn 150 g?; rice 250 g; oil 1 tbsp',
     steps: [
       ['Faites revenir oignon, poivron et ail, puis la viande.', 'Sauté onion, pepper and garlic, then brown the beef.', 8],
@@ -233,7 +233,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'sin_carne', fr: 'Chili sin carne', en: 'Veggie chili', icon: '🌶️', course: 'main', time: 35, serv: 4,
+    id: 'sin_carne', fr: 'Chili sin carne', en: 'Veggie chili', icon: '🌶️', course: 'main', time: 35, tools: [], serv: 4,
     ing: 'kidney_beans 800 g; canned_tomato 400 g; onion 1; bell_pepper 1; corn 150 g?; garlic 2 clove; cumin 1 tsp; chili 1 tsp; paprika 1 tsp?; rice 250 g; oil 1 tbsp',
     steps: [
       ['Faites revenir oignon, poivron et ail.', 'Sauté onion, pepper and garlic.', 5],
@@ -242,7 +242,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'risotto_mushroom', fr: 'Risotto aux champignons', en: 'Mushroom risotto', icon: '🍄', course: 'main', time: 35, diff: 2, serv: 3,
+    id: 'risotto_mushroom', fr: 'Risotto aux champignons', en: 'Mushroom risotto', icon: '🍄', course: 'main', time: 35, tools: [], diff: 2, serv: 3,
     ing: 'rice 250 g; mushroom 250 g; onion 1; stock 1; water 800 ml; parmesan 50 g; butter 20 g; oil 1 tbsp',
     steps: [
       ['Faites chauffer l’eau avec le bouillon.', 'Heat the water with the stock cube.'],
@@ -252,7 +252,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'fajitas', fr: 'Fajitas au poulet', en: 'Chicken fajitas', icon: '🌯', course: 'main', time: 25, serv: 3,
+    id: 'fajitas', fr: 'Fajitas au poulet', en: 'Chicken fajitas', icon: '🌯', course: 'main', time: 25, tools: [], serv: 3,
     ing: 'tortilla 6; chicken 400 g; bell_pepper 2; onion 1; paprika 1 tsp; cumin 1 tsp; lemon 1?; cream 3 tbsp?; avocado 1?; oil 1 tbsp',
     steps: [
       ['Coupez poulet, poivrons et oignon en lanières.', 'Slice chicken, peppers and onion into strips.'],
@@ -261,7 +261,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'quesadilla', fr: 'Quesadillas express', en: 'Quick quesadillas', icon: '🌮', course: 'main', time: 15,
+    id: 'quesadilla', fr: 'Quesadillas express', en: 'Quick quesadillas', icon: '🌮', course: 'main', time: 15, tools: [],
     ing: 'tortilla 4; emmental 100 g; kidney_beans 150 g?; corn 80 g?; ham 2 slice?; bell_pepper 1?',
     steps: [
       ['Garnissez une moitié de chaque tortilla de fromage et de ce que vous avez.', 'Fill half of each tortilla with cheese and whatever you have.'],
@@ -270,7 +270,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'pizza', fr: 'Pizza maison', en: 'Homemade pizza', icon: '🍕', course: 'main', time: 25, serv: 2,
+    id: 'pizza', fr: 'Pizza maison', en: 'Homemade pizza', icon: '🍕', course: 'main', time: 25, tools: ['oven'], serv: 2,
     ing: 'pizza_dough 1; canned_tomato 150 g; mozzarella 125 g; ham 2 slice?; mushroom 100 g?; olives 8?; herbs 1 tsp',
     steps: [
       ['Préchauffez le four à 240 °C. Étalez la pâte.', 'Preheat the oven to 240 °C. Roll out the dough.'],
@@ -279,7 +279,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'stir_fry_noodles', fr: 'Nouilles sautées aux légumes', en: 'Veggie stir-fry noodles', icon: '🍜', course: 'main', time: 20,
+    id: 'stir_fry_noodles', fr: 'Nouilles sautées aux légumes', en: 'Veggie stir-fry noodles', icon: '🍜', course: 'main', time: 20, tools: [],
     ing: 'noodles 200 g; carrot 1?; bell_pepper 1?; cabbage 150 g?; frozen_veg 200 g?; garlic 1 clove; soy_sauce 3 tbsp; honey 1 tsp?; oil 2 tbsp; egg 2?',
     steps: [
       ['Faites cuire les nouilles selon le paquet.', 'Cook the noodles as per the packet.', 4],
@@ -288,7 +288,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'salmon_papillote', fr: 'Saumon en papillote', en: 'Salmon en papillote', icon: '🐟', course: 'main', time: 25,
+    id: 'salmon_papillote', fr: 'Saumon en papillote', en: 'Salmon en papillote', icon: '🐟', course: 'main', time: 25, tools: ['oven'],
     ing: 'salmon 2; lemon 1; zucchini 1?; carrot 1?; herbs 1 tsp?; oil 1 tbsp; salt; pepper',
     steps: [
       ['Préchauffez le four à 200 °C.', 'Preheat the oven to 200 °C.'],
@@ -297,7 +297,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'fish_rice', fr: 'Poisson blanc, riz et sauce citron', en: 'White fish with lemon rice', icon: '🐟', course: 'main', time: 25,
+    id: 'fish_rice', fr: 'Poisson blanc, riz et sauce citron', en: 'White fish with lemon rice', icon: '🐟', course: 'main', time: 25, tools: [],
     ing: 'white_fish 2; rice 150 g; lemon 1; butter 20 g; parsley?; salt; pepper',
     steps: [
       ['Faites cuire le riz.', 'Cook the rice.', 12],
@@ -306,7 +306,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'chicken_mustard', fr: 'Poulet à la moutarde', en: 'Mustard cream chicken', icon: '🍗', course: 'main', time: 25,
+    id: 'chicken_mustard', fr: 'Poulet à la moutarde', en: 'Mustard cream chicken', icon: '🍗', course: 'main', time: 25, tools: [],
     ing: 'chicken 300 g; cream 150 ml; mustard 2 tbsp; onion 1?; oil 1 tbsp; pasta 200 g?; rice 150 g?',
     steps: [
       ['Faites dorer le poulet (et l’oignon) dans l’huile.', 'Brown the chicken (and onion) in the oil.', 8],
@@ -315,7 +315,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'sausage_lentils', fr: 'Saucisses aux lentilles', en: 'Sausages with lentils', icon: '🌭', course: 'main', time: 40, serv: 3,
+    id: 'sausage_lentils', fr: 'Saucisses aux lentilles', en: 'Sausages with lentils', icon: '🌭', course: 'main', time: 40, tools: [], serv: 3,
     ing: 'sausage 4; lentils 250 g; carrot 2; onion 1; stock 1; water 800 ml; herbs 1 tsp?',
     steps: [
       ['Faites dorer les saucisses, réservez.', 'Brown the sausages and set aside.', 6],
@@ -324,7 +324,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'couscous_veg', fr: 'Couscous express aux légumes', en: 'Quick vegetable couscous', icon: '🍲', course: 'main', time: 30, serv: 3,
+    id: 'couscous_veg', fr: 'Couscous express aux légumes', en: 'Quick vegetable couscous', icon: '🍲', course: 'main', time: 30, tools: [], serv: 3,
     ing: 'couscous 200 g; chickpeas 200 g; carrot 2; zucchini 1; onion 1; canned_tomato 200 g; cumin 1 tsp; stock 1; water 500 ml; oil 1 tbsp',
     steps: [
       ['Faites revenir oignon et légumes coupés, ajoutez tomates, épices, eau et bouillon.', 'Sauté onion and chopped veg, add tomatoes, spices, water and stock.', 5],
@@ -333,7 +333,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'mac_cheese', fr: 'Macaroni au fromage', en: 'Mac and cheese', icon: '🧀', course: 'main', time: 30, serv: 3,
+    id: 'mac_cheese', fr: 'Macaroni au fromage', en: 'Mac and cheese', icon: '🧀', course: 'main', time: 30, tools: ['oven'], serv: 3,
     ing: 'pasta 250 g; milk 400 ml; butter 30 g; flour 30 g; emmental 150 g; mustard 1 tsp?; nutmeg 1 pinch?',
     steps: [
       ['Faites cuire les pâtes.', 'Cook the pasta.', 9],
@@ -343,7 +343,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'gnocchi_tomato', fr: 'Gnocchis poêlés tomate-mozza', en: 'Pan-fried gnocchi with tomato & mozzarella', icon: '🥟', course: 'main', time: 20,
+    id: 'gnocchi_tomato', fr: 'Gnocchis poêlés tomate-mozza', en: 'Pan-fried gnocchi with tomato & mozzarella', icon: '🥟', course: 'main', time: 20, tools: [],
     ing: 'gnocchi 500 g; canned_tomato 300 g; mozzarella 125 g; garlic 1 clove; basil?; oil 1 tbsp',
     steps: [
       ['Faites dorer les gnocchis dans l’huile.', 'Pan-fry the gnocchi in the oil until golden.', 6],
@@ -352,7 +352,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'buddha_bowl', fr: 'Bowl quinoa-légumes', en: 'Quinoa veggie bowl', icon: '🥗', course: 'main', time: 25,
+    id: 'buddha_bowl', fr: 'Bowl quinoa-légumes', en: 'Quinoa veggie bowl', icon: '🥗', course: 'main', time: 25, tools: [],
     ing: 'quinoa 150 g; chickpeas 200 g; avocado 1?; carrot 1?; cucumber 1?; tomato 1?; feta 60 g?; lemon 1; oil 2 tbsp',
     steps: [
       ['Faites cuire le quinoa.', 'Cook the quinoa.', 12],
@@ -361,7 +361,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'tofu_stirfry', fr: 'Tofu sauté soja-sésame', en: 'Soy-sesame tofu stir-fry', icon: '🥢', course: 'main', time: 25,
+    id: 'tofu_stirfry', fr: 'Tofu sauté soja-sésame', en: 'Soy-sesame tofu stir-fry', icon: '🥢', course: 'main', time: 25, tools: [],
     ing: 'tofu 250 g; soy_sauce 3 tbsp; broccoli 1?; bell_pepper 1?; garlic 1 clove; ginger 1 tsp?; sesame 1 tbsp?; rice 150 g; oil 2 tbsp',
     steps: [
       ['Faites cuire le riz.', 'Cook the rice.', 12],
@@ -372,7 +372,7 @@ export const FREE_RECIPES: Recipe[] = [
   }),
   // ---------- Entrées & salades ----------
   r({
-    id: 'nicoise', fr: 'Salade niçoise', en: 'Niçoise salad', icon: '🥗', course: 'starter', time: 20,
+    id: 'nicoise', fr: 'Salade niçoise', en: 'Niçoise salad', icon: '🥗', course: 'starter', time: 20, tools: [],
     ing: 'salad 1; tuna 1 can; egg 2; tomato 2; green_beans 100 g?; olives 10?; potato 2?; oil 3 tbsp; vinegar 1 tbsp',
     steps: [
       ['Faites cuire les œufs durs (et les pommes de terre, haricots).', 'Hard-boil the eggs (and cook the potatoes and beans).', 10],
@@ -381,7 +381,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'tomato_mozza', fr: 'Salade tomate-mozzarella', en: 'Caprese salad', icon: '🍅', course: 'starter', time: 10,
+    id: 'tomato_mozza', fr: 'Salade tomate-mozzarella', en: 'Caprese salad', icon: '🍅', course: 'starter', time: 10, tools: [],
     ing: 'tomato 3; mozzarella 125 g; basil?; oil 2 tbsp; salt; pepper',
     steps: [
       ['Coupez tomates et mozzarella en tranches.', 'Slice the tomatoes and mozzarella.'],
@@ -389,7 +389,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'carrot_salad', fr: 'Carottes râpées', en: 'Grated carrot salad', icon: '🥕', course: 'starter', time: 10,
+    id: 'carrot_salad', fr: 'Carottes râpées', en: 'Grated carrot salad', icon: '🥕', course: 'starter', time: 10, tools: [],
     ing: 'carrot 4; lemon 1; oil 2 tbsp; parsley?; raisins 30 g?',
     steps: [
       ['Râpez les carottes.', 'Grate the carrots.'],
@@ -397,7 +397,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'cucumber_yogurt', fr: 'Concombre au yaourt', en: 'Cucumber yogurt salad', icon: '🥒', course: 'starter', time: 10,
+    id: 'cucumber_yogurt', fr: 'Concombre au yaourt', en: 'Cucumber yogurt salad', icon: '🥒', course: 'starter', time: 10, tools: [],
     ing: 'cucumber 1; yogurt 1; garlic 1 clove?; chives?; lemon 1?; salt',
     steps: [
       ['Coupez le concombre en fines rondelles, salez.', 'Thinly slice the cucumber and salt it.'],
@@ -405,7 +405,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'hummus', fr: 'Houmous', en: 'Hummus', icon: '🫘', course: 'starter', time: 10, serv: 4,
+    id: 'hummus', fr: 'Houmous', en: 'Hummus', icon: '🫘', course: 'starter', time: 10, tools: ['blender'], serv: 4,
     ing: 'chickpeas 400 g; lemon 1; garlic 1 clove; oil 3 tbsp; cumin 1 pinch?; sesame 1 tbsp?; water 3 tbsp',
     steps: [
       ['Égouttez les pois chiches en gardant un peu de jus.', 'Drain the chickpeas, keeping a little liquid.'],
@@ -413,7 +413,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'guacamole', fr: 'Guacamole', en: 'Guacamole', icon: '🥑', course: 'starter', time: 10,
+    id: 'guacamole', fr: 'Guacamole', en: 'Guacamole', icon: '🥑', course: 'starter', time: 10, tools: [],
     ing: 'avocado 2; lemon 1; tomato 1?; onion 1?; coriander?; chili 1 pinch?; salt',
     steps: [
       ['Écrasez les avocats avec le jus de citron.', 'Mash the avocados with lemon juice.'],
@@ -421,7 +421,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'lentil_salad', fr: 'Salade de lentilles', en: 'Lentil salad', icon: '🥗', course: 'starter', time: 30,
+    id: 'lentil_salad', fr: 'Salade de lentilles', en: 'Lentil salad', icon: '🥗', course: 'starter', time: 30, tools: [],
     ing: 'lentils 150 g; shallot 1; mustard 1 tsp; vinegar 1 tbsp; oil 3 tbsp; parsley?; carrot 1?; feta 60 g?',
     steps: [
       ['Faites cuire les lentilles, égouttez et laissez tiédir.', 'Cook the lentils, drain and cool.', 20],
@@ -431,7 +431,7 @@ export const FREE_RECIPES: Recipe[] = [
   }),
   // ---------- Desserts ----------
   r({
-    id: 'banana_bread', fr: 'Banana bread', en: 'Banana bread', icon: '🍌', course: 'dessert', time: 60, serv: 6,
+    id: 'banana_bread', fr: 'Banana bread', en: 'Banana bread', icon: '🍌', course: 'dessert', time: 60, tools: ['oven'], serv: 6,
     ing: 'banana 3; flour 200 g; egg 2; sugar 80 g; butter 80 g; baking_powder 1 tsp; nuts 50 g?; chocolate 50 g?',
     steps: [
       ['Préchauffez le four à 180 °C.', 'Preheat the oven to 180 °C.'],
@@ -441,7 +441,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'apple_crumble', fr: 'Crumble aux pommes', en: 'Apple crumble', icon: '🍎', course: 'dessert', time: 45, serv: 4,
+    id: 'apple_crumble', fr: 'Crumble aux pommes', en: 'Apple crumble', icon: '🍎', course: 'dessert', time: 45, tools: ['oven'], serv: 4,
     ing: 'apple 4; flour 100 g; butter 70 g; sugar 80 g; cinnamon 1 pinch?; oats 30 g?',
     steps: [
       ['Préchauffez le four à 180 °C. Coupez les pommes en dés dans un plat.', 'Preheat the oven to 180 °C. Dice the apples into a dish.'],
@@ -450,7 +450,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'yogurt_cake', fr: 'Gâteau au yaourt', en: 'Yogurt cake', icon: '🍰', course: 'dessert', time: 45, serv: 6,
+    id: 'yogurt_cake', fr: 'Gâteau au yaourt', en: 'Yogurt cake', icon: '🍰', course: 'dessert', time: 45, tools: ['oven'], serv: 6,
     ing: 'yogurt 1; egg 3; flour 250 g; sugar 150 g; oil 80 ml; baking_powder 1 tsp; lemon 1?; vanilla?',
     steps: [
       ['Préchauffez le four à 180 °C.', 'Preheat the oven to 180 °C.'],
@@ -459,7 +459,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'chocolate_mousse', fr: 'Mousse au chocolat', en: 'Chocolate mousse', icon: '🍫', course: 'dessert', time: 20, serv: 4, diff: 2,
+    id: 'chocolate_mousse', fr: 'Mousse au chocolat', en: 'Chocolate mousse', icon: '🍫', course: 'dessert', time: 20, tools: [], serv: 4, diff: 2,
     ing: 'chocolate 200 g; egg 6; sugar 1 tbsp?; salt 1 pinch',
     steps: [
       ['Faites fondre le chocolat doucement.', 'Gently melt the chocolate.'],
@@ -469,7 +469,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'rice_pudding', fr: 'Riz au lait', en: 'Rice pudding', icon: '🍚', course: 'dessert', time: 45, serv: 4,
+    id: 'rice_pudding', fr: 'Riz au lait', en: 'Rice pudding', icon: '🍚', course: 'dessert', time: 45, tools: [], serv: 4,
     ing: 'rice 100 g; milk 1000 ml; sugar 80 g; vanilla?; cinnamon 1 pinch?',
     steps: [
       ['Portez le lait à ébullition avec la vanille.', 'Bring the milk to the boil with the vanilla.'],
@@ -478,7 +478,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'banana_pancakes', fr: 'Pancakes à la banane', en: 'Banana pancakes', icon: '🥞', course: 'dessert', time: 15,
+    id: 'banana_pancakes', fr: 'Pancakes à la banane', en: 'Banana pancakes', icon: '🥞', course: 'dessert', time: 15, tools: [],
     ing: 'banana 1; egg 2; flour 60 g?; oats 40 g?; baking_powder 1 pinch?; oil 1 tsp',
     steps: [
       ['Écrasez la banane, ajoutez les œufs (et farine ou avoine, levure).', 'Mash the banana, add the eggs (and flour or oats, baking powder).'],
@@ -486,7 +486,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'baked_apples', fr: 'Pommes au four', en: 'Baked apples', icon: '🍎', course: 'dessert', time: 35,
+    id: 'baked_apples', fr: 'Pommes au four', en: 'Baked apples', icon: '🍎', course: 'dessert', time: 35, tools: ['oven'],
     ing: 'apple 2; butter 20 g; sugar 2 tbsp; cinnamon 1 pinch?; honey 1 tbsp?; nuts 20 g?',
     steps: [
       ['Préchauffez le four à 180 °C. Évidez les pommes.', 'Preheat the oven to 180 °C. Core the apples.'],
@@ -495,7 +495,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'fruit_salad', fr: 'Salade de fruits', en: 'Fruit salad', icon: '🍓', course: 'dessert', time: 10, serv: 3,
+    id: 'fruit_salad', fr: 'Salade de fruits', en: 'Fruit salad', icon: '🍓', course: 'dessert', time: 10, tools: [], serv: 3,
     ing: 'apple 1?; banana 1?; orange 1?; pear 1?; strawberry 150 g?; lemon 1; sugar 1 tbsp?',
     steps: [
       ['Coupez tous les fruits disponibles en morceaux.', 'Chop whatever fruit you have.'],
@@ -506,7 +506,7 @@ export const FREE_RECIPES: Recipe[] = [
   // ---------- Lot 2 : recettes du quotidien, peu d'ingrédients obligatoires ----------
   // Œufs
   r({
-    id: 'scrambled_eggs', fr: 'Œufs brouillés crémeux', en: 'Creamy scrambled eggs', icon: '🍳', course: 'main', time: 10,
+    id: 'scrambled_eggs', fr: 'Œufs brouillés crémeux', en: 'Creamy scrambled eggs', icon: '🍳', course: 'main', time: 10, tools: [],
     ing: 'egg 4; butter 15 g; cream 1 tbsp?; chives 1 tbsp?; bread 2 slice?; salt; pepper',
     steps: [
       ['Battez les œufs avec sel et poivre.', 'Beat the eggs with salt and pepper.'],
@@ -515,7 +515,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'eggs_cocotte', fr: 'Œufs cocotte à la crème', en: 'Baked eggs with cream', icon: '🥚', course: 'starter', time: 15,
+    id: 'eggs_cocotte', fr: 'Œufs cocotte à la crème', en: 'Baked eggs with cream', icon: '🥚', course: 'starter', time: 15, tools: ['oven'],
     ing: 'egg 4; cream 4 tbsp; ham 1 slice?; emmental 30 g?; chives 1 tbsp?; butter 10 g; salt; pepper',
     steps: [
       ['Préchauffez le four à 180 °C et beurrez 4 ramequins.', 'Preheat the oven to 180 °C and butter 4 ramekins.'],
@@ -524,7 +524,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'tortilla_espanola', fr: 'Tortilla espagnole', en: 'Spanish omelette', icon: '🥔', course: 'main', time: 35, serv: 3,
+    id: 'tortilla_espanola', fr: 'Tortilla espagnole', en: 'Spanish omelette', icon: '🥔', course: 'main', time: 35, tools: [], serv: 3,
     ing: 'egg 5; potato 400 g; onion 1; oil 4 tbsp; salt',
     steps: [
       ['Coupez pommes de terre et oignon en fines tranches.', 'Thinly slice the potatoes and onion.'],
@@ -534,7 +534,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'egg_custard', fr: 'Œufs au lait', en: 'Baked egg custard', icon: '🍮', course: 'dessert', time: 50, serv: 4,
+    id: 'egg_custard', fr: 'Œufs au lait', en: 'Baked egg custard', icon: '🍮', course: 'dessert', time: 50, tools: ['oven'], serv: 4,
     ing: 'milk 500 ml; egg 4; sugar 80 g; vanilla?',
     steps: [
       ['Préchauffez le four à 160 °C. Faites chauffer le lait (avec la vanille).', 'Preheat the oven to 160 °C. Heat the milk (with the vanilla).'],
@@ -546,7 +546,7 @@ export const FREE_RECIPES: Recipe[] = [
 
   // Pâtes
   r({
-    id: 'ham_cheese_pasta', fr: 'Coquillettes jambon-fromage', en: 'Ham & cheese pasta', icon: '🧀', course: 'main', time: 15,
+    id: 'ham_cheese_pasta', fr: 'Coquillettes jambon-fromage', en: 'Ham & cheese pasta', icon: '🧀', course: 'main', time: 15, tools: [],
     ing: 'pasta 200 g; ham 2 slice; emmental 60 g; butter 15 g; cream 2 tbsp?; salt; pepper',
     steps: [
       ['Faites cuire les pâtes dans l’eau salée.', 'Cook the pasta in salted water.', 9],
@@ -555,7 +555,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'pesto_pasta', fr: 'Pâtes au pesto', en: 'Pesto pasta', icon: '🌿', course: 'main', time: 15,
+    id: 'pesto_pasta', fr: 'Pâtes au pesto', en: 'Pesto pasta', icon: '🌿', course: 'main', time: 15, tools: [],
     ing: 'pasta 200 g; pesto 3 tbsp; parmesan 30 g?; tomato 1?; basil 1 tbsp?; salt',
     steps: [
       ['Faites cuire les pâtes dans l’eau salée.', 'Cook the pasta in salted water.', 10],
@@ -564,7 +564,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'tomato_pasta', fr: 'Pâtes sauce tomate maison', en: 'Pasta with homemade tomato sauce', icon: '🍅', course: 'main', time: 25,
+    id: 'tomato_pasta', fr: 'Pâtes sauce tomate maison', en: 'Pasta with homemade tomato sauce', icon: '🍅', course: 'main', time: 25, tools: [],
     ing: 'pasta 200 g; canned_tomato 400 g; garlic 2 clove; onion 1?; herbs 1 tsp?; basil 1 tbsp?; parmesan 30 g?; oil 2 tbsp; sugar 1 pinch; salt',
     steps: [
       ['Faites revenir l’ail (et l’oignon) dans l’huile.', 'Sauté the garlic (and onion) in the oil.', 3],
@@ -574,7 +574,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'zucchini_pasta', fr: 'Pâtes à la courgette et au citron', en: 'Zucchini lemon pasta', icon: '🥒', course: 'main', time: 20,
+    id: 'zucchini_pasta', fr: 'Pâtes à la courgette et au citron', en: 'Zucchini lemon pasta', icon: '🥒', course: 'main', time: 20, tools: [],
     ing: 'pasta 200 g; zucchini 1; garlic 1 clove; lemon 1?; goat_cheese 60 g?; parmesan 30 g?; oil 2 tbsp; salt; pepper',
     steps: [
       ['Faites cuire les pâtes.', 'Cook the pasta.', 10],
@@ -583,7 +583,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'salmon_pasta', fr: 'Pâtes au saumon et à la crème', en: 'Creamy salmon pasta', icon: '🐟', course: 'main', time: 20,
+    id: 'salmon_pasta', fr: 'Pâtes au saumon et à la crème', en: 'Creamy salmon pasta', icon: '🐟', course: 'main', time: 20, tools: [],
     ing: 'pasta 200 g; salmon 150 g; cream 150 ml; lemon 1?; chives 1 tbsp?; salt; pepper',
     steps: [
       ['Faites cuire les pâtes.', 'Cook the pasta.', 10],
@@ -592,7 +592,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'broccoli_pasta', fr: 'Pâtes au brocoli et parmesan', en: 'Broccoli parmesan pasta', icon: '🥦', course: 'main', time: 20,
+    id: 'broccoli_pasta', fr: 'Pâtes au brocoli et parmesan', en: 'Broccoli parmesan pasta', icon: '🥦', course: 'main', time: 20, tools: [],
     ing: 'pasta 200 g; broccoli 1; garlic 2 clove; parmesan 40 g?; chili 1 pinch?; oil 3 tbsp; salt',
     steps: [
       ['Faites cuire pâtes et fleurettes de brocoli dans la même eau salée.', 'Cook the pasta and broccoli florets in the same salted water.', 10],
@@ -601,7 +601,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'spinach_pasta', fr: 'Pâtes épinards et fromage frais', en: 'Spinach & cream cheese pasta', icon: '🥬', course: 'main', time: 20,
+    id: 'spinach_pasta', fr: 'Pâtes épinards et fromage frais', en: 'Spinach & cream cheese pasta', icon: '🥬', course: 'main', time: 20, tools: [],
     ing: 'pasta 200 g; spinach 150 g; cream_cheese 100 g; garlic 1 clove; parmesan 30 g?; nutmeg 1 pinch?; salt; pepper',
     steps: [
       ['Faites cuire les pâtes.', 'Cook the pasta.', 10],
@@ -610,7 +610,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'pasta_salad', fr: 'Salade de pâtes', en: 'Pasta salad', icon: '🥗', course: 'main', time: 20,
+    id: 'pasta_salad', fr: 'Salade de pâtes', en: 'Pasta salad', icon: '🥗', course: 'main', time: 20, tools: [],
     ing: 'pasta 200 g; tomato 2; mozzarella 125 g?; ham 2 slice?; olives 10?; pesto 2 tbsp?; basil 1 tbsp?; vinegar 1 tbsp; oil 3 tbsp; salt',
     steps: [
       ['Faites cuire les pâtes, rincez-les à l’eau froide.', 'Cook the pasta, rinse under cold water.', 10],
@@ -621,7 +621,7 @@ export const FREE_RECIPES: Recipe[] = [
 
   // Riz, céréales, féculents
   r({
-    id: 'tuna_rice_salad', fr: 'Salade de riz au thon', en: 'Tuna rice salad', icon: '🍚', course: 'main', time: 20,
+    id: 'tuna_rice_salad', fr: 'Salade de riz au thon', en: 'Tuna rice salad', icon: '🍚', course: 'main', time: 20, tools: [],
     ing: 'rice 200 g; tuna 1 can; tomato 2; corn 150 g?; egg 2?; olives 10?; vinegar 1 tbsp; oil 3 tbsp; salt',
     steps: [
       ['Faites cuire le riz (et les œufs 10 min pour les durcir), laissez refroidir.', 'Cook the rice (and hard-boil the eggs for 10 min), let cool.', 12],
@@ -630,7 +630,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'chorizo_rice', fr: 'Riz au chorizo et poivron', en: 'Chorizo & pepper rice', icon: '🥘', course: 'main', time: 30, serv: 3,
+    id: 'chorizo_rice', fr: 'Riz au chorizo et poivron', en: 'Chorizo & pepper rice', icon: '🥘', course: 'main', time: 30, tools: [], serv: 3,
     ing: 'rice 200 g; chorizo 100 g; bell_pepper 1; onion 1; canned_tomato 200 g?; paprika 1 tsp?; stock 1?; water 500 ml; oil 1 tbsp',
     steps: [
       ['Faites revenir oignon, poivron et chorizo en dés.', 'Sauté onion, pepper and diced chorizo.', 5],
@@ -639,7 +639,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'tabbouleh', fr: 'Taboulé', en: 'Tabbouleh', icon: '🥗', course: 'starter', time: 20, serv: 4,
+    id: 'tabbouleh', fr: 'Taboulé', en: 'Tabbouleh', icon: '🥗', course: 'starter', time: 20, tools: [], serv: 4,
     ing: 'couscous 150 g; tomato 2; cucumber 1; lemon 1; parsley 1 bunch?; onion 1?; oil 4 tbsp; water 150 ml; salt',
     steps: [
       ['Versez l’eau bouillante salée sur la semoule, couvrez 5 minutes puis égrainez.', 'Pour boiling salted water over the couscous, cover 5 minutes, then fluff.', 5],
@@ -648,7 +648,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'sauteed_potatoes', fr: 'Pommes de terre sautées', en: 'Pan-fried potatoes', icon: '🥔', course: 'main', time: 30,
+    id: 'sauteed_potatoes', fr: 'Pommes de terre sautées', en: 'Pan-fried potatoes', icon: '🥔', course: 'main', time: 30, tools: [],
     ing: 'potato 600 g; garlic 2 clove?; onion 1?; parsley 1 tbsp?; bacon 100 g?; oil 3 tbsp; salt',
     steps: [
       ['Coupez les pommes de terre en dés.', 'Dice the potatoes.'],
@@ -657,7 +657,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'sausage_potatoes', fr: 'Poêlée saucisses et pommes de terre', en: 'Sausage & potato skillet', icon: '🌭', course: 'main', time: 35,
+    id: 'sausage_potatoes', fr: 'Poêlée saucisses et pommes de terre', en: 'Sausage & potato skillet', icon: '🌭', course: 'main', time: 35, tools: [],
     ing: 'sausage 4; potato 500 g; onion 1; bell_pepper 1?; herbs 1 tsp?; oil 2 tbsp; salt',
     steps: [
       ['Faites précuire les pommes de terre en dés 8 minutes dans l’eau salée.', 'Parboil the diced potatoes in salted water for 8 minutes.', 8],
@@ -666,7 +666,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'noodle_soup', fr: 'Soupe de nouilles', en: 'Noodle soup', icon: '🍜', course: 'main', time: 20,
+    id: 'noodle_soup', fr: 'Soupe de nouilles', en: 'Noodle soup', icon: '🍜', course: 'main', time: 20, tools: [],
     ing: 'noodles 150 g; stock 1; water 800 ml; soy_sauce 2 tbsp; egg 2?; carrot 1?; mushroom 100 g?; chicken 150 g?; ginger 1 tsp?',
     steps: [
       ['Portez l’eau à ébullition avec le bouillon, la sauce soja et le gingembre.', 'Bring the water to a boil with the stock, soy sauce and ginger.'],
@@ -677,7 +677,7 @@ export const FREE_RECIPES: Recipe[] = [
 
   // Viandes & poissons
   r({
-    id: 'chicken_lemon_honey', fr: 'Poulet au miel et citron', en: 'Honey lemon chicken', icon: '🍗', course: 'main', time: 25,
+    id: 'chicken_lemon_honey', fr: 'Poulet au miel et citron', en: 'Honey lemon chicken', icon: '🍗', course: 'main', time: 25, tools: [],
     ing: 'chicken 300 g; honey 2 tbsp; lemon 1; garlic 1 clove; soy_sauce 1 tbsp?; rice 200 g?; oil 1 tbsp',
     steps: [
       ['Faites dorer le poulet en morceaux dans l’huile.', 'Brown the chicken pieces in the oil.', 8],
@@ -686,7 +686,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'chicken_tomato_rice', fr: 'Riz au poulet et à la tomate', en: 'Chicken & tomato rice', icon: '🍛', course: 'main', time: 30, serv: 3,
+    id: 'chicken_tomato_rice', fr: 'Riz au poulet et à la tomate', en: 'Chicken & tomato rice', icon: '🍛', course: 'main', time: 30, tools: [], serv: 3,
     ing: 'chicken 300 g; rice 200 g; tomato 3; onion 1; garlic 1 clove?; paprika 1 tsp?; herbs 1 tsp?; stock 1?; water 500 ml; oil 1 tbsp; salt',
     steps: [
       ['Faites dorer le poulet en dés et l’oignon dans l’huile.', 'Brown the diced chicken and onion in the oil.', 6],
@@ -695,7 +695,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'chicken_basquaise', fr: 'Poulet basquaise', en: 'Basque-style chicken', icon: '🫑', course: 'main', time: 40, serv: 3,
+    id: 'chicken_basquaise', fr: 'Poulet basquaise', en: 'Basque-style chicken', icon: '🫑', course: 'main', time: 40, tools: [], serv: 3,
     ing: 'chicken 400 g; bell_pepper 2; canned_tomato 400 g; onion 1; garlic 2 clove; paprika 1 tsp?; chili 1 pinch?; rice 200 g?; oil 2 tbsp',
     steps: [
       ['Faites dorer le poulet dans l’huile, réservez.', 'Brown the chicken in the oil, set aside.', 6],
@@ -704,7 +704,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'chicken_wrap', fr: 'Wraps poulet-crudités', en: 'Chicken salad wraps', icon: '🌯', course: 'main', time: 20,
+    id: 'chicken_wrap', fr: 'Wraps poulet-crudités', en: 'Chicken salad wraps', icon: '🌯', course: 'main', time: 20, tools: [],
     ing: 'tortilla 4; chicken 250 g; salad 1?; tomato 1?; yogurt 3 tbsp?; emmental 40 g?; paprika 1 tsp?; oil 1 tbsp',
     steps: [
       ['Faites cuire le poulet en lamelles avec le paprika.', 'Cook the sliced chicken with the paprika.', 8],
@@ -713,7 +713,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'turkey_cream', fr: 'Escalopes de dinde à la crème', en: 'Turkey in cream sauce', icon: '🍗', course: 'main', time: 25,
+    id: 'turkey_cream', fr: 'Escalopes de dinde à la crème', en: 'Turkey in cream sauce', icon: '🍗', course: 'main', time: 25, tools: [],
     ing: 'turkey 300 g; cream 150 ml; mushroom 200 g?; shallot 1?; mustard 1 tsp?; rice 200 g?; butter 15 g',
     steps: [
       ['Faites dorer les escalopes au beurre, réservez.', 'Brown the escalopes in butter, set aside.', 6],
@@ -722,7 +722,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'meatballs_tomato', fr: 'Boulettes sauce tomate', en: 'Meatballs in tomato sauce', icon: '🍝', course: 'main', time: 40, serv: 3,
+    id: 'meatballs_tomato', fr: 'Boulettes sauce tomate', en: 'Meatballs in tomato sauce', icon: '🍝', course: 'main', time: 40, tools: [], serv: 3,
     ing: 'ground_beef 400 g; canned_tomato 400 g; onion 1; garlic 2 clove; egg 1?; bread 1 slice?; herbs 1 tsp?; pasta 250 g?; oil 2 tbsp; salt; pepper',
     steps: [
       ['Mélangez viande, œuf, pain émietté, sel et poivre, formez des boulettes.', 'Mix beef, egg, crumbled bread, salt and pepper, shape into balls.'],
@@ -732,7 +732,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'stuffed_tomatoes', fr: 'Tomates farcies', en: 'Stuffed tomatoes', icon: '🍅', course: 'main', time: 50, serv: 4,
+    id: 'stuffed_tomatoes', fr: 'Tomates farcies', en: 'Stuffed tomatoes', icon: '🍅', course: 'main', time: 50, tools: ['oven'], serv: 4,
     ing: 'tomato 6; ground_beef 350 g; onion 1; garlic 1 clove; bread 1 slice?; herbs 1 tsp?; parsley 1 tbsp?; rice 150 g?; oil 1 tbsp; salt; pepper',
     steps: [
       ['Préchauffez le four à 180 °C. Coupez le chapeau des tomates et videz-les.', 'Preheat the oven to 180 °C. Cut the tops off the tomatoes and hollow them.'],
@@ -741,7 +741,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'beef_stirfry', fr: 'Bœuf sauté aux oignons', en: 'Beef & onion stir-fry', icon: '🥩', course: 'main', time: 20,
+    id: 'beef_stirfry', fr: 'Bœuf sauté aux oignons', en: 'Beef & onion stir-fry', icon: '🥩', course: 'main', time: 20, tools: [],
     ing: 'beef 300 g; onion 2; soy_sauce 3 tbsp; garlic 1 clove; bell_pepper 1?; ginger 1 tsp?; sesame 1 tbsp?; rice 200 g?; oil 2 tbsp',
     steps: [
       ['Coupez le bœuf en fines lamelles, les oignons en quartiers.', 'Slice the beef thinly and the onions into wedges.'],
@@ -750,7 +750,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'honey_soy_pork', fr: 'Porc caramélisé miel-soja', en: 'Honey soy pork', icon: '🍖', course: 'main', time: 25,
+    id: 'honey_soy_pork', fr: 'Porc caramélisé miel-soja', en: 'Honey soy pork', icon: '🍖', course: 'main', time: 25, tools: [],
     ing: 'pork 400 g; honey 2 tbsp; soy_sauce 3 tbsp; garlic 2 clove; sesame 1 tbsp?; rice 200 g?; oil 1 tbsp',
     steps: [
       ['Coupez le porc en morceaux et faites-le dorer dans l’huile.', 'Cut the pork into pieces and brown in the oil.', 8],
@@ -759,7 +759,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'garlic_shrimp', fr: 'Crevettes à l’ail', en: 'Garlic butter shrimp', icon: '🦐', course: 'main', time: 15,
+    id: 'garlic_shrimp', fr: 'Crevettes à l’ail', en: 'Garlic butter shrimp', icon: '🦐', course: 'main', time: 15, tools: [],
     ing: 'shrimp 300 g; garlic 3 clove; butter 30 g; lemon 1?; parsley 1 tbsp?; chili 1 pinch?; rice 200 g?',
     steps: [
       ['Faites fondre le beurre, ajoutez l’ail haché (et le piment).', 'Melt the butter, add the chopped garlic (and chili).', 1],
@@ -768,7 +768,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'fish_curry', fr: 'Curry de poisson au lait de coco', en: 'Coconut fish curry', icon: '🐟', course: 'main', time: 30, serv: 3,
+    id: 'fish_curry', fr: 'Curry de poisson au lait de coco', en: 'Coconut fish curry', icon: '🐟', course: 'main', time: 30, tools: [], serv: 3,
     ing: 'white_fish 400 g; coconut_milk 400 ml; curry 1 tbsp; onion 1; tomato 1?; ginger 1 tsp?; coriander 1 tbsp?; rice 200 g?; oil 1 tbsp',
     steps: [
       ['Faites revenir l’oignon avec le curry (et le gingembre).', 'Sauté the onion with the curry powder (and ginger).', 4],
@@ -780,7 +780,7 @@ export const FREE_RECIPES: Recipe[] = [
 
   // Légumes
   r({
-    id: 'roasted_veg', fr: 'Légumes rôtis au four', en: 'Oven-roasted vegetables', icon: '🥕', course: 'main', time: 40,
+    id: 'roasted_veg', fr: 'Légumes rôtis au four', en: 'Oven-roasted vegetables', icon: '🥕', course: 'main', time: 40, tools: ['oven'],
     ing: 'potato 2?; carrot 2?; zucchini 1?; bell_pepper 1?; sweet_potato 1?; onion 1?; eggplant 1?; herbs 1 tsp?; oil 3 tbsp; salt',
     steps: [
       ['Préchauffez le four à 200 °C. Coupez les légumes en morceaux de même taille.', 'Preheat the oven to 200 °C. Cut the vegetables into even pieces.'],
@@ -789,7 +789,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'veg_curry', fr: 'Curry de légumes', en: 'Vegetable curry', icon: '🍛', course: 'main', time: 35, serv: 3,
+    id: 'veg_curry', fr: 'Curry de légumes', en: 'Vegetable curry', icon: '🍛', course: 'main', time: 35, tools: [], serv: 3,
     ing: 'coconut_milk 400 ml; curry 1 tbsp; onion 1; potato 2?; carrot 2?; cauliflower 1?; peas 100 g?; chickpeas 400 g?; rice 200 g?; oil 1 tbsp',
     steps: [
       ['Faites revenir l’oignon avec le curry.', 'Sauté the onion with the curry powder.', 3],
@@ -798,7 +798,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'zucchini_gratin', fr: 'Gratin de courgettes', en: 'Zucchini gratin', icon: '🥒', course: 'main', time: 45, serv: 3,
+    id: 'zucchini_gratin', fr: 'Gratin de courgettes', en: 'Zucchini gratin', icon: '🥒', course: 'main', time: 45, tools: ['oven'], serv: 3,
     ing: 'zucchini 3; egg 2; cream 100 ml; emmental 60 g; garlic 1 clove?; salt; pepper',
     steps: [
       ['Préchauffez le four à 180 °C. Coupez les courgettes en rondelles et faites-les revenir.', 'Preheat the oven to 180 °C. Slice and sauté the zucchini.', 8],
@@ -807,7 +807,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'cauliflower_gratin', fr: 'Gratin de chou-fleur', en: 'Cauliflower cheese', icon: '🥦', course: 'main', time: 45, serv: 4,
+    id: 'cauliflower_gratin', fr: 'Gratin de chou-fleur', en: 'Cauliflower cheese', icon: '🥦', course: 'main', time: 45, tools: ['oven'], serv: 4,
     ing: 'cauliflower 1; milk 400 ml; butter 30 g; flour 30 g; emmental 80 g; nutmeg 1 pinch?; salt',
     steps: [
       ['Faites cuire les fleurettes de chou-fleur dans l’eau salée.', 'Boil the cauliflower florets in salted water.', 8],
@@ -816,7 +816,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'leek_potato_soup', fr: 'Soupe poireaux-pommes de terre', en: 'Leek & potato soup', icon: '🥣', course: 'starter', time: 35, serv: 4,
+    id: 'leek_potato_soup', fr: 'Soupe poireaux-pommes de terre', en: 'Leek & potato soup', icon: '🥣', course: 'starter', time: 35, tools: ['blender'], serv: 4,
     ing: 'leek 2; potato 400 g; stock 1; water 1000 ml; butter 15 g?; cream 2 tbsp?; salt',
     steps: [
       ['Émincez les poireaux et faites-les fondre (au beurre).', 'Slice the leeks and soften them (in butter).', 5],
@@ -825,7 +825,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'carrot_soup', fr: 'Velouté de carottes au cumin', en: 'Carrot & cumin soup', icon: '🥕', course: 'starter', time: 35, serv: 4,
+    id: 'carrot_soup', fr: 'Velouté de carottes au cumin', en: 'Carrot & cumin soup', icon: '🥕', course: 'starter', time: 35, tools: ['blender'], serv: 4,
     ing: 'carrot 600 g; onion 1; stock 1; water 800 ml; cumin 1 tsp?; cream 2 tbsp?; oil 1 tbsp; salt',
     steps: [
       ['Faites revenir l’oignon dans l’huile avec le cumin.', 'Sauté the onion in the oil with the cumin.', 3],
@@ -834,7 +834,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'leek_tart', fr: 'Tarte aux poireaux', en: 'Leek tart', icon: '🥧', course: 'main', time: 50, serv: 4,
+    id: 'leek_tart', fr: 'Tarte aux poireaux', en: 'Leek tart', icon: '🥧', course: 'main', time: 50, tools: ['oven'], serv: 4,
     ing: 'puff_pastry 1; leek 3; egg 3; cream 200 ml; emmental 50 g?; bacon 100 g?; butter 15 g; nutmeg 1 pinch?; salt',
     steps: [
       ['Préchauffez le four à 180 °C. Faites fondre les poireaux émincés au beurre.', 'Preheat the oven to 180 °C. Soften the sliced leeks in butter.', 10],
@@ -843,7 +843,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'tomato_mustard_tart', fr: 'Tarte fine tomate-moutarde', en: 'Tomato mustard tart', icon: '🍅', course: 'main', time: 40, serv: 4,
+    id: 'tomato_mustard_tart', fr: 'Tarte fine tomate-moutarde', en: 'Tomato mustard tart', icon: '🍅', course: 'main', time: 40, tools: ['oven'], serv: 4,
     ing: 'puff_pastry 1; tomato 4; mustard 2 tbsp; emmental 50 g?; herbs 1 tsp?; oil 1 tbsp',
     steps: [
       ['Préchauffez le four à 200 °C. Étalez la pâte et tartinez-la de moutarde.', 'Preheat the oven to 200 °C. Roll out the pastry and spread with mustard.'],
@@ -854,7 +854,7 @@ export const FREE_RECIPES: Recipe[] = [
 
   // Tartines & entrées
   r({
-    id: 'avocado_toast', fr: 'Tartine avocat-œuf', en: 'Avocado egg toast', icon: '🥑', course: 'starter', time: 10,
+    id: 'avocado_toast', fr: 'Tartine avocat-œuf', en: 'Avocado egg toast', icon: '🥑', course: 'starter', time: 10, tools: [],
     ing: 'bread 2 slice; avocado 1; egg 2?; lemon 1?; chili 1 pinch?; salt',
     steps: [
       ['Faites griller le pain (et cuire les œufs au plat ou mollets).', 'Toast the bread (and fry or soft-boil the eggs).', 5],
@@ -863,7 +863,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'mushroom_toast', fr: 'Tartines champignons à la crème', en: 'Creamy mushroom toast', icon: '🍄', course: 'main', time: 15,
+    id: 'mushroom_toast', fr: 'Tartines champignons à la crème', en: 'Creamy mushroom toast', icon: '🍄', course: 'main', time: 15, tools: [],
     ing: 'bread 4 slice; mushroom 250 g; cream 3 tbsp; garlic 1 clove; parsley 1 tbsp?; butter 10 g; salt',
     steps: [
       ['Faites revenir les champignons émincés au beurre avec l’ail.', 'Sauté the sliced mushrooms in butter with the garlic.', 6],
@@ -872,7 +872,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'pizza_toast', fr: 'Tartines façon pizza', en: 'Pizza toasts', icon: '🍕', course: 'main', time: 15,
+    id: 'pizza_toast', fr: 'Tartines façon pizza', en: 'Pizza toasts', icon: '🍕', course: 'main', time: 15, tools: ['oven'],
     ing: 'bread 4 slice; canned_tomato 4 tbsp; mozzarella 125 g; ham 2 slice?; olives 6?; herbs 1 tsp?',
     steps: [
       ['Préchauffez le four en position gril.', 'Preheat the grill.'],
@@ -881,7 +881,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'sardine_spread', fr: 'Rillettes de sardines', en: 'Sardine spread', icon: '🐟', course: 'starter', time: 10,
+    id: 'sardine_spread', fr: 'Rillettes de sardines', en: 'Sardine spread', icon: '🐟', course: 'starter', time: 10, tools: [],
     ing: 'sardines 1 can; cream_cheese 100 g; lemon 1?; chives 1 tbsp?; bread 4 slice?; pepper',
     steps: [
       ['Égouttez les sardines et retirez l’arête centrale.', 'Drain the sardines and remove the backbone.'],
@@ -890,7 +890,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'greek_salad', fr: 'Salade grecque', en: 'Greek salad', icon: '🥗', course: 'starter', time: 10,
+    id: 'greek_salad', fr: 'Salade grecque', en: 'Greek salad', icon: '🥗', course: 'starter', time: 10, tools: [],
     ing: 'tomato 3; cucumber 1; feta 100 g; olives 10?; onion 1?; herbs 1 tsp?; oil 3 tbsp; salt',
     steps: [
       ['Coupez tomates, concombre et oignon en morceaux.', 'Chop the tomatoes, cucumber and onion.'],
@@ -899,7 +899,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'coleslaw', fr: 'Coleslaw', en: 'Coleslaw', icon: '🥬', course: 'starter', time: 15, serv: 4,
+    id: 'coleslaw', fr: 'Coleslaw', en: 'Coleslaw', icon: '🥬', course: 'starter', time: 15, tools: [], serv: 4,
     ing: 'cabbage 300 g; carrot 2; yogurt 3 tbsp; mustard 1 tsp; vinegar 1 tbsp; sugar 1 tsp; salt',
     steps: [
       ['Émincez finement le chou et râpez les carottes.', 'Finely shred the cabbage and grate the carrots.'],
@@ -908,7 +908,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'beet_salad', fr: 'Salade de betterave', en: 'Beetroot salad', icon: '🫜', course: 'starter', time: 10,
+    id: 'beet_salad', fr: 'Salade de betterave', en: 'Beetroot salad', icon: '🫜', course: 'starter', time: 10, tools: [],
     ing: 'beetroot 2; vinegar 1 tbsp; goat_cheese 60 g?; nuts 20 g?; shallot 1?; oil 2 tbsp; salt',
     steps: [
       ['Coupez la betterave cuite en dés.', 'Dice the cooked beetroot.'],
@@ -919,7 +919,7 @@ export const FREE_RECIPES: Recipe[] = [
 
   // Desserts
   r({
-    id: 'pancakes', fr: 'Pancakes moelleux', en: 'Fluffy pancakes', icon: '🥞', course: 'dessert', time: 25, serv: 3,
+    id: 'pancakes', fr: 'Pancakes moelleux', en: 'Fluffy pancakes', icon: '🥞', course: 'dessert', time: 25, tools: [], serv: 3,
     ing: 'flour 200 g; egg 2; milk 250 ml; sugar 2 tbsp; butter 20 g; baking_powder 1 tsp?; salt 1 pinch',
     steps: [
       ['Mélangez farine, sucre, levure et sel.', 'Mix flour, sugar, baking powder and salt.'],
@@ -928,7 +928,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'chocolate_cake', fr: 'Gâteau au chocolat', en: 'Chocolate cake', icon: '🍫', course: 'dessert', time: 40, serv: 6,
+    id: 'chocolate_cake', fr: 'Gâteau au chocolat', en: 'Chocolate cake', icon: '🍫', course: 'dessert', time: 40, tools: ['oven'], serv: 6,
     ing: 'chocolate 200 g; butter 150 g; egg 4; sugar 150 g; flour 50 g',
     steps: [
       ['Préchauffez le four à 180 °C. Faites fondre chocolat et beurre.', 'Preheat the oven to 180 °C. Melt the chocolate and butter.'],
@@ -937,7 +937,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'cookies', fr: 'Cookies aux pépites de chocolat', en: 'Chocolate chip cookies', icon: '🍪', course: 'dessert', time: 25, serv: 6,
+    id: 'cookies', fr: 'Cookies aux pépites de chocolat', en: 'Chocolate chip cookies', icon: '🍪', course: 'dessert', time: 25, tools: ['oven'], serv: 6,
     ing: 'flour 200 g; butter 100 g; sugar 100 g; egg 1; chocolate 100 g; baking_powder 1 tsp?; salt 1 pinch',
     steps: [
       ['Préchauffez le four à 180 °C. Mélangez beurre mou et sucre, puis l’œuf.', 'Preheat the oven to 180 °C. Cream the soft butter and sugar, then add the egg.'],
@@ -946,7 +946,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'apple_tart', fr: 'Tarte fine aux pommes', en: 'Thin apple tart', icon: '🥧', course: 'dessert', time: 40, serv: 4,
+    id: 'apple_tart', fr: 'Tarte fine aux pommes', en: 'Thin apple tart', icon: '🥧', course: 'dessert', time: 40, tools: ['oven'], serv: 4,
     ing: 'puff_pastry 1; apple 3; sugar 2 tbsp; butter 20 g?; cinnamon 1 pinch?',
     steps: [
       ['Préchauffez le four à 200 °C. Étalez la pâte sur une plaque.', 'Preheat the oven to 200 °C. Roll the pastry onto a tray.'],
@@ -955,7 +955,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'yogurt_honey', fr: 'Yaourt miel et noix', en: 'Yogurt with honey & nuts', icon: '🍯', course: 'dessert', time: 5,
+    id: 'yogurt_honey', fr: 'Yaourt miel et noix', en: 'Yogurt with honey & nuts', icon: '🍯', course: 'dessert', time: 5, tools: [],
     ing: 'yogurt 2; honey 2 tbsp; nuts 30 g?; red_fruits 80 g?; banana 1?',
     steps: [
       ['Versez le yaourt dans des bols.', 'Spoon the yogurt into bowls.'],
@@ -963,7 +963,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'porridge', fr: 'Porridge', en: 'Porridge', icon: '🥣', course: 'dessert', time: 10,
+    id: 'porridge', fr: 'Porridge', en: 'Porridge', icon: '🥣', course: 'dessert', time: 10, tools: [],
     ing: 'oats 80 g; milk 300 ml; banana 1?; honey 1 tbsp?; cinnamon 1 pinch?; red_fruits 50 g?',
     steps: [
       ['Faites chauffer flocons et lait en remuant jusqu’à ce que ce soit crémeux.', 'Heat the oats and milk, stirring, until creamy.', 5],
@@ -971,7 +971,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'poached_pears', fr: 'Poires pochées', en: 'Poached pears', icon: '🍐', course: 'dessert', time: 30,
+    id: 'poached_pears', fr: 'Poires pochées', en: 'Poached pears', icon: '🍐', course: 'dessert', time: 30, tools: [],
     ing: 'pear 4; sugar 100 g; water 700 ml; vanilla?; cinnamon 1 pinch?; chocolate 60 g?',
     steps: [
       ['Faites chauffer eau, sucre (et vanille, cannelle).', 'Heat the water with the sugar (and vanilla, cinnamon).'],
@@ -980,7 +980,7 @@ export const FREE_RECIPES: Recipe[] = [
     ],
   }),
   r({
-    id: 'strawberries_cream', fr: 'Fraises à la crème', en: 'Strawberries and cream', icon: '🍓', course: 'dessert', time: 10,
+    id: 'strawberries_cream', fr: 'Fraises à la crème', en: 'Strawberries and cream', icon: '🍓', course: 'dessert', time: 10, tools: [],
     ing: 'strawberry 250 g; cream 150 ml; sugar 2 tbsp; vanilla?',
     steps: [
       ['Lavez et coupez les fraises, sucrez-les légèrement.', 'Wash and halve the strawberries, sweeten lightly.'],

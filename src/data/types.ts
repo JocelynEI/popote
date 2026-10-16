@@ -54,6 +54,9 @@ export interface RecipeIngredient {
 export type Course = 'starter' | 'main' | 'dessert';
 export type Diet = 'vegetarian' | 'vegan' | 'glutenFree' | 'lactoseFree';
 
+/** Ustensiles au-delà d'une poêle et d'une casserole. */
+export type Tool = 'oven' | 'microwave' | 'blender' | 'multicooker';
+
 export interface RecipeStep {
   text: L10n;
   /** minuteur suggéré pour cette étape, en minutes */
@@ -74,4 +77,6 @@ export interface Recipe {
   premium?: boolean;
   /** recette créée par l'utilisateur */
   custom?: boolean;
+  /** ustensiles nécessaires au-delà d'une poêle et d'une casserole ([] = aucun ; absent = inconnu, recette perso) */
+  tools?: Tool[];
 }

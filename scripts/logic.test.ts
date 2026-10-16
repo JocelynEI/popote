@@ -9,7 +9,8 @@ import { INGREDIENT_BY_ID, INGREDIENTS, PANTRY_IDS, QUICK_FILL_IDS } from '../sr
 import { FREE_RECIPES } from '../src/data/recipes';
 import { PREMIUM_RECIPES } from '../src/data/recipesPremium';
 import { SUBSTITUTIONS } from '../src/data/substitutions';
-import { recipeDiets, recipeFitsProfile } from '../src/logic/diets';
+import { ingredientConflicts, recipeDiets, recipeFitsProfile } from '../src/logic/diets';
+import { fitsTools, inferTools } from '../src/logic/tools';
 import { planEmptyFridge } from '../src/logic/emptyFridge';
 import { addDays, checkExpiryDate, daysLeft, expiryStatus, isUrgent, todayISO } from '../src/logic/expiry';
 import { didYouMean, parseIngredientText, searchIngredients } from '../src/logic/ingredientSearch';
@@ -334,4 +335,45 @@ test('idées : au plus deux recettes Premium verrouillées, toutes pour un abonn
 test('idées : la liste après « Il manque : » commence en minuscule', () => {
   assert.equal(lowerFirst('Jambon'), 'jambon');
   assert.equal(lowerFirst(''), '');
+});
+
+// ——— V1.5 : « je n'aime pas » et ustensiles ———
+
+test('ustensiles : chaque recette a sa liste, cohérente avec ses étapes', () => {
+  for (const r of ALL) {
+    assert.ok(Array.isArray(r.tools), `${r.id} : ustensiles manquants`);
+    for (const tool of inferTools(r)) assert.ok(r.tools!.includes(tool), `${r.id} : les étapes demandent « ${tool} »`);
+  }
+  // « fourchette » ne veut pas dire four
+  assert.deepEqual(inferTools({ steps: [{ text: { fr: 'Écrasez à la fourchette.', en: '' } }] }), []);
+  assert.deepEqual(inferTools({ steps: [{ text: { fr: 'Gratinez à 200 °C.', en: '' } }] }), ['oven']);
+});
+
+test('ustensiles : rien n’est caché tant que la question n’a pas de réponse', () => {
+  const quiche = ALL.find((r) => r.id === 'quiche')!;
+  const omelette = ALL.find((r) => r.id === 'omelette')!;
+  assert.ok(fitsTools(quiche, null));
+  assert.ok(!fitsTools(quiche, []));
+  assert.ok(fitsTools(quiche, ['oven']));
+  assert.ok(fitsTools(omelette, []));
+  assert.ok(fitsTools({ tools: undefined }, []), 'recette perso sans ustensiles : jamais cachée');
+});
+
+test('je n’aime pas : obligatoire = recette cachée, facultatif = seulement signalé', () => {
+  const fridge = new Set(['egg', 'butter', 'emmental', 'chives', 'mushroom', 'onion', 'pasta', 'cream']);
+  const base = { ...noFilter, maxTime: null, difficulty: null, course: null };
+  const sans = matchRecipes(ALL, fridge, { ...base, dislikes: ['egg'] });
+  assert.ok(sans.length > 0);
+  assert.ok(sans.every((m) => !m.recipe.ingredients.some((i) => !i.optional && i.id === 'egg')), 'une recette avec des œufs obligatoires est restée');
+  // la ciboulette est facultative dans l'omelette : la recette reste, l'ingrédient est signalé
+  const avec = matchRecipes(ALL, fridge, { ...base, dislikes: ['chives'] });
+  assert.ok(avec.some((m) => m.recipe.id === 'omelette'));
+  assert.ok(ingredientConflicts('chives', [], [], ['chives']));
+});
+
+test('ustensiles : sans four, aucune recette au four dans les idées', () => {
+  const fridge = new Set(['egg', 'milk', 'butter', 'pasta', 'emmental', 'tomato', 'cream', 'onion', 'zucchini', 'potato']);
+  const m = matchRecipes(ALL, fridge, { ...noFilter, maxTime: null, difficulty: null, course: null, tools: ['microwave'] });
+  assert.ok(m.length > 0);
+  assert.ok(m.every((x) => !x.recipe.tools?.includes('oven') && !x.recipe.tools?.includes('blender')));
 });

@@ -235,7 +235,7 @@ export default function RecipeScreen() {
               const has = pantry || available.has(ri.id);
               const isChecked = checked[ri.id] ?? has;
               const sub = subByMissing.get(ri.id);
-              const conflict = ri.optional && ingredientConflicts(ri.id, settings.diets, settings.allergies);
+              const conflict = ri.optional && ingredientConflicts(ri.id, settings.diets, settings.allergies, settings.dislikes);
               const missing = !has && !ri.optional;
               return (
                 <Pressable
@@ -256,7 +256,7 @@ export default function RecipeScreen() {
                     </Txt>
                     {conflict ? (
                       <Txt v="small" color={c.warning}>
-                        ⚠️ {t('conflictWarn')}
+                        ⚠️ {settings.dislikes.includes(ri.id) ? t('dislikeWarn') : t('conflictWarn')}
                       </Txt>
                     ) : null}
                     {sub && (
