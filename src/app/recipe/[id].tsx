@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DishArt } from '../../components/Dish';
 import { useToast } from '../../components/Toast';
 import { Button, Chip, haptic, IconButton, MAX_FONT_SCALE, Screen, Section, Stepper, styles as ui, Txt } from '../../components/ui';
-import { ingredientDisplay, PANTRY_IDS } from '../../data/ingredients';
+import { INGREDIENT_BY_ID, ingredientDisplay, PANTRY_IDS } from '../../data/ingredients';
 import type { Diet } from '../../data/types';
 import {
   addHistory,
@@ -24,7 +24,7 @@ import { useData, useFridge, useRecipe } from '../../hooks/useData';
 import { type TKey, useI18n } from '../../i18n';
 import { ingredientConflicts, recipeAllergens, recipeDiets } from '../../logic/diets';
 import { evaluateRecipe } from '../../logic/matching';
-import { clampServings, formatQty } from '../../logic/scaling';
+import { clampServings, countedName, formatQty, shownQty } from '../../logic/scaling';
 import { usePremium } from '../../services/premium';
 import { checkBadges } from '../../services/progress';
 import { useSettings } from '../../state/settings';
@@ -82,7 +82,8 @@ export default function RecipeScreen() {
 
   const lines = recipe.ingredients.map((ri) => {
     const d = ingredientDisplay(ri.id, lang, ri.label);
-    return { ri, emoji: d.emoji, name: d.name, qty: formatQty(ri, factor, lang) };
+    const name = ri.unit === 'pc' ? countedName(INGREDIENT_BY_ID[ri.id]?.count?.[lang], d.name, shownQty(ri, factor)) : d.name;
+    return { ri, emoji: d.emoji, name, qty: formatQty(ri, factor, lang) };
   });
 
   const share = () => {
