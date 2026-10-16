@@ -38,6 +38,8 @@ export interface Ingredient {
   pantry?: boolean;
   /** proposé dans la grille « Remplir mon frigo rapidement » */
   quick?: boolean;
+  /** compté à l'unité : [singulier, pluriel] par langue (« Oignon », « Oignons ») */
+  count?: { fr: [string, string]; en: [string, string] };
 }
 
 export type Unit = 'g' | 'ml' | 'pc' | 'tbsp' | 'tsp' | 'pinch' | 'slice' | 'clove' | 'can' | 'bunch';
@@ -53,6 +55,9 @@ export interface RecipeIngredient {
 
 export type Course = 'starter' | 'main' | 'dessert';
 export type Diet = 'vegetarian' | 'vegan' | 'glutenFree' | 'lactoseFree';
+
+/** Ustensiles au-delà d'une poêle et d'une casserole. */
+export type Tool = 'oven' | 'microwave' | 'blender' | 'multicooker';
 
 export interface RecipeStep {
   text: L10n;
@@ -74,4 +79,6 @@ export interface Recipe {
   premium?: boolean;
   /** recette créée par l'utilisateur */
   custom?: boolean;
+  /** ustensiles nécessaires au-delà d'une poêle et d'une casserole ([] = aucun ; absent = inconnu, recette perso) */
+  tools?: Tool[];
 }

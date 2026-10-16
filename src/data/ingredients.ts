@@ -152,6 +152,48 @@ export const INGREDIENTS: Ingredient[] = [
   i('frozen_veg', 'Légumes surgelés', 'Frozen vegetables', '🧊', 'frozen', [], ['poêlée', 'jardinière', 'frozen veg']),
 ];
 
+/** Singulier et pluriel des ingrédients comptés à l'unité dans les recettes (« 1 Œuf », « 3 Œufs »). */
+const COUNT: Record<string, [string, string, string, string]> = {
+  egg: ['Œuf', 'Œufs', 'Egg', 'Eggs'],
+  onion: ['Oignon', 'Oignons', 'Onion', 'Onions'],
+  carrot: ['Carotte', 'Carottes', 'Carrot', 'Carrots'],
+  bell_pepper: ['Poivron', 'Poivrons', 'Bell pepper', 'Bell peppers'],
+  olives: ['Olive', 'Olives', 'Olive', 'Olives'],
+  tomato: ['Tomate', 'Tomates', 'Tomato', 'Tomatoes'],
+  lemon: ['Citron', 'Citrons', 'Lemon', 'Lemons'],
+  puff_pastry: ['Pâte feuilletée', 'Pâtes feuilletées', 'Sheet of puff pastry', 'Sheets of puff pastry'],
+  zucchini: ['Courgette', 'Courgettes', 'Zucchini', 'Zucchini'],
+  leek: ['Poireau', 'Poireaux', 'Leek', 'Leeks'],
+  eggplant: ['Aubergine', 'Aubergines', 'Eggplant', 'Eggplants'],
+  potato: ['Pomme de terre', 'Pommes de terre', 'Potato', 'Potatoes'],
+  stock: ['Bouillon cube', 'Bouillons cubes', 'Stock cube', 'Stock cubes'],
+  tortilla: ['Tortilla', 'Tortillas', 'Tortilla', 'Tortillas'],
+  avocado: ['Avocat', 'Avocats', 'Avocado', 'Avocados'],
+  pizza_dough: ['Pâte à pizza', 'Pâtes à pizza', 'Pizza base', 'Pizza bases'],
+  salmon: ['Pavé de saumon', 'Pavés de saumon', 'Salmon fillet', 'Salmon fillets'],
+  white_fish: ['Filet de poisson blanc', 'Filets de poisson blanc', 'White fish fillet', 'White fish fillets'],
+  sausage: ['Saucisse', 'Saucisses', 'Sausage', 'Sausages'],
+  cucumber: ['Concombre', 'Concombres', 'Cucumber', 'Cucumbers'],
+  broccoli: ['Brocoli', 'Brocolis', 'Head of broccoli', 'Heads of broccoli'],
+  salad: ['Salade', 'Salades', 'Lettuce', 'Lettuces'],
+  yogurt: ['Yaourt nature', 'Yaourts nature', 'Plain yogurt', 'Plain yogurts'],
+  shallot: ['Échalote', 'Échalotes', 'Shallot', 'Shallots'],
+  banana: ['Banane', 'Bananes', 'Banana', 'Bananas'],
+  apple: ['Pomme', 'Pommes', 'Apple', 'Apples'],
+  orange: ['Orange', 'Oranges', 'Orange', 'Oranges'],
+  pear: ['Poire', 'Poires', 'Pear', 'Pears'],
+  sweet_potato: ['Patate douce', 'Patates douces', 'Sweet potato', 'Sweet potatoes'],
+  cauliflower: ['Chou-fleur', 'Choux-fleurs', 'Cauliflower', 'Cauliflowers'],
+  beetroot: ['Betterave', 'Betteraves', 'Beetroot', 'Beetroots'],
+  mushroom: ['Champignon', 'Champignons', 'Mushroom', 'Mushrooms'],
+  celery: ['Branche de céleri', 'Branches de céleri', 'Celery stick', 'Celery sticks'],
+  cabbage: ['Chou', 'Choux', 'Cabbage', 'Cabbages'],
+};
+for (const ing of INGREDIENTS) {
+  const c = COUNT[ing.id];
+  if (c) ing.count = { fr: [c[0], c[1]], en: [c[2], c[3]] };
+}
+
 export const INGREDIENT_BY_ID: Record<string, Ingredient> = Object.fromEntries(
   INGREDIENTS.map((x) => [x.id, x]),
 );

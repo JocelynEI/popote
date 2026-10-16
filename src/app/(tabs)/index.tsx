@@ -1,40 +1,36 @@
 import { router } from 'expo-router';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
-import { Illo } from '../../components/Dish';
+import { type ReactNode, useEffect, useMemo, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { DishArt } from '../../components/Dish';
 import { Icon } from '../../components/Icon';
-import { Tip } from '../../components/Tip';
-import { useToast } from '../../components/Toast';
-import { Button, Chip, haptic, IconButton, MAX_FONT_SCALE, Screen, styles as ui, Txt } from '../../components/ui';
+import { Button, IconButton, Screen, Txt } from '../../components/ui';
 import { INGREDIENT_BY_ID } from '../../data/ingredients';
-import type { Ingredient } from '../../data/types';
-import { useFridge } from '../../hooks/useData';
+import { ingredientName, recentlyCookedMap } from '../../db/repo';
+import { useAllRecipes, useData, useFridge } from '../../hooks/useData';
 import { useI18n } from '../../i18n';
-import { parseIngredientText, searchIngredients } from '../../logic/ingredientSearch';
-import { useDictation } from '../../services/voice';
+import { homeCards, namesSentence, pantryIdeas, quickIdeas } from '../../logic/home';
+import type { RecipeMatch } from '../../logic/matching';
+import { usePremium } from '../../services/premium';
+import { getRecipeEngine } from '../../services/recipeEngine';
 import { useSettings } from '../../state/settings';
 import { FONTS, radius, shadow, space, TOUCH, useTheme } from '../../theme/theme';
 
-/** Basiques du placard proposés en « Ajout rapide » (scroll horizontal) */
-const QUICK_TAGS = ['pasta', 'rice', 'egg', 'cream', 'onion', 'tomato', 'emmental', 'potato', 'milk', 'butter', 'chicken', 'garlic', 'bread', 'zucchini', 'lemon'];
 const GUTTER = space(5);
 
 /**
- * Écran 1 — L'inventaire spontané.
- * Objectif : saisir ses restes en moins de 3 secondes, puis « Créer ma Mypopote ».
+ * Accueil en cartes (cahier des charges, 3.2), ordre donné par `homeCards` :
+ * à finir vite → tout de suite → « Ajouter ce que j'ai » → remplir mon frigo.
+ * Frigo vide : « Ajouter ce que j'ai » d'abord, puis des idées avec trois fois rien.
  */
 export default function HomeScreen() {
   const { c } = useTheme();
   const { t, l, lang } = useI18n();
   const { settings, update } = useSettings();
-  const toast = useToast();
+  const { isPremium } = usePremium();
   const fridge = useFridge();
-  const inputRef = useRef<TextInput>(null);
-
-  const [selected, setSelected] = useState<string[]>([]);
-  const [text, setText] = useState('');
-  const [includeSaved, setIncludeSaved] = useState(true);
-  const [tipStep, setTipStep] = useState(settings.tipsSeen.includes('home2') ? -1 : 0);
+  const recipes = useAllRecipes();
+  const recent = useData(recentlyCookedMap);
+  const [matches, setMatches] = useState<RecipeMatch[]>([]);
 
   useEffect(() => {
     if (settings.welcomeSeen && settings.prefsDone) return;
@@ -43,72 +39,105 @@ export default function HomeScreen() {
     return () => clearTimeout(id);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const nextTip = () => {
-    if (tipStep >= 2) {
-      setTipStep(-1);
-      update({ tipsSeen: [...settings.tipsSeen, 'home2'] });
-    } else setTipStep(tipStep + 1);
-  };
-
-  const add = (ids: string[]) => {
-    const fresh = ids.filter((id) => !selected.includes(id));
-    if (fresh.length) {
-      haptic();
-      setSelected((s) => [...s, ...fresh.filter((id) => !s.includes(id))]);
-    }
-    return fresh.length;
-  };
-
-  /** Validation de la saisie libre : « 2 œufs, un demi brocoli, du cheddar » -> 3 puces */
-  const submitText = (value = text) => {
-    const v = value.trim();
-    if (!v) return [];
-    const { found, unknown } = parseIngredientText(v);
-    const n = add(found.map((i) => i.id));
-    if (n > 1) toast.show(t('parsedToast', { n }));
-    if (unknown.length) toast.show(t('notUnderstood', { list: unknown.join(', ') }));
-    setText('');
-    return found.map((i) => i.id);
-  };
-
-  const dictation = useDictation(lang, (spoken) => submitText(spoken));
+  // idées à partir de tout le frigo (même moteur que l'écran des idées)
   useEffect(() => {
-    if (dictation.state === 'unavailable' || dictation.state === 'onlineOnly') toast.show(t('dictationUnavailable'));
-    if (dictation.state === 'denied') toast.show(t('voiceDenied'));
-  }, [dictation.state]); // eslint-disable-line react-hooks/exhaustive-deps
+    let alive = true;
+    getRecipeEngine()
+      .suggest({
+        recipes,
+        available: fridge.ids,
+        filters: { maxTime: null, difficulty: null, course: null, diets: settings.diets, allergies: settings.allergies, dislikes: settings.dislikes, tools: settings.tools },
+        urgent: fridge.urgent,
+        recentlyCooked: recent,
+      })
+      .then((res) => alive && setMatches(res))
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [recipes, fridge.ids, fridge.urgent, recent, settings.diets, settings.allergies, settings.dislikes, settings.tools]);
 
-  // suggestions pendant la frappe (sur le dernier morceau de la phrase)
-  const lastPart = text.split(/[,;]/).pop()?.trim() ?? '';
-  const suggestions = useMemo(
-    () => (lastPart.length >= 1 ? searchIngredients(lastPart, new Set(selected), 5).map((h) => h.ing) : []),
-    [lastPart, selected],
-  );
+  const cards = homeCards({ fridgeEmpty: fridge.items.length === 0, urgentCount: fridge.urgentItems.length });
+  const now = quickIdeas(matches, isPremium);
+  const pantry = useMemo(() => pantryIdeas(recipes), [recipes]);
+  const openCount = matches.filter((m) => isPremium || !m.recipe.premium).length;
+  const urgentNames = fridge.urgentItems.map((i) => ingredientName(i.ingredient_id, i.custom_name, lang));
+  const ingName = (id: string) => (INGREDIENT_BY_ID[id] ? l(INGREDIENT_BY_ID[id].name) : id);
+  const sentence = (names: string[]) => namesSentence(names, { and: t('and'), others: (n) => t('andOthers', { n }) });
 
-  const pickSuggestion = (ing: Ingredient) => {
-    add([ing.id]);
-    const parts = text.split(/[,;]/);
-    parts.pop();
-    const rest = parts.join(',').trim();
-    setText(rest ? `${rest}, ` : '');
+  const openRecipe = (m: RecipeMatch) => router.push({ pathname: '/recipe/[id]', params: { id: m.recipe.id } });
+
+  const timeAndLevel = (m: RecipeMatch) => `${t('minutes', { n: m.recipe.time })} · ${t(m.recipe.difficulty === 1 ? 'difficultyEasy' : 'difficultyMedium')}`;
+
+  const blocks: Record<string, ReactNode> = {
+    urgent: (
+      <Pressable
+        key="urgent"
+        accessibilityRole="button"
+        accessibilityLabel={`${t('urgentCardTitle')} : ${sentence(urgentNames)}. ${t('urgentCardLink')}`}
+        onPress={() => router.push('/empty-fridge')}
+        style={({ pressed }) => [styles.card, { backgroundColor: c.accentSoft, transform: [{ scale: pressed ? 0.98 : 1 }] }]}
+      >
+        <Txt v="label" color={c.accentText}>
+          ⏳ {t('urgentCardTitle')}
+        </Txt>
+        <Txt style={{ marginTop: space(2), fontWeight: '600' }}>{sentence(urgentNames)}</Txt>
+        <Txt v="small" color={c.accentText} style={{ marginTop: space(3), fontWeight: '700' }}>
+          {t('urgentCardLink')} →
+        </Txt>
+      </Pressable>
+    ),
+    now: (
+      <View key="now" style={[styles.card, { backgroundColor: c.surface }, shadow(c, 1)]}>
+        <Txt v="label" color={c.primaryText}>
+          {now.complete ? t('nowTitle') : t('nowTitleAlmost')}
+        </Txt>
+        {now.ideas.map((m, i) => (
+          <RecipeRow key={m.recipe.id} first={i === 0} onPress={() => openRecipe(m)} m={m} meta={m.missing.length ? t('badgeMissing', { list: m.missing.map(ingName).join(', ') }) : timeAndLevel(m)} />
+        ))}
+        {openCount > 0 && (
+          <Pressable accessibilityRole="button" onPress={() => router.push({ pathname: '/results', params: { fridge: '1' } })} style={styles.link} hitSlop={6}>
+            <Txt v="small" color={c.primaryText} style={{ fontWeight: '700' }}>
+              {t('seeAllIdeas', { n: openCount })} →
+            </Txt>
+          </Pressable>
+        )}
+      </View>
+    ),
+    add: <Button key="add" title={t('addWhatIHave')} icon="add" onPress={() => router.push('/add')} style={{ minHeight: 60, marginBottom: space(4) }} />,
+    pantry: (
+      <View key="pantry" style={[styles.card, { backgroundColor: c.surface }, shadow(c, 1)]}>
+        <Txt v="label" color={c.primaryText}>
+          {t('pantryTitle')}
+        </Txt>
+        {pantry.map((m, i) => (
+          <RecipeRow key={m.recipe.id} first={i === 0} onPress={() => openRecipe(m)} m={m} meta={`${t('minutes', { n: m.recipe.time })} · ${sentence([...m.missing.map(ingName), t('yourPantry')])}`} />
+        ))}
+      </View>
+    ),
+    fill: (
+      <Pressable
+        key="fill"
+        accessibilityRole="button"
+        onPress={() => router.push('/quick-fill')}
+        style={({ pressed }) => [styles.tile, { backgroundColor: c.primarySoft, transform: [{ scale: pressed ? 0.98 : 1 }] }]}
+      >
+        <Icon name="grid-outline" size={24} color={c.primaryText} />
+        <View style={{ flex: 1, marginLeft: space(3) }}>
+          <Txt style={{ fontWeight: '700' }}>{t('fillFridge')}</Txt>
+          <Txt v="small" muted>
+            {t('fillFridgeHint')}
+          </Txt>
+        </View>
+        <Icon name="chevron-forward" size={20} color={c.primaryText} />
+      </Pressable>
+    ),
   };
-
-  const savedCount = fridge.ids.size;
-  const total = new Set([...selected, ...(includeSaved ? [...fridge.ids] : [])]).size;
-  const name = (id: string) => `${INGREDIENT_BY_ID[id]?.emoji ?? ''} ${l(INGREDIENT_BY_ID[id]?.name ?? { fr: id, en: id })}`;
-
-  const create = () => {
-    // le texte encore dans le champ est pris en compte
-    const typed = text.trim() ? submitText() : [];
-    const all = [...new Set([...selected, ...typed])];
-    router.push({ pathname: '/results', params: { ing: all.join(','), fridge: includeSaved ? '1' : '0' } });
-  };
-
-  const quick = QUICK_TAGS.filter((id) => !selected.includes(id));
 
   return (
     <Screen>
-      <ScrollView contentContainerStyle={{ paddingBottom: 150 }} keyboardShouldPersistTaps="handled">
-        {/* Header : logo centré, profil à droite */}
+      <ScrollView contentContainerStyle={{ paddingBottom: space(10) }}>
+        {/* En-tête : progrès, logo, réglages */}
         <View style={styles.header}>
           <IconButton icon="trophy-outline" label={t('progress')} onPress={() => router.push('/progress')} color={c.primaryText} size={22} style={styles.headerBtn} />
           <View style={styles.logo} accessibilityRole="header" accessible accessibilityLabel="Mypopote">
@@ -121,160 +150,16 @@ export default function HomeScreen() {
         </View>
 
         <View style={{ paddingHorizontal: GUTTER }}>
-          <Txt v="display" style={{ marginTop: space(6) }}>
+          <Txt v="display" style={{ marginTop: space(4), marginBottom: fridge.items.length ? space(5) : space(2) }}>
             {t('homeTitle')}
           </Txt>
-          <Txt muted style={{ marginTop: space(2) }}>
-            {t('homeSubtitle')}
-          </Txt>
-
-          {tipStep === 0 && <Tip text={t('tip1')} onNext={nextTip} />}
-
-          {/* Saisie héros : texte libre + micro */}
-          <View style={[styles.hero, { backgroundColor: c.surface, borderColor: text ? c.primary : 'transparent' }, shadow(c, 1)]}>
-            <Icon name="search" size={22} color={c.primaryText} />
-            <TextInput
-              ref={inputRef}
-              value={text}
-              onChangeText={setText}
-              onSubmitEditing={() => submitText()}
-              placeholder={dictation.state === 'listening' ? t('dictating') : t('heroPlaceholder')}
-              placeholderTextColor={c.textMuted}
-              accessibilityLabel={t('searchA11y')}
-              accessibilityHint={t('heroPlaceholder')}
-              returnKeyType="done"
-              submitBehavior="submit"
-              autoCorrect={false}
-              maxFontSizeMultiplier={MAX_FONT_SCALE}
-              style={[styles.heroInput, { color: c.text }]}
-            />
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={t('dictate')}
-              accessibilityState={{ busy: dictation.state === 'listening' }}
-              onPress={() => (dictation.state === 'listening' ? dictation.stop() : dictation.start())}
-              hitSlop={6}
-              style={[styles.mic, { backgroundColor: dictation.state === 'listening' ? c.accent : c.primarySoft }]}
-            >
-              <Icon name="mic" size={22} color={dictation.state === 'listening' ? c.onAccent : c.primaryText} />
-            </Pressable>
-          </View>
-
-          {suggestions.length > 0 && (
-            <View style={[styles.suggest, { backgroundColor: c.surface }, shadow(c, 2)]}>
-              {suggestions.map((ing) => (
-                <Pressable
-                  key={ing.id}
-                  accessibilityRole="button"
-                  accessibilityLabel={l(ing.name)}
-                  onPress={() => pickSuggestion(ing)}
-                  style={({ pressed }) => [styles.suggestRow, { backgroundColor: pressed ? c.primarySoft : 'transparent' }]}
-                >
-                  <Txt style={{ fontSize: 20 }}>{ing.emoji}</Txt>
-                  <Txt style={{ marginLeft: space(3), fontWeight: '500' }}>{l(ing.name)}</Txt>
-                  <View style={{ flex: 1 }} />
-                  <Icon name="add" size={18} color={c.primaryText} />
-                </Pressable>
-              ))}
-            </View>
-          )}
-        </View>
-
-        {/* Ajout rapide : scroll horizontal */}
-        {tipStep === 1 && (
-          <View style={{ paddingHorizontal: GUTTER }}>
-            <Tip text={t('tip2')} onNext={nextTip} />
-          </View>
-        )}
-        <Txt v="label" muted style={{ paddingHorizontal: GUTTER, marginTop: space(7), marginBottom: space(3) }}>
-          {t('quickAdd')}
-        </Txt>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ gap: space(2), paddingHorizontal: GUTTER, paddingBottom: space(2) }}
-          keyboardShouldPersistTaps="handled"
-        >
-          {quick.map((id) => (
-            <Chip key={id} label={`${name(id)}  +`} onPress={() => add([id])} />
-          ))}
-        </ScrollView>
-
-        {/* Zone « Mon frigo » : puces supprimables */}
-        <View style={{ paddingHorizontal: GUTTER, marginTop: space(8) }}>
-          <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
-            <Txt v="h2" style={{ flex: 1 }}>
-              {t('myFridgeZone')}
+          {fridge.items.length === 0 && (
+            <Txt muted style={{ marginBottom: space(5) }}>
+              {t('homeSubtitle')}
             </Txt>
-            {selected.length > 0 && (
-              <Pressable accessibilityRole="button" onPress={() => setSelected([])} hitSlop={8}>
-                <Txt v="small" color={c.primaryText} style={{ fontWeight: '600' }}>
-                  {t('clearSelection')}
-                </Txt>
-              </Pressable>
-            )}
-          </View>
-
-          {selected.length ? (
-            <View style={[ui.wrap, { marginTop: space(4) }]}>
-              {selected.map((id) => (
-                <Chip
-                  key={id}
-                  selected
-                  label={name(id)}
-                  onRemove={() => setSelected((s) => s.filter((x) => x !== id))}
-                  removeLabel={t('removeIngredientA11y', { name: l(INGREDIENT_BY_ID[id]?.name ?? { fr: id, en: id }) })}
-                />
-              ))}
-            </View>
-          ) : (
-            <View style={[styles.emptyZone, { borderColor: c.border }]}>
-              <Illo name="salad" size={72} />
-              <Txt muted style={{ flex: 1, marginLeft: space(3) }}>
-                {t('myFridgeEmpty')}
-              </Txt>
-            </View>
           )}
 
-          {savedCount > 0 ? (
-            <Pressable
-              accessibilityRole="switch"
-              accessibilityState={{ checked: includeSaved }}
-              onPress={() => (haptic(), setIncludeSaved(!includeSaved))}
-              style={styles.includeRow}
-            >
-              <Icon name={includeSaved ? 'checkbox' : 'square-outline'} size={22} color={includeSaved ? c.primaryText : c.textMuted} />
-              <Txt style={{ marginLeft: space(2), flex: 1 }}>{t('includeSaved', { n: savedCount })}</Txt>
-            </Pressable>
-          ) : (
-            <Pressable accessibilityRole="button" onPress={() => router.push('/quick-fill')} style={styles.includeRow}>
-              <Txt color={c.primaryText} style={{ fontWeight: '600' }}>
-                {t('emptyQuickFill')} →
-              </Txt>
-            </Pressable>
-          )}
-
-          {/* Anti-gaspi : produits à finir vite */}
-          {fridge.urgentItems.length > 0 && (
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={`${t('urgentBannerA11y', { n: fridge.urgentItems.length })}. ${t('seeIdeas')}`}
-              onPress={() => router.push('/empty-fridge')}
-              style={[styles.urgent, { backgroundColor: c.accentSoft }]}
-            >
-              <Txt style={{ flex: 1 }} numberOfLines={2}>
-                {t('urgentShort', {
-                  list: fridge.urgentItems
-                    .slice(0, 3)
-                    .map((i) => (i.ingredient_id && INGREDIENT_BY_ID[i.ingredient_id] ? l(INGREDIENT_BY_ID[i.ingredient_id].name) : i.custom_name))
-                    .join(', '),
-                })}
-              </Txt>
-              <Txt v="small" color={c.accentText} style={{ fontWeight: '700', marginLeft: space(2) }}>
-                {t('seeIdeas')} →
-              </Txt>
-            </Pressable>
-          )}
+          {cards.map((k) => blocks[k])}
 
           {!settings.privacyNoticeSeen && (
             <Pressable accessibilityRole="button" accessibilityHint={t('close')} onPress={() => update({ privacyNoticeSeen: true })} style={styles.privacy}>
@@ -286,13 +171,40 @@ export default function HomeScreen() {
           )}
         </View>
       </ScrollView>
-
-      {/* CTA fixé en bas */}
-      <View style={[styles.sticky, { backgroundColor: c.bg }]} pointerEvents="box-none">
-        {tipStep === 2 && <Tip text={t('tip3')} last onNext={nextTip} />}
-        <Button title={total > 0 ? `${t('ctaCreate')} · ${total}` : t('ctaCreate')} icon="pot" onPress={create} disabled={total === 0 && !text.trim()} style={{ minHeight: 60 }} />
-      </View>
     </Screen>
+  );
+}
+
+/** Une recette dans une carte de l'accueil : vignette, titre, une ligne d'infos. */
+function RecipeRow({ m, meta, first, onPress }: { m: RecipeMatch; meta: string; first: boolean; onPress: () => void }) {
+  const { c } = useTheme();
+  const { t, l } = useI18n();
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={`${l(m.recipe.title)}. ${meta}`}
+      onPress={onPress}
+      style={({ pressed }) => [styles.recipeRow, { borderTopColor: c.border, borderTopWidth: first ? 0 : 1, opacity: pressed ? 0.7 : 1 }]}
+    >
+      <DishArt recipe={m.recipe} size={56} radius={14} padding={0.1} />
+      <View style={{ flex: 1, marginLeft: space(3) }}>
+        <Txt style={{ fontFamily: FONTS.display, fontSize: 17, lineHeight: 21 }} numberOfLines={2}>
+          {l(m.recipe.title)}
+        </Txt>
+        <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', marginTop: 3, gap: space(2) }}>
+          <Txt v="small" muted>
+            {meta}
+          </Txt>
+          {m.usedUrgent.length > 0 && (
+            <View style={[styles.badge, { backgroundColor: c.accentSoft }]}>
+              <Txt v="small" color={c.accentText} style={{ fontWeight: '700', fontSize: 12 }}>
+                {t('badgeAntiWaste')}
+              </Txt>
+            </View>
+          )}
+        </View>
+      </View>
+    </Pressable>
   );
 }
 
@@ -300,24 +212,10 @@ const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: space(3), marginTop: space(2) },
   headerBtn: { width: TOUCH, height: TOUCH },
   logo: { flexDirection: 'row', alignItems: 'center' },
-  hero: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: radius.md,
-    borderWidth: 1.5,
-    paddingLeft: space(4),
-    paddingRight: space(2),
-    minHeight: 68,
-    marginTop: space(6),
-    gap: space(3),
-  },
-  heroInput: { flex: 1, minWidth: 0, fontSize: 17, fontFamily: FONTS.body, paddingVertical: space(4) },
-  mic: { width: 48, height: 48, borderRadius: 24, alignItems: 'center', justifyContent: 'center' },
-  suggest: { borderRadius: radius.md, marginTop: space(2), paddingVertical: space(1), overflow: 'hidden' },
-  suggestRow: { flexDirection: 'row', alignItems: 'center', minHeight: TOUCH + 4, paddingHorizontal: space(4) },
-  emptyZone: { flexDirection: 'row', alignItems: 'center', borderWidth: 1.5, borderStyle: 'dashed', borderRadius: radius.md, padding: space(4), marginTop: space(4) },
-  includeRow: { flexDirection: 'row', alignItems: 'center', minHeight: TOUCH, marginTop: space(3) },
-  urgent: { flexDirection: 'row', alignItems: 'center', borderRadius: radius.md, padding: space(4), marginTop: space(5) },
+  card: { borderRadius: radius.xl, padding: space(4), marginBottom: space(4) },
+  recipeRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: space(2.5), minHeight: TOUCH },
+  badge: { borderRadius: radius.pill, paddingHorizontal: space(2), paddingVertical: 1 },
+  link: { marginTop: space(2), minHeight: TOUCH, justifyContent: 'center' },
+  tile: { flexDirection: 'row', alignItems: 'center', borderRadius: radius.xl, padding: space(4), minHeight: 72 },
   privacy: { flexDirection: 'row', alignItems: 'center', gap: space(2), marginTop: space(6), paddingVertical: space(2) },
-  sticky: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: GUTTER, paddingTop: space(3), paddingBottom: space(4) },
 });

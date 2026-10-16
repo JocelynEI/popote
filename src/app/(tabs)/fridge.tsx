@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { FlatList, Pressable, TextInput, View } from 'react-native';
+import { Pressable, SectionList, TextInput, View } from 'react-native';
 import { Illo } from '../../components/Dish';
 import { ExpiryPill } from '../../components/Expiry';
 import { useToast } from '../../components/Toast';
@@ -9,6 +9,7 @@ import { INGREDIENT_BY_ID } from '../../data/ingredients';
 import { deleteFridgeItem, type FridgeItem, ingredientName, resolveFridgeItem, restoreFridgeItem } from '../../db/repo';
 import { useFridge } from '../../hooks/useData';
 import { useI18n } from '../../i18n';
+import { groupFridge } from '../../logic/fridge';
 import { key } from '../../logic/text';
 import { checkBadges } from '../../services/progress';
 import { radius, shadow, space, useTheme } from '../../theme/theme';
@@ -25,6 +26,16 @@ export default function FridgeScreen() {
     if (!k) return items;
     return items.filter((i) => key(ingredientName(i.ingredient_id, i.custom_name, lang)).includes(k));
   }, [items, q, lang]);
+
+  // trois blocs : à finir vite, avec une date, sans date (un bloc vide n'apparaît pas)
+  const sections = useMemo(() => {
+    const g = groupFridge(filtered);
+    return [
+      { key: 'urgent', title: t('fridgeGroupUrgent'), data: g.urgent },
+      { key: 'dated', title: t('fridgeGroupDated'), data: g.dated },
+      { key: 'undated', title: t('fridgeGroupUndated'), data: g.undated },
+    ].filter((sec) => sec.data.length > 0);
+  }, [filtered, t]);
 
   const resolve = (it: FridgeItem, outcome: 'used' | 'wasted') => {
     resolveFridgeItem(it.id, outcome);
@@ -69,10 +80,16 @@ export default function FridgeScreen() {
 
   return (
     <Screen>
-      <FlatList
-        data={filtered}
+      <SectionList
+        sections={sections}
         keyExtractor={(i) => String(i.id)}
         renderItem={renderItem}
+        stickySectionHeadersEnabled={false}
+        renderSectionHeader={({ section }) => (
+          <Txt v="label" accessibilityRole="header" color={section.key === 'urgent' ? c.accentText : c.textMuted} style={{ marginTop: space(2), marginBottom: space(3) }}>
+            {section.title} · {section.data.length}
+          </Txt>
+        )}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ padding: space(4), paddingBottom: space(24) }}
         ListHeaderComponent={

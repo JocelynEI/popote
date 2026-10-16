@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DishArt } from '../../components/Dish';
 import { useToast } from '../../components/Toast';
 import { Button, Chip, haptic, IconButton, MAX_FONT_SCALE, Screen, Section, Stepper, styles as ui, Txt } from '../../components/ui';
-import { ingredientDisplay, PANTRY_IDS } from '../../data/ingredients';
+import { INGREDIENT_BY_ID, ingredientDisplay, PANTRY_IDS } from '../../data/ingredients';
 import type { Diet } from '../../data/types';
 import {
   addHistory,
@@ -24,7 +24,7 @@ import { useData, useFridge, useRecipe } from '../../hooks/useData';
 import { type TKey, useI18n } from '../../i18n';
 import { ingredientConflicts, recipeAllergens, recipeDiets } from '../../logic/diets';
 import { evaluateRecipe } from '../../logic/matching';
-import { clampServings, formatQty } from '../../logic/scaling';
+import { clampServings, countedName, formatQty, shownQty } from '../../logic/scaling';
 import { usePremium } from '../../services/premium';
 import { checkBadges } from '../../services/progress';
 import { useSettings } from '../../state/settings';
@@ -44,16 +44,18 @@ export default function RecipeScreen() {
   const fridge = useFridge();
   const favs = useData(listFavorites);
   const [servings, setServings] = useState(clampServings(settings.defaultServings));
-  const [note, setNoteText] = useState('');
+  const [note, setNoteText] = useState(() => (id ? getNote(id) : ''));
+  const [noteFor, setNoteFor] = useState(id);
+  if (noteFor !== id) {
+    // autre recette dans le même écran : on recharge sa note (sans effet, pendant le rendu)
+    setNoteFor(id);
+    setNoteText(id ? getNote(id) : '');
+  }
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [awake, setAwake] = useState(false);
   const insets = useSafeAreaInsets();
   // on relâche la mise en veille en quittant la fiche
   useEffect(() => () => void deactivateKeepAwake(AWAKE_TAG).catch(() => {}), []);
-
-  useEffect(() => {
-    if (id) setNoteText(getNote(id));
-  }, [id]);
 
   const locked = !!recipe?.premium && !isPremium;
   useEffect(() => {
@@ -80,7 +82,8 @@ export default function RecipeScreen() {
 
   const lines = recipe.ingredients.map((ri) => {
     const d = ingredientDisplay(ri.id, lang, ri.label);
-    return { ri, emoji: d.emoji, name: d.name, qty: formatQty(ri, factor, lang) };
+    const name = ri.unit === 'pc' ? countedName(INGREDIENT_BY_ID[ri.id]?.count?.[lang], d.name, shownQty(ri, factor)) : d.name;
+    return { ri, emoji: d.emoji, name, qty: formatQty(ri, factor, lang) };
   });
 
   const share = () => {
@@ -142,10 +145,6 @@ export default function RecipeScreen() {
     }
     setAwake(!awake);
   };
-
-  const RoundBtn = ({ icon, label, onPress, color }: { icon: IconName; label: string; onPress: () => void; color?: string }) => (
-    <IconButton icon={icon} label={label} onPress={onPress} color={color ?? c.text} size={20} style={[styles.round, { backgroundColor: c.surface }, shadow(c, 1)]} />
-  );
 
   return (
     <Screen edges={['bottom']}>
@@ -237,7 +236,7 @@ export default function RecipeScreen() {
               const has = pantry || available.has(ri.id);
               const isChecked = checked[ri.id] ?? has;
               const sub = subByMissing.get(ri.id);
-              const conflict = ri.optional && ingredientConflicts(ri.id, settings.diets, settings.allergies);
+              const conflict = ri.optional && ingredientConflicts(ri.id, settings.diets, settings.allergies, settings.dislikes);
               const missing = !has && !ri.optional;
               return (
                 <Pressable
@@ -258,7 +257,7 @@ export default function RecipeScreen() {
                     </Txt>
                     {conflict ? (
                       <Txt v="small" color={c.warning}>
-                        ⚠️ {t('conflictWarn')}
+                        ⚠️ {settings.dislikes.includes(ri.id) ? t('dislikeWarn') : t('conflictWarn')}
                       </Txt>
                     ) : null}
                     {sub && (
@@ -336,6 +335,12 @@ export default function RecipeScreen() {
 }
 
 const AWAKE_TAG = 'mypopote-recipe';
+
+/** Bouton rond posé sur la grande image de la recette. */
+function RoundBtn({ icon, label, onPress, color }: { icon: IconName; label: string; onPress: () => void; color?: string }) {
+  const { c } = useTheme();
+  return <IconButton icon={icon} label={label} onPress={onPress} color={color ?? c.text} size={20} style={[styles.round, { backgroundColor: c.surface }, shadow(c, 1)]} />;
+}
 
 const styles = StyleSheet.create({
   round: { width: 44, height: 44, borderRadius: 22 },

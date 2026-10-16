@@ -6,7 +6,7 @@ import { CONTACT_EMAIL } from '../config';
 
 const FR = `Dernière mise à jour : septembre 2026
 
-Mypopote est conçue pour respecter ta vie privée : l’application ne collecte, ne transmet et ne vend aucune donnée personnelle.
+L’application Mypopote ne collecte, ne transmet et ne vend aucune donnée personnelle.
 
 1. Aucune collecte
 • Pas de compte, pas d’inscription, pas d’identifiant.
@@ -17,7 +17,7 @@ Mypopote est conçue pour respecter ta vie privée : l’application ne collecte
 Ton frigo, ta liste de courses, tes favoris, tes notes, tes recettes perso, ton historique et tes réglages sont enregistrés uniquement dans l’espace privé de l’application, sur ton appareil. Ils sont supprimés si tu désinstalles l’application.
 
 3. Sauvegarde
-L’export crée un fichier que TU choisis d’envoyer où tu veux (Drive, iCloud, e-mail…). Mypopote n’y a plus accès ensuite.
+L’export crée un fichier que tu envoies où tu veux (Drive, iCloud, e-mail…). Mypopote n’y a plus accès ensuite.
 
 4. Autorisations
 • Notifications (facultatif) : rappels programmés sur l’appareil.
@@ -34,7 +34,7 @@ ${CONTACT_EMAIL}`;
 
 const EN = `Last updated: September 2026
 
-Mypopote is built to respect your privacy: the app does not collect, transmit or sell any personal data.
+The Mypopote app does not collect, transmit or sell any personal data.
 
 1. No collection
 • No account, no sign-up, no identifier.
@@ -45,7 +45,7 @@ Mypopote is built to respect your privacy: the app does not collect, transmit or
 Your fridge, shopping list, favourites, notes, own recipes, history and settings are stored only in the app’s private storage on your device. They are deleted if you uninstall the app.
 
 3. Backup
-Export creates a file that YOU choose to send wherever you like (Drive, iCloud, email…). Mypopote has no access to it afterwards.
+Export creates a file that you send wherever you like (Drive, iCloud, email…). Mypopote has no access to it afterwards.
 
 4. Permissions
 • Notifications (optional): reminders scheduled on the device.

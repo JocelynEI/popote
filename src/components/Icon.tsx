@@ -76,7 +76,6 @@ const MAP = {
 
 export type IconName = keyof typeof MAP;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const TAGS: Record<IconNode[number][0], any> = { path: Path, circle: SvgCircle, rect: Rect, line: Line, polyline: Polyline, ellipse: Ellipse };
 
 /** Icônes « pleines » : même dessin, remplissage de la couleur (favori actif, case cochée…) */

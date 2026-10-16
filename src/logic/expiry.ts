@@ -31,7 +31,7 @@ export function daysLeft(expiresAt: string, now = new Date()): number {
 
 export type ExpiryStatus = 'expired' | 'red' | 'orange' | 'green' | 'none';
 
-/** rouge ≤ 1 jour, orange 2–3 jours, vert au-delà */
+/** rouge ≤ 1 jour, orange 2 à 3 jours, vert au-delà */
 export function expiryStatus(expiresAt: string | null | undefined, now = new Date()): ExpiryStatus {
   if (!expiresAt) return 'none';
   const d = daysLeft(expiresAt, now);
