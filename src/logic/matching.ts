@@ -99,12 +99,16 @@ function passesFilters(recipe: Recipe, f: MatchFilters): boolean {
   return recipeFitsProfile(recipe, f.diets, f.allergies, f.dislikes) && fitsTools(recipe, f.tools);
 }
 
-/** La recette utilise-t-elle suffisamment ce que l'utilisateur a vraiment ? (évite « salade de fruits » avec juste un citron) */
+/**
+ * La recette utilise-t-elle suffisamment ce que l'utilisateur a vraiment ? (évite « salade de fruits » avec juste un citron)
+ * Un seul ingrédient obligatoire suffit quand c'est lui qui donne son nom au plat (compote de pommes, poires pochées).
+ */
 function isRelevant(m: RecipeMatch): boolean {
   const nonPantry = m.recipe.ingredients.filter((i) => !PANTRY_IDS.has(i.id));
-  const requiredNonPantry = nonPantry.filter((i) => !i.optional).length;
+  const required = nonPantry.filter((i) => !i.optional);
   if (m.used.length === 0) return false;
-  if (requiredNonPantry <= 1 && nonPantry.length > 1) return m.used.length >= 2;
+  if (required.length === 1 && starIngredients(m.recipe).has(required[0].id)) return true;
+  if (required.length <= 1 && nonPantry.length > 1) return m.used.length >= 2;
   return true;
 }
 

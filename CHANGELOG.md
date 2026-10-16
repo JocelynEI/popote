@@ -2,6 +2,26 @@
 
 Chaque version porte un seul sujet. Le plan de la refonte est dans `CAHIER_DES_CHARGES.md`.
 
+## V1.6 : le catalogue, premier lot (16 octobre 2026)
+
+181 recettes gratuites au lieu de 105, et des idées plus justes sur tout le catalogue.
+
+- **76 nouvelles recettes gratuites**, en trois lots : les légumes qu'on jette le plus souvent (courgette, aubergine, poireau, épinards, salade, brocoli, chou…), le placard et le petit budget (lentilles, pois chiches, riz, pâtes, conserves, beaucoup de végétarien), puis viandes, poissons, cuisines du monde et desserts (rougail saucisses, keftas, soupe coco-poulet, mug cake, crumble aux fruits rouges…). Chacune en français et en anglais, pour 2 personnes sauf mention, avec ses ustensiles et son illustration. Aucun nouvel ingrédient : tout se trouve déjà dans la recherche.
+- **L'ingrédient qui donne son nom au plat n'est plus remplacé.** « Salade tomate-mozzarella » n'est plus proposée « tout de suite » avec du fromage râpé : la mozzarella apparaît dans « Il manque ». Les remplacements qui gardent le même plat restent permis (tomates fraîches ou en boîte, oignon ou échalote).
+- **Un seul produit suffit quand c'est lui qui fait le plat** : avec seulement des pommes, la compote de pommes est proposée ; avec seulement des pommes de terre, les pommes de terre sautées aussi. Avant, ces recettes ne sortaient jamais avec un seul produit. Le citron seul ne propose toujours pas de salade de fruits.
+- Liste de relecture : `docs/catalogue-v1.6.md` (les 76 recettes avec leurs ingrédients, temps, ustensiles et régimes, puis les 108 remplacements désormais refusés). `npx tsx scripts/rapport-catalogue.ts` la recalcule pour tout le catalogue.
+
+Tests ajoutés : la règle de l'ingrédient vedette, vérifiée sur les 193 recettes ; au moins 180 recettes gratuites ; chaque recette a un vrai ingrédient, deux étapes, ses deux langues et des minuteurs entiers ; aucun dessert avec viande ou poisson ; compote avec seulement des pommes, pas de salade de fruits avec seulement un citron.
+
+### Recette sur le téléphone
+
+1. Vide le frigo, puis ajoute seulement « tomates » et « fromage râpé » : la salade tomate-mozzarella est dans « Presque prêt », avec « Il manque : mozzarella ».
+2. Remplace le fromage râpé par « œufs » : « Œufs brouillés à la tomate » est dans « Tout de suite ».
+3. Vide le frigo, ajoute seulement « pommes » : la compote de pommes est proposée tout de suite.
+4. Ajoute « courgette » et « œufs » : les galettes de courgette apparaissent.
+5. Cherche « mug cake » dans les idées, profil sans micro-ondes (Réglages → profil culinaire → étape 3, ne coche que le four) : il disparaît ; coche le micro-ondes : il revient.
+6. Ouvre trois nouvelles recettes au hasard en anglais (Réglages → langue) : titre et étapes traduits.
+
 ## V1.5 : « Je n'aime pas » et ustensiles (16 octobre 2026)
 
 Les idées tiennent compte de ce que tu n'aimes pas et de ce que tu as dans ta cuisine.

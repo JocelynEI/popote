@@ -406,3 +406,29 @@ test('ingrédient vedette : sur tout le catalogue, jamais remplacé sauf si le p
     }
   }
 });
+
+test('catalogue : au moins 180 recettes gratuites', () => {
+  assert.ok(FREE_RECIPES.length >= 180, `${FREE_RECIPES.length} recettes gratuites`);
+});
+
+test('catalogue : chaque recette a un vrai ingrédient, des étapes et des minuteurs entiers', () => {
+  for (const r of ALL) {
+    assert.ok(r.ingredients.some((i) => !PANTRY_IDS.has(i.id)), `${r.id} : seulement des ingrédients du placard`);
+    assert.ok(r.steps.length >= 2, `${r.id} : moins de deux étapes`);
+    assert.ok(r.title.fr && r.title.en && r.steps.every((s) => s.text.fr && s.text.en), `${r.id} : traduction manquante`);
+    for (const s of r.steps) if (s.timer != null) assert.ok(Number.isInteger(s.timer) && s.timer > 0, `${r.id} : minuteur ${s.timer}`);
+  }
+});
+
+test('catalogue : aucun dessert avec de la viande ou du poisson', () => {
+  for (const r of ALL.filter((x) => x.course === 'dessert'))
+    for (const i of r.ingredients) assert.ok(!INGREDIENT_BY_ID[i.id].tags.some((t) => t === 'meat' || t === 'fish' || t === 'shellfish'), `${r.id} : ${i.id}`);
+});
+
+test('pertinence : un seul produit suffit quand il donne son nom au plat', () => {
+  const ids = (fridge: string[]) => matchRecipes(ALL, new Set(fridge), { ...noFilter, maxTime: null, difficulty: null, course: null }).filter((m) => !m.missing.length).map((m) => m.recipe.id);
+  assert.ok(ids(['apple']).includes('apple_compote'));
+  assert.ok(ids(['potato']).includes('sauteed_potatoes'));
+  assert.ok(ids(['pear']).includes('poached_pears'));
+  assert.ok(!ids(['lemon']).includes('fruit_salad'));
+});
