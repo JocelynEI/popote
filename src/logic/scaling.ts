@@ -46,10 +46,27 @@ function fmtNumber(n: number, lang: Lang): string {
   return lang === 'fr' ? s.replace('.', ',') : s;
 }
 
-/** « 200 g », « 2 gousses », « 1,5 c. à soupe », « 3 » */
+/**
+ * Quantité affichée d'un ingrédient. Une moitié écrite dans la recette (« ½ oignon ») reste une moitié
+ * tant qu'on ne dépasse pas 0,75 ; sinon arrondi de cuisine (`scaleQty`). Un œuf entier ne devient jamais ½.
+ */
+export function shownQty(ri: RecipeIngredient, factor: number): number | null {
+  if (ri.qty == null || !ri.unit) return null;
+  if (ri.unit === 'pc' && ri.qty < 1 && ri.qty * factor < 0.75) return 0.5;
+  return scaleQty(ri.qty, ri.unit, factor);
+}
+
+/** Nom d'un ingrédient compté à l'unité, accordé : « 1 Oignon », « 2 Oignons », « ½ Concombre ». */
+export function countedName(forms: [string, string] | undefined, fallback: string, q: number | null): string {
+  if (!forms || q == null) return fallback;
+  return q > 1 ? forms[1] : forms[0];
+}
+
+/** « 200 g », « 2 gousses », « 1,5 c. à soupe », « 3 », « ½ » */
 export function formatQty(ri: RecipeIngredient, factor: number, lang: Lang): string {
-  if (ri.qty == null || !ri.unit) return '';
-  const q = scaleQty(ri.qty, ri.unit, factor);
+  const q = shownQty(ri, factor);
+  if (q == null || !ri.unit) return '';
+  if (q === 0.5 && ri.unit === 'pc') return '½';
   const [one, many] = UNIT_LABELS[lang][ri.unit];
   const label = q > 1 ? many : one;
   if (ri.unit === 'g' || ri.unit === 'ml') {

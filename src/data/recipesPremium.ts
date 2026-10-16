@@ -3,7 +3,7 @@ import type { Recipe } from './types';
 
 /**
  * « Pack recettes + » (Premium). Cuisine du monde, desserts, batch cooking.
- * Lot initial — à compléter jusqu'à ~300 recettes.
+ * Lot initial, à compléter jusqu'à ~300 recettes.
  * Les recettes premium apparaissent dans les résultats avec un cadenas pour les non-premium (aperçu du titre uniquement).
  */
 export const PREMIUM_RECIPES: Recipe[] = [
